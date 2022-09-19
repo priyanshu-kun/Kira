@@ -1,3 +1,37 @@
+@font-face {
+    font-family: './assets/fonts/HelveticaNowDisplay-ExtBlk.otf';
+    src: url('./assets/fonts/HelveticaNowDisplay-ExtBlk.otf'); 
+  }
+@font-face {
+    font-family: 'HelveticaNowDisplay-Black.otf';
+    src: url('./assets/fonts/HelveticaNowDisplay-Black.otf'); 
+  }
+@font-face {
+    font-family: 'HelveticaNowDisplay-Medium.otf';
+    src: url('./assets/fonts/HelveticaNowDisplay-Medium.otf'); 
+  }
+@font-face {
+    font-family: 'HelveticaNowDisplay-Hairline.otf';
+    src: url('./assets/fonts/HelveticaNowDisplay-Hairline.otf'); 
+  }
+@font-face {
+    font-family: 'HelveticaNowDisplay-Thin.otf';
+    src: url('./assets/fonts/HelveticaNowDisplay-Thin.otf'); 
+  }
+
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+body {
+    font-family: 'HelveticaNowDisplay-Medium.otf';
+}
+
+
+.logo {
+    font-family: 'HelveticaNowDisplay-Black.otf';
+}
+
+

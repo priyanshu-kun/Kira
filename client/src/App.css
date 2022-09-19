@@ -1,0 +1,25 @@
+/* html {
+    background: #fff !important;
+    color: black !important;
+} */
+
+.logo {
+    position: relative;
+}
+
+.logo::after {
+    content: "";
+    position: absolute;
+    bottom: -20px;
+    left: 0;
+    width: 200px;
+    height: 1px;
+    background-color: rgb(0, 0, 0,0.6);
+}
+
+
+.login-character-image {
+    width: 600px;
+    max-width: 600px;
+    min-width: 100px;
+}
