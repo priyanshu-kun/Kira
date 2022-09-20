@@ -19,6 +19,9 @@ module.exports = {
         'secondary-light': "#F5F2EA",
         'button-main-light': "#FDC886",
         'text-main-light': "#000"
+      },
+      spacing: {
+        'form-width': '900px'
       }
     },
   },
