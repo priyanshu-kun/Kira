@@ -1,10 +1,27 @@
-import React from 'react'
+import React, { useRef,useState } from 'react'
 import { FiArrowRight } from "react-icons/fi";
-import { FaGoogle,FaGithub } from "react-icons/fa";
+import { FaGoogle, FaGithub } from "react-icons/fa";
 import character from "../../assets/character.svg"
+import ContentEditable from "react-contenteditable"
+import "./SignUp.css"
+
 // import pointingArrow from "../../assets/arrow.svg"
 
 function SignUp() {
+
+  const text = useRef("Username")
+  const [isChecked, setIsChecked] = useState(true);
+
+
+  const handleChange = evt => {
+    text.current = evt.target.value;
+  };
+
+  const handleBlur = () => {
+    console.log(text.current);
+  };
+
+
   return (
     <div className='bg-secondary-light text-black min-h-screen max-h-screen flex items-center justify-center'>
       <div className='auth-header flex w-3/4 mx-auto justify-between py-6 fixed top-0 left-1/2 transform -translate-x-1/2'>
@@ -16,7 +33,7 @@ function SignUp() {
       </div>
       <img className='login-character-image absolute bottom-10 right-20' src={character} alt="" />
       <div className='form-body px-12 py-12 bg-white w-form-width relative z-50 rounded-3xl shadow-sm'>
-        <h1 className='signup__form__welcome text-center text-3xl pb-12'>Welcome 🔮</h1>
+        {/* <h1 className='signup__form__welcome text-center text-3xl pb-12'>Welcome 🔮</h1> */}
         {/* <p className='text-center pt-3 pb-12 opacity-60'>Hey, Enter your details to get to Sign up to your account.</p> */}
         <form className='w-full h-full' action="">
           <div class="flex w-full">
@@ -27,12 +44,15 @@ function SignUp() {
                 </div>
               </div>
               <div className='avatar-buttons mb-16'>
-                <button className="btn btn-primary rounded-full bg-button-main-light border-none text-black hover:bg-button-main-light px-8 mr-4 normal-case">Change</button>
+                <label className='btn  btn-primary rounded-full bg-button-main-light border-none text-black hover:bg-button-main-light px-8 mr-4 normal-case' >
+                  <input type="file"  accept="image/png, image/jpg, image/gif, image/jpeg" className='custom-file-input hidden'/>
+                  Select
+                </label>
                 <button className="btn btn-ghost btn-active rounded-full  border-none text-black hover:border-none px-8 normal-case">Remove</button>
               </div>
-              <div className='username-field text-lg opacity-60 relative'><span className='text-button-main-light mr-1'>@</span><span>Username</span></div>
+              <div className='username-field text-lg opacity-60 relative flex'><span className='text-button-main-light mr-1'>@</span><ContentEditable html={text.current} onBlur={handleBlur} onChange={handleChange}  /></div>
             </div>
-            <div class="divider divider-horizontal">OR</div>
+            <div class="divider divider-horizontal">AND</div>
             <div class="grid flex-grow card bg-transparent rounded-box place-items-center">
 
               <div class="flex flex-col w-full border-opacity-50">
@@ -55,9 +75,9 @@ function SignUp() {
                     </label>
                     <input type="password" placeholder="eg. stay strong" class="bg-secondary-light input input-bordered w-full max-w-xs" />
                   </div>
-                  <div class="form-control mb-3">
+                  <div class="form-control checkbox-wrapper mb-3">
                     <label class="cursor-pointer label">
-                      <input type="checkbox" checked  class="checkbox mr-2 " />
+                      <input type="checkbox"  className={isChecked ? "checked" : ""} checked={isChecked} onClick={(e) => setIsChecked(prev => !prev)} />
                       <span class="label-text">Remember me</span>
                     </label>
                   </div>
@@ -70,7 +90,7 @@ function SignUp() {
                 </div>
               </div>
               <p className='text-sm text-center mt-6'><span className='text-gray-500 mr-2'>Don't have an account?</span>
-              <a className=' cursor-pointer' hef="">Request now</a>
+                <a className=' cursor-pointer' hef="">Request now</a>
               </p>
             </div>
           </div>
