@@ -3,19 +3,19 @@
     src: url('./assets/fonts/HelveticaNowDisplay-ExtBlk.otf'); 
   }
 @font-face {
-    font-family: 'HelveticaNowDisplay-Black.otf';
+    font-family: './assets/fonts/HelveticaNowDisplay-Black.otf';
     src: url('./assets/fonts/HelveticaNowDisplay-Black.otf'); 
   }
 @font-face {
-    font-family: 'HelveticaNowDisplay-Medium.otf';
+    font-family: './assets/fonts/HelveticaNowDisplay-Medium.otf';
     src: url('./assets/fonts/HelveticaNowDisplay-Medium.otf'); 
   }
 @font-face {
-    font-family: 'HelveticaNowDisplay-Hairline.otf';
+    font-family: './assets/fonts/HelveticaNowDisplay-Hairline.otf';
     src: url('./assets/fonts/HelveticaNowDisplay-Hairline.otf'); 
   }
 @font-face {
-    font-family: 'HelveticaNowDisplay-Thin.otf';
+    font-family: './assets/fonts/HelveticaNowDisplay-Thin.otf';
     src: url('./assets/fonts/HelveticaNowDisplay-Thin.otf'); 
   }
 
@@ -26,12 +26,12 @@
 
 
 body {
-    font-family: 'HelveticaNowDisplay-Medium.otf';
+    font-family: './assets/fonts/HelveticaNowDisplay-Medium.otf';
 }
 
 
 .logo {
-    font-family: 'HelveticaNowDisplay-Black.otf';
+    font-family: './assets/fonts/HelveticaNowDisplay-Black.otf';
 }
 
 

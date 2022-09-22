@@ -13,6 +13,9 @@ module.exports = {
       'thin':['HelveticaNowDisplay-Thin.otf'],
       'extraThin':['HelveticaNowDisplay-Hairline.otf']
     },
+    maxWidth: {
+       'register-form-field': '24rem'
+    },
     extend: {
       colors: {
         'main-light': "#fff",
@@ -21,7 +24,8 @@ module.exports = {
         'text-main-light': "#000"
       },
       spacing: {
-        'form-width': '900px'
+        'form-width': '900px',
+        'form-width-login': '480px'
       }
     },
   },
