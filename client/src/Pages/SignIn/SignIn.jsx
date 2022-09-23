@@ -48,8 +48,8 @@ function SignUp() {
       </div>
       <img className='login-character-image absolute bottom-10 right-20' src={character} alt="" />
       <div className='form-body px-12 py-12 bg-white  w-form-width-login  relative z-50 rounded-3xl shadow-sm'>
-        <h1 className='signup__form__welcome text-center text-2xl'>Agent Login</h1>
-        <p className='text-center py-6 w-72 mx-auto '>Hey, Enter your details to get to Sign in to your account.</p>
+        <h1 className='signup__form__welcome text-center mb-10 text-2xl'>Agent Login</h1>
+        {/* <p className='text-center pt-6 pb-10 w-72 mx-auto '>Hey, Enter your details to get to Sign in to your account.</p> */}
         <form className='w-full h-full' onSubmit={handleSubmit} action="">
           <div class="flex flex-col w-full border-opacity-50">
             <div class="grid card rounded-box place-items-center">
@@ -80,8 +80,8 @@ function SignUp() {
             </div>
             <div class="divider my-8">or Sign in with</div>
             <div class=" flex w-full text-center justify-center">
-              <button className="btn mr-3 normal-case rounded-box bg-transparent border-2 border-solid border-black/10 text-black hover:bg-transparent"><FaGoogle className='mr-2 text-xl' /> Google</button>
-              <button className="btn normal-case rounded-box bg-transparent border-2  border-solid border-black/10 text-black hover:bg-transparent"><FaGithub className='mr-2 text-xl' /> Github</button>
+              <button className="btn mr-3 normal-case rounded-xl bg-transparent border-1 border-solid border-black/10 text-black hover:bg-transparent"><FaGoogle className='mr-2 text-xl' /> Google</button>
+              <button className="btn normal-case rounded-xl bg-transparent border-1  border-solid border-black/10 text-black hover:bg-transparent"><FaGithub className='mr-2 text-xl' /> Github</button>
             </div>
           </div>
           <p className='text-sm text-center mt-6'><span className='text-gray-500 mr-2'>Don't have an account?</span>

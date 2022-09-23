@@ -62,13 +62,13 @@ function SignUp() {
       </div>
       <img className='register-character-image absolute bottom-10 right-20' src={character} alt="" />
       <div className='form-body px-12 py-12 bg-white w-form-width relative z-50 rounded-3xl shadow-sm'>
-         <h1 className='signup__form__welcome text-center text-2xl'>Agent Register</h1>
-        <p className='text-center pt-6 pb-8 w-72 mx-auto '>Hey, Enter your details to get to Sign up to your account.</p>
+         <h1 className='signup__form__welcome text-center text-2xl mb-10'>Agent Register</h1>
+        {/* <p className='text-center pt-6 pb-10 w-72 mx-auto'>Hey, Enter your details to get to Sign up to your account.</p> */}
         <form className='w-full h-full' onSubmit={handleSubmit} action="">
           <div class="flex w-full">
             <div class="flex flex-col items-center justify-center  card bg-transparent rounded-box px-6">
               <div class="avatar mb-8">
-                <div class="avatar-cover w-32 overflow-hidden rounded-3xl">
+                <div class="avatar-cover w-28 overflow-hidden rounded-3xl">
                   <img className='object-cover' src={image} />
                 </div>
               </div>
@@ -108,8 +108,8 @@ function SignUp() {
                 </div>
                 <div class="divider my-8">or Sign up with</div>
                 <div class=" flex w-full text-center justify-center">
-                  <button className="btn mr-3 normal-case rounded-box bg-transparent border-2 border-solid border-black/10 text-black hover:bg-transparent"><FaGoogle className='mr-2 text-xl' /> Google</button>
-                  <button className="btn normal-case rounded-box bg-transparent border-2  border-solid border-black/10 text-black hover:bg-transparent"><FaGithub className='mr-2 text-xl' /> Github</button>
+                  <button className="btn mr-3 normal-case rounded-xl bg-transparent border-1 border-solid border-black/10 text-black hover:bg-transparent"><FaGoogle className='mr-2 text-xl' /> Google</button>
+                  <button className="btn normal-case rounded-xl bg-transparent border-1  border-solid border-black/10 text-black hover:bg-transparent"><FaGithub className='mr-2 text-xl' /> Github</button>
                 </div>
               </div>
               <p className='text-sm text-center mt-6'><span className='text-gray-500 mr-2'>Already have an account?</span>
