@@ -17,6 +17,7 @@ function SignUp() {
 
   const [isChecked, setIsChecked] = useState(true);
   const [inputs, setInputs] = useState(initialState)
+  const [showHide,setShowHide] = useState(false)
 
 
 
@@ -44,7 +45,7 @@ function SignUp() {
           <h1 className='logo text-xl'>Kira </h1>
           <span className='logo-data flex items-center mt-5 text-base opacity-60'><span className='mr-2'>priyanshusharma.me</span> <FiArrowRight /></span>
         </div>
-        <button class="btn btn-active btn-ghost normal-case tex-sm text-black/60">Sign Up</button>
+        <Link to="/SignUp" class="btn btn-active btn-ghost normal-case tex-sm text-black/60">Sign Up</Link>
       </div>
       <img className='login-character-image absolute bottom-10 right-20' src={character} alt="" />
       <div className='form-body px-12 py-12 bg-white  w-form-width-login  relative z-50 rounded-3xl shadow-sm'>
@@ -57,16 +58,19 @@ function SignUp() {
                 <label class="label">
                   <span class="label-text">Enter email or username</span>
                 </label>
-                <input type="email" name='email' value={inputs.emailAndUsername} onChange={handleInputChanges} placeholder="Email / Username" class="bg-secondary-light input input-bordered w-full max-w-full" />
+                <input type="email" name='emailAndUsername' value={inputs.emailAndUsername} onChange={handleInputChanges} placeholder="Email / Username" class="bg-secondary-light input input-bordered w-full max-w-full" />
               </div>
-              <div class="form-control w-full max-w-full mb-2">
+              <div class="form-control w-full max-w-full mb-2 relative select-none">
                 <label class="label">
                   <span class="label-text">What is your password?</span>
                 </label>
-                <input type="password" name='password' value={inputs.password} onChange={handleInputChanges} placeholder="eg. stay strong" class="bg-secondary-light input input-bordered w-full max-w-full" />
+                <input type={showHide ? "text":"password"}  name='password' value={inputs.password} onChange={handleInputChanges} placeholder="eg. stay strong" class="bg-secondary-light select-none input input-bordered w-full max-w-full relative" />
+                <span onClick={(e) => {
+                    setShowHide(prev => !prev); 
+                }} className='text-gray-600 cursor-pointer absolute right-6 h-12 flex items-center justify-center bottom-0'>{showHide ? "Show": "Hide"}</span>
               </div>
               <div className="flex w-full justify-between items-center mb-6">
-                <div className='checkbox-wrapper'>
+                <div className='checkbox-wrapper '>
                   <label class="cursor-pointer label">
                     <input type="checkbox" className={isChecked ? "checked" : ""} checked={isChecked} onClick={(e) => setIsChecked(prev => !prev)} />
                     <span class="label-text">Remember me</span>
