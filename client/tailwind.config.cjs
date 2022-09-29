@@ -25,7 +25,8 @@ module.exports = {
       },
       spacing: {
         'form-width': '900px',
-        'form-width-login': '480px'
+        'form-width-login': '480px',
+        'form-width-otp': '400px'
       }
     },
   },

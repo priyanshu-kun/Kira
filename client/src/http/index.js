@@ -10,4 +10,10 @@ const api = axios.create({
 });
 
 
-const sendMail = (data) => axios.post('/api/send-mail',data)
+export const sendOTP =  (data) => {
+    console.log(data)
+      axios.post('http://localhost:5500/api/send-otp',data)
+}
+
+
+export default api

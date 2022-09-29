@@ -5,9 +5,10 @@ import character from "../../assets/character.svg"
 import ContentEditable from "react-contenteditable"
 import avatar from "../../assets/avatar.jpg"
 import "./SignUp.css"
-import { Link } from "react-router-dom"
-import { useDispatch,useSelector } from 'react-redux';
-import {setAuth} from "../../store/auth.slice"
+import { Link, useNavigate } from "react-router-dom"
+import { useDispatch, useSelector } from 'react-redux';
+import { setAuth } from "../../store/auth.slice"
+import { sendOTP } from "../../http/index"
 
 // import pointingArrow from "../../assets/arrow.svg"
 const initialState = {
@@ -18,13 +19,13 @@ const initialState = {
 
 function SignUp() {
 
-
+  const navigate = useNavigate()
   const dipatch = useDispatch()
 
   const text = useRef("Username")
   const [inputs, setInputs] = useState(initialState)
   const [image, setImage] = useState(avatar)
-  const [showHide,setShowHide] = useState(false)
+  const [showHide, setShowHide] = useState(false)
 
 
 
@@ -51,20 +52,22 @@ function SignUp() {
     const file = e.target.files[0];
     const reader = new FileReader();
     reader.readAsDataURL(file)
-    reader.onloadend = function() {
+    reader.onloadend = function () {
       setImage(reader.result)
     }
   }
 
 
-  const handleSubmit = e => {
+  const handleSubmit = async e => {
     e.preventDefault()
     const formContent = {
       ...inputs,
       username: text.current,
       image
     }
+    await sendOTP({ Email: formContent.email })
     dipatch(setAuth(formContent))
+    navigate("/confirm-otp")
   }
 
 
@@ -124,7 +127,7 @@ function SignUp() {
                       setShowHide(prev => !prev);
                     }} className='text-gray-600 cursor-pointer absolute right-6 h-12 flex items-center justify-center bottom-0'>{showHide ? "Show" : "Hide"}</span>
                   </div>
-                  <button class="btn btn-primary w-56 mt-8 rounded-full bg-button-main-light border-none hover:bg-button-main-light text-black normal-case">Sign up</button>
+                  <button className="btn btn-primary w-56 mt-8 rounded-full bg-button-main-light border-none hover:bg-button-main-light text-black normal-case">Sign up</button>
                 </div>
                 <div class="divider my-8">or Sign up with</div>
                 <div class=" flex w-full text-center justify-center">
