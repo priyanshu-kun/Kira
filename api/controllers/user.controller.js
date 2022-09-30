@@ -1,12 +1,10 @@
 class AuthController {
     async sendOTP(req,res) {
-        console.log(req.body)
-        // const {email} = req.body;
-        // if(!email) {
-        //     // handle error
-        //     res.status(500)
-        // }
-        // console.log(email)
+        const {Email} = req.body;
+        if(!Email) {
+            // handle error
+            res.status(500)
+        }
         res.send(200)
     }
 }

@@ -9,6 +9,7 @@ import { Link, useNavigate } from "react-router-dom"
 import { useDispatch, useSelector } from 'react-redux';
 import { setAuth } from "../../store/auth.slice"
 import { sendOTP } from "../../http/index"
+import Navbar from '../../components/Navbar';
 
 // import pointingArrow from "../../assets/arrow.svg"
 const initialState = {
@@ -73,17 +74,10 @@ function SignUp() {
 
   return (
     <div className='bg-secondary-light text-black min-h-screen max-h-screen flex items-center justify-center'>
-      <div className='auth-header flex w-3/4 mx-auto justify-between py-6 fixed top-0 left-1/2 transform -translate-x-1/2'>
-        <div className=' flex flex-col'>
-          <h1 className='logo text-xl'>Kira </h1>
-          <span className='logo-data flex items-center mt-5 text-base opacity-60'><span className='mr-2'>priyanshusharma.me</span> <FiArrowRight /></span>
-        </div>
-        <Link to="/SignIn" class="btn btn-active btn-ghost normal-case tex-sm text-black/60">Sign In</Link>
-      </div>
+      <Navbar _Route={"SignIn"} />
       <img className='register-character-image absolute bottom-10 right-20' src={character} alt="" />
       <div className='form-body px-12 py-12 bg-white w-form-width relative z-50 rounded-3xl shadow-sm'>
         <h1 className='signup__form__welcome text-center text-2xl mb-10'>Agent Register</h1>
-        {/* <p className='text-center pt-6 pb-10 w-72 mx-auto'>Hey, Enter your details to get to Sign up to your account.</p> */}
         <form className='w-full h-full' onSubmit={handleSubmit} action="">
           <div class="flex w-full">
             <div class="flex flex-col items-center justify-center  card bg-transparent rounded-box px-6">

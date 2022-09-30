@@ -6,6 +6,7 @@ import ContentEditable from "react-contenteditable"
 import avatar from "../../assets/avatar.jpg"
 import "./SignIn.css"
 import { Link } from "react-router-dom"
+import Navbar from '../../components/Navbar';
 
 // import pointingArrow from "../../assets/arrow.svg"
 const initialState = {
@@ -17,7 +18,7 @@ function SignUp() {
 
   const [isChecked, setIsChecked] = useState(true);
   const [inputs, setInputs] = useState(initialState)
-  const [showHide,setShowHide] = useState(false)
+  const [showHide, setShowHide] = useState(false)
 
 
 
@@ -40,13 +41,7 @@ function SignUp() {
 
   return (
     <div className='bg-secondary-light text-black min-h-screen max-h-screen flex items-center justify-center'>
-      <div className='auth-header flex w-3/4 mx-auto justify-between py-6 fixed top-0 left-1/2 transform -translate-x-1/2'>
-        <div className=' flex flex-col'>
-          <h1 className='logo text-xl'>Kira </h1>
-          <span className='logo-data flex items-center mt-5 text-base opacity-60'><span className='mr-2'>priyanshusharma.me</span> <FiArrowRight /></span>
-        </div>
-        <Link to="/SignUp" class="btn btn-active btn-ghost normal-case tex-sm text-black/60">Sign Up</Link>
-      </div>
+      <Navbar _Route={"SignUp"} />
       <img className='login-character-image absolute bottom-10 right-20' src={character} alt="" />
       <div className='form-body px-12 py-12 bg-white  w-form-width-login  relative z-50 rounded-3xl shadow-sm'>
         <h1 className='signup__form__welcome text-center mb-10 text-2xl'>Agent Login</h1>
@@ -64,10 +59,10 @@ function SignUp() {
                 <label class="label">
                   <span class="label-text">What is your password?</span>
                 </label>
-                <input type={showHide ? "text":"password"}  name='password' value={inputs.password} onChange={handleInputChanges} placeholder="eg. stay strong" class="bg-secondary-light select-none input input-bordered w-full max-w-full relative" />
+                <input type={showHide ? "text" : "password"} name='password' value={inputs.password} onChange={handleInputChanges} placeholder="eg. stay strong" class="bg-secondary-light select-none input input-bordered w-full max-w-full relative" />
                 <span onClick={(e) => {
-                    setShowHide(prev => !prev); 
-                }} className='text-gray-600 cursor-pointer absolute right-6 h-12 flex items-center justify-center bottom-0'>{showHide ? "Show": "Hide"}</span>
+                  setShowHide(prev => !prev);
+                }} className='text-gray-600 cursor-pointer absolute right-6 h-12 flex items-center justify-center bottom-0'>{showHide ? "Show" : "Hide"}</span>
               </div>
               <div className="flex w-full justify-between items-center mb-6">
                 <div className='checkbox-wrapper '>
