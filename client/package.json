@@ -9,6 +9,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@dicebear/avatars": "^4.10.5",
+    "@dicebear/micah": "^4.10.5",
     "@reduxjs/toolkit": "^1.8.5",
     "axios": "^0.27.2",
     "daisyui": "^2.28.0",

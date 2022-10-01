@@ -10,6 +10,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setAuth } from "../../store/auth.slice"
 import { sendOTP } from "../../http/index"
 import Navbar from '../../components/Navbar';
+import { createAvatar } from '@dicebear/avatars';
+import * as style from '@dicebear/micah';
 
 // import pointingArrow from "../../assets/arrow.svg"
 const initialState = {
@@ -28,6 +30,12 @@ function SignUp() {
   const [image, setImage] = useState(avatar)
   const [showHide, setShowHide] = useState(false)
 
+
+  let svg = createAvatar(style, {
+    seed: 'human',
+    // ... and other options
+  });
+  console.log(svg)
 
 
   const handleChange = evt => {
@@ -56,6 +64,11 @@ function SignUp() {
     reader.onloadend = function () {
       setImage(reader.result)
     }
+  }
+
+  const handleRemoveAvatar = (e) => {
+    e.preventDefault();
+    setImage(avatar)
   }
 
 
@@ -91,7 +104,7 @@ function SignUp() {
                   <input type="file" onChange={captureImage} accept="image/png, image/jpg, image/gif, image/jpeg" className='custom-file-input hidden' />
                   Select
                 </label>
-                <button className="btn btn-ghost btn-active rounded-full  border-none text-black hover:border-none px-8 normal-case">Remove</button>
+                <button onClick={handleRemoveAvatar} className="btn btn-ghost btn-active rounded-full  border-none text-black hover:border-none px-8 normal-case">Remove</button>
               </div>
               <div className='username-field text-lg opacity-60 relative flex'><span className='text-button-main-light mr-1'>@</span><ContentEditable html={text.current} onBlur={handleBlur} onChange={handleChange} /></div>
             </div>
@@ -125,8 +138,8 @@ function SignUp() {
                 </div>
                 <div class="divider my-8">or Sign up with</div>
                 <div class=" flex w-full text-center justify-center">
-                  <button className="btn mr-3 normal-case rounded-xl bg-transparent border-1 border-solid border-black/10 text-black hover:bg-transparent"><FaGoogle className='mr-2 text-xl' /> Google</button>
-                  <button className="btn normal-case rounded-xl bg-transparent border-1  border-solid border-black/10 text-black hover:bg-transparent"><FaGithub className='mr-2 text-xl' /> Github</button>
+                  <button onClick={(e) => e.preventDefault()} className="btn mr-3 normal-case rounded-xl bg-transparent border-1 border-solid border-black/10 text-black hover:bg-transparent"><FaGoogle className='mr-2 text-xl' /> Google</button>
+                  <button onClick={(e) => e.preventDefault()} className="btn normal-case rounded-xl bg-transparent border-1  border-solid border-black/10 text-black hover:bg-transparent"><FaGithub className='mr-2 text-xl' /> Github</button>
                 </div>
               </div>
               <p className='text-sm text-center mt-6'><span className='text-gray-500 mr-2'>Already have an account?</span>
