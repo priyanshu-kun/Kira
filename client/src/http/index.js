@@ -10,9 +10,8 @@ const api = axios.create({
 });
 
 
-export const sendOTP =  (data) => {
-    console.log(data)
-      axios.post('http://localhost:5500/api/send-otp',data)
+export const sendOTP =  async (data) => {
+      return await axios.post('http://localhost:5500/api/send-otp',data)
 }
 
 

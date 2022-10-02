@@ -7,7 +7,7 @@ import avatar from "../../assets/avatar.jpg"
 import "./SignUp.css"
 import { Link, useNavigate } from "react-router-dom"
 import { useDispatch, useSelector } from 'react-redux';
-import { setAuth } from "../../store/auth.slice"
+import { setAuth, setOTPData } from "../../store/auth.slice"
 import { sendOTP } from "../../http/index"
 import Navbar from '../../components/Navbar';
 import { createAvatar } from '@dicebear/avatars';
@@ -23,7 +23,7 @@ const initialState = {
 function SignUp() {
 
   const navigate = useNavigate()
-  const dipatch = useDispatch()
+  const dispatch = useDispatch()
 
   const text = useRef("Username")
   const [inputs, setInputs] = useState(initialState)
@@ -35,7 +35,7 @@ function SignUp() {
     seed: 'human',
     // ... and other options
   });
-  console.log(svg)
+  // console.log(svg)
 
 
   const handleChange = evt => {
@@ -79,8 +79,9 @@ function SignUp() {
       username: text.current,
       image
     }
-    await sendOTP({ Email: formContent.email })
-    dipatch(setAuth(formContent))
+    const { data } = await sendOTP({ Email: formContent.email })
+    dispatch(setAuth(formContent))
+    dispatch(setOTPData(data));
     navigate("/confirm-otp")
   }
 
