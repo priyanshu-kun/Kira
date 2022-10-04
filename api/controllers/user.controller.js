@@ -1,6 +1,11 @@
-const { sendMail } = require("../services/email.service");
-const { hashOTP } = require("../services/hash.service");
-const { generateOTP } = require("../services/otp.service");
+import emailService from "../services/email.service.js";
+import hashOtpService from "../services/hash.service.js";
+import otpService from "../services/otp.service.js";
+import userService from "../services/user.service.js";
+const {sendMail} = emailService
+const {hashOTP} = hashOtpService
+const {verifyOtp,generateOTP} = otpService
+const {findUserByEmail} = userService
 
 class AuthController {
     async sendOTP(req,res) {
@@ -15,9 +20,9 @@ class AuthController {
         const data = `${Email}.${otp}.${expire}`
         const hash = await hashOTP(data)
         try {
-            // await sendMail(Email,otp)
+            await sendMail(Email,otp)
             res.json({
-                otp,
+                // otp,
                 hash: `${hash}.${expire}`,
                 Email
             })
@@ -28,8 +33,8 @@ class AuthController {
         }
     }
     async verifyOTP(req,res) {
-        const { otp, hash, Email } = req.body;
-        if (!otp || !hash || !phone) {
+        const { otp, hash, Email,fullName,username,avatar,password } = req.body;
+        if (!otp || !hash || !Email) {
             res.status(400).json({ message: 'All fields are required!' });
         }
 
@@ -38,23 +43,23 @@ class AuthController {
             res.status(400).json({ message: 'OTP expired!' });
         }
 
-        // const data = `${phone}.${otp}.${expires}`;
-        // const isValid = otpService.verifyOtp(hashedOtp, data);
-        // if (!isValid) {
-        //     res.status(400).json({ message: 'Invalid OTP' });
-        // }
+        const data = `${Email}.${otp}.${expires}`;
+        const isValid = verifyOtp(data,hashedOtp);
+        if (!isValid) {
+            res.status(400).json({ message: 'Invalid OTP' });
+        }
 
-        // let user;
-        // try {
-        //     user = await userService.findUser({ phone });
-        //     if (!user) {
-        //         user = await userService.createUser({ phone });
-        //     }
-        // } catch (err) {
-        //     console.log(err);
-        //     res.status(500).json({ message: 'Db error' });
-        // }
-
+        let user;
+        try {
+            user = await findUserByEmail({ email: Email });
+            if (!user) {
+                user = await userService.createUser({ email: Email,username,fullName,password });
+            }
+        } catch (err) {
+            console.log(err);
+            res.status(500).json({ message: 'Db error' });
+        }
+        return res.json(user)
         // const { accessToken, refreshToken } = tokenService.generateTokens({
         //     _id: user._id,
         //     activated: false,
@@ -70,4 +75,4 @@ class AuthController {
 }
 
 
-module.exports = new AuthController()
+export default new AuthController()

@@ -1,13 +1,16 @@
-const crypto = require("crypto")
+import crypto  from "crypto";
+import hashService from "./hash.service.js";
+const {hashOTP} = hashService
 
 
 class OTPService {
     generateOTP() {
         return crypto.randomInt(100000,999999)
     }
-    verifyOTP() {
-
+    verifyOtp(data,hashedOtp) {
+       const computedHash = hashOTP(data) 
+       return computedHash === hashedOtp;
     }
 }
 
-module.exports = new OTPService()
+export default new OTPService()

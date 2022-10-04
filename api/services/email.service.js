@@ -1,4 +1,4 @@
-const sgMail = require('@sendgrid/mail')
+import sgMail from '@sendgrid/mail'
 class SendMail {
     sendMail(email,otp) {
         sgMail.setApiKey(process.env.SENDGRID_SECRET)
@@ -20,4 +20,4 @@ class SendMail {
     }
 }
 
-module.exports = new SendMail()
+export default new SendMail()
