@@ -2,12 +2,28 @@ import React, { useRef, useState } from 'react'
 import { FiArrowRight } from "react-icons/fi";
 import { FaGoogle, FaGithub } from "react-icons/fa";
 import character from "../../assets/character.svg"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import Navbar from '../../components/Navbar';
+import {useSelector} from "react-redux"
+import { verifyOTP } from '../../http';
 
 function ConfirmOTP() {
-    const handleSubmit = (e) => {
-
+    const authData = useSelector(state => state.auth)
+    const [Otp,setOtp] = useState("");
+    const navigate = useNavigate()
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        const createUser = {
+            hash: authData.otp.hash,
+            Email: authData.otp.Email,
+            fullName: authData.user.fullName,
+            username: authData.user.username,
+            password: authData.user.password,
+            otp: Otp
+        }
+        const {data} = await verifyOTP(createUser)
+        console.log(data)
+        navigate("/SignIn")
     }
 
     return (
@@ -23,7 +39,7 @@ function ConfirmOTP() {
                             <span className="label-text">Confirm you otp</span>
                         </label>
                         <div>
-                            <input type="text" id='otp' placeholder='eg. xxxxxx' className="block w-full text-center bg-secondary-light input input-bordered" />
+                            <input onChange={(e) => setOtp(e.target.value)} type="text" id='otp' placeholder='eg. xxxxxx' className="block w-full text-center bg-secondary-light input input-bordered" />
                         </div> 
                     </div>
                     <button className="btn btn-primary w-56 mt-3 rounded-full bg-button-main-light border-none hover:bg-button-main-light text-black normal-case">Confirm Account</button>
