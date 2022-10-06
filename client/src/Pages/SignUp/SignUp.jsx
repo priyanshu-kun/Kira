@@ -79,7 +79,7 @@ function SignUp() {
       username: text.current,
       image
     }
-    const { data } = await sendOTP({ Email: formContent.email })
+    const { data: {data} } = await sendOTP({ Email: formContent.email })
     dispatch(setAuth(formContent))
     dispatch(setOTPData(data));
     navigate("/confirm-otp")

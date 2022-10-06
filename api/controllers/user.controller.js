@@ -38,7 +38,6 @@ class AuthController {
             return res.status(400).json({reqStatus: false, data: 'All fields are required.'});
         }
 
-
         const [hashedOtp, expires] = hash.split('.');
         if (Date.now() > +expires) {
             return res.status(400).json({reqStatus: false, data: 'OTP expired.'});

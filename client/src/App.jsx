@@ -14,6 +14,7 @@ function App() {
         <Route path='/SignUp' element={<SignUp />} />
         <Route path='/SignIn' element={<SignIn />} />
         <Route path='/confirm-otp' element={<ConfirmOTP />} />
+        <Route path='*' element={<h1>Path didn't exists.</h1>} />
       </Routes>
   )
 }
