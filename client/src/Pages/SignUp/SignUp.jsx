@@ -42,10 +42,6 @@ function SignUp() {
     text.current = evt.target.value;
   };
 
-  const handleBlur = () => {
-    console.log(text.current);
-  };
-
 
   const handleInputChanges = e => {
     setInputs(prev => {
@@ -79,10 +75,15 @@ function SignUp() {
       username: text.current,
       image
     }
-    const { data: {data} } = await sendOTP({ Email: formContent.email })
-    dispatch(setAuth(formContent))
-    dispatch(setOTPData(data));
-    navigate("/confirm-otp")
+    try {
+      const { data: { data } } = await sendOTP({ Email: formContent.email })
+      dispatch(setAuth(formContent))
+      dispatch(setOTPData(data));
+      navigate("/confirm-otp")
+    }
+    catch (e) {
+      console.error(e)
+    }
   }
 
 
@@ -107,7 +108,7 @@ function SignUp() {
                 </label>
                 <button onClick={handleRemoveAvatar} className="btn btn-ghost btn-active rounded-full  border-none text-black hover:border-none px-8 normal-case">Remove</button>
               </div>
-              <div className='username-field text-lg opacity-60 relative flex'><span className='text-button-main-light mr-1'>@</span><ContentEditable html={text.current} onBlur={handleBlur} onChange={handleChange} /></div>
+              <div className='username-field text-lg opacity-60 relative flex'><span className='text-button-main-light mr-1'>@</span><ContentEditable html={text.current} onChange={handleChange} /></div>
             </div>
             <div class="divider divider-horizontal">AND</div>
             <div class="grid flex-grow card bg-transparent rounded-box place-items-center">

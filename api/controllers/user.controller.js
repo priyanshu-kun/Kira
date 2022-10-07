@@ -6,6 +6,8 @@ const {sendMail} = emailService
 const {hashOTP} = hashOtpService
 const {verifyOtp,generateOTP} = otpService
 const {findUserByEmail} = UserService
+import jimp from "jimp"
+import path from "path"
 
 class AuthController {
     async sendOTP(req,res) {
@@ -74,6 +76,21 @@ class AuthController {
     }
     async createAccount(req,res) {
         const {Email,password,username,fullName,avatar} = req.body;
+        if (!Email || !password || !username || !fullName || !avatar) {
+            return res.status(400).json({reqStatus: false, data: 'All fields are required.'});
+        }
+        try {
+            const buffer = Buffer.from(avatar.replace(/^data:image\/png;base64,/,""),"base64")
+            const imagePath = `${Date.now()}-${Math.round(Math.random() * 1e9)}.png`
+            const jimpResp = await jimp.read(buffer)
+            jimpResp
+                .resize(150, jimp.AUTO)
+                .write(path.resolve(__dirname, `../storage/${imagePath}`))
+        }
+        catch(e) {
+            console.log(e.message)
+            return res.status(500).json({reqStatus: false,data: "Error while creating new user."});
+        }
         let user;
         try {
             user = await findUserByEmail({ email: Email });

@@ -24,6 +24,7 @@ function ConfirmOTP() {
             fullName: authData.user.fullName,
             username: authData.user.username,
             password: authData.user.password,
+            avatar: authData.user.image
         }
         if (otpData.reqStatus) {
             const { data } = await createAccount(user)
