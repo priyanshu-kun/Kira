@@ -6,22 +6,25 @@ const {sendMail} = emailService
 const {hashOTP} = hashOtpService
 const {verifyOtp,generateOTP} = otpService
 const {findUserByEmail} = UserService
-import jimp from "jimp"
-import path from "path"
+import Jimp from "jimp"
+import path, { dirname } from "path"
+import { fileURLToPath } from 'url';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename)
 
 class AuthController {
     async sendOTP(req,res) {
-        const {Email} = req.body;
-        if(!Email) {
-            // handle error
-            res.sendStatus(500)
-        }
-        const otp = await generateOTP();
-        const ttl = 1000 * 60 * 5;
-        const expire = Date.now()+ttl;
-        const data = `${Email}.${otp}.${expire}`
-        const hash = await hashOTP(data)
         try {
+            const {Email} = req.body;
+            if(!Email) {
+                // handle error
+                return res.status(500).json({reqStatus: false,data: "Please provide an Email."})
+            }
+            const otp = await generateOTP();
+            const ttl = 1000 * 60 * 5;
+            const expire = Date.now()+ttl;
+            const data = `${Email}.${otp}.${expire}`
+            const hash = await hashOTP(data)
             console.log(otp)
             // await sendMail(Email,otp)
             return res.json({reqStatus: true,data: {
@@ -31,7 +34,7 @@ class AuthController {
             }})
         }
         catch(e) {
-            return res.status(500).json({reqStatus: false,data: "failed to process request."})
+            return res.status(500).json({reqStatus: false,data: "Failed to process request."})
         }
     }
     async verifyOTP(req,res) {
@@ -54,7 +57,7 @@ class AuthController {
             const user = await findUserByEmail({ email: Email });
 
             if (!user) {
-                await UserService.createUser({ email: Email,username: "null",fullName: "null",password: "null", activated: true });
+                await UserService.createUser({ email: Email,username: "null",fullName: "null",password: "null",avatar: "null", activated: true });
             }
         } catch (err) {
             console.log(err)
@@ -79,12 +82,13 @@ class AuthController {
         if (!Email || !password || !username || !fullName || !avatar) {
             return res.status(400).json({reqStatus: false, data: 'All fields are required.'});
         }
+        let imagePath;
         try {
             const buffer = Buffer.from(avatar.replace(/^data:image\/png;base64,/,""),"base64")
-            const imagePath = `${Date.now()}-${Math.round(Math.random() * 1e9)}.png`
-            const jimpResp = await jimp.read(buffer)
+            imagePath = `${Date.now()}-${Math.round(Math.random() * 1e9)}.png`
+            const jimpResp = await Jimp.read(buffer)
             jimpResp
-                .resize(150, jimp.AUTO)
+                .resize(150, Jimp.AUTO)
                 .write(path.resolve(__dirname, `../storage/${imagePath}`))
         }
         catch(e) {
@@ -97,7 +101,7 @@ class AuthController {
             if(user && !user.activated) {
                 return res.status(400).json({reqStatus: false, data: "User is not verified."})
             }
-            user = await UserService.ActivateUser(Email,{  username,fullName,password });
+            user = await UserService.ActivateUser(Email,{  username,fullName,password, avatar: `/storage/${imagePath}` });
         } catch (err) {
             console.log(err)
             return res.status(500).json({reqStatus: false,data: "Error while creating new user."});

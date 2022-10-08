@@ -12,7 +12,7 @@ import { sendOTP } from "../../http/index"
 import Navbar from '../../components/Navbar';
 import { createAvatar } from '@dicebear/avatars';
 import * as style from '@dicebear/micah';
-
+  import {  toast } from 'react-toastify';
 // import pointingArrow from "../../assets/arrow.svg"
 const initialState = {
   fullName: "",
@@ -75,14 +75,24 @@ function SignUp() {
       username: text.current,
       image
     }
+    if(!text.current || !image || !inputs.email || !inputs.fullName || !inputs.password) {
+      return toast.error("All fields are required.",{
+        icon: "😓"
+      })
+    }
     try {
       const { data: { data } } = await sendOTP({ Email: formContent.email })
       dispatch(setAuth(formContent))
       dispatch(setOTPData(data));
       navigate("/confirm-otp")
+      toast.success("OTP has been sent.",{
+        icon: "🎉"
+      })
     }
     catch (e) {
-      console.error(e)
+      toast.error(e.response.data.data,{
+        icon: "😰"
+      })
     }
   }
 

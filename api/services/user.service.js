@@ -9,7 +9,7 @@ class UserService {
     }
     async ActivateUser(key,user) {
         console.log(key)
-        return await userModel.findOneAndUpdate({email: {$eq: key}},{$set: {username: user.username,password: user.password,fullName: user.fullName}},{returnDocument: "after"})
+        return await userModel.findOneAndUpdate({email: {$eq: key}},{$set: {username: user.username,password: user.password,fullName: user.fullName, avatar: user.avatar}},{returnDocument: "after"})
     }
 }
 

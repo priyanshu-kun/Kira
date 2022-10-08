@@ -11,10 +11,13 @@ const Home = React.lazy(() => import('./Pages/Home/Home'))
 const ConfirmOTP = React.lazy(() => import('./Pages/Otp/Otp'))
 const SignIn = React.lazy(() => import('./Pages/SignIn/SignIn'))
 import {ErrorBoundary} from 'react-error-boundary'
+  import { ToastContainer } from 'react-toastify';
+  import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
 
   return (
+    <>
     <Suspense fallback={<h1>Loading...</h1>}>
       <Routes>
         <Route path='/' element={<Home />} />
@@ -24,6 +27,8 @@ function App() {
         <Route path='*' element={<h1>Path didn't exists.</h1>} />
       </Routes>
     </Suspense>
+        <ToastContainer />
+    </>
   )
 }
 
