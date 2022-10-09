@@ -5,7 +5,7 @@ import UserService from "../services/user.service.js";
 const {sendMail} = emailService
 const {hashOTP} = hashOtpService
 const {verifyOtp,generateOTP} = otpService
-const {findUserByEmail} = UserService
+const {findUserByEmail, findUserByUsernameAndEmail} = UserService
 import Jimp from "jimp"
 import path, { dirname } from "path"
 import { fileURLToPath } from 'url';
@@ -99,11 +99,30 @@ class AuthController {
         try {
             user = await findUserByEmail({ email: Email });
             if(user && !user.activated) {
-                return res.status(400).json({reqStatus: false, data: "User is not verified."})
+                return res.status(401).json({reqStatus: false, data: "User is not verified."})
             }
             user = await UserService.ActivateUser(Email,{  username,fullName,password, avatar: `/storage/${imagePath}` });
         } catch (err) {
             console.log(err)
+            return res.status(500).json({reqStatus: false,data: "Error while creating new user."});
+        }
+        return res.json({reqStatus: true,data: user})
+    }
+    async loginUser(req,res) {
+        const {emailAndUsername,password} = req.body;
+        if(!emailAndUsername || !password) {
+            return res.status(400).json({reqStatus: false, data: 'All fields are required.'});
+        }
+        try {
+
+            const user = await findUserByUsernameAndEmail(emailAndUsername);
+            if(!user) {
+                return res.status(401).json({reqStatus: false,data: "username or email is incorrect."});
+            }
+            // const passwordHash = awai
+
+        }
+        catch(e) {
             return res.status(500).json({reqStatus: false,data: "Error while creating new user."});
         }
         return res.json({reqStatus: true,data: user})

@@ -6,31 +6,45 @@ import { Link, useNavigate } from "react-router-dom"
 import Navbar from '../../components/Navbar';
 import { useSelector } from "react-redux"
 import { createAccount, verifyOTP } from '../../http';
+  import {  toast } from 'react-toastify';
 
 function ConfirmOTP() {
     const authData = useSelector(state => state.auth)
     const [Otp, setOtp] = useState("");
     const navigate = useNavigate()
+
+
+
     const handleSubmit = async (e) => {
-        e.preventDefault();
-        const createUser = {
-            hash: authData.otp.hash,
-            Email: authData.otp.Email,
-            otp: Otp
+        try{
+            e.preventDefault();
+            const createUser = {
+                hash: authData.otp.hash,
+                Email: authData.otp.Email,
+                otp: Otp
+            }
+            const { data: otpData } = await verifyOTP(createUser)
+            const user = {
+                Email: authData.otp.Email,
+                fullName: authData.user.fullName,
+                username: authData.user.username,
+                password: authData.user.password,
+                avatar: authData.user.image
+            }
+            if (otpData.reqStatus) {
+                const { data } = await createAccount(user)
+                console.log(data)
+            }
+            navigate("/SignIn")
+            toast.success("Account created successfully.",{
+                icon: "🎉"
+            })
         }
-        const { data: otpData } = await verifyOTP(createUser)
-        const user = {
-            Email: authData.otp.Email,
-            fullName: authData.user.fullName,
-            username: authData.user.username,
-            password: authData.user.password,
-            avatar: authData.user.image
+        catch(e) {
+            toast.error(e.response.data.data,{
+                icon: "😰"
+            })
         }
-        if (otpData.reqStatus) {
-            const { data } = await createAccount(user)
-            console.log(data)
-        }
-        navigate("/SignIn")
     }
 
     return (
