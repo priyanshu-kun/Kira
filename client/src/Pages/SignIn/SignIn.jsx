@@ -7,6 +7,7 @@ import avatar from "../../assets/avatar.jpg"
 import "./SignIn.css"
 import { Link } from "react-router-dom"
 import Navbar from '../../components/Navbar';
+import { userLogin } from '../../http';
 
 // import pointingArrow from "../../assets/arrow.svg"
 const initialState = {
@@ -34,8 +35,25 @@ function SignUp() {
   }
 
 
-  const handleSubmit = e => {
+  const handleSubmit = async e => {
     e.preventDefault()
+    try {
+      if(!inputs.emailAndUsername || !inputs.password) {
+        return toast.error("All fields are required.",{
+          icon: "😓"
+        })
+      }
+      const {data: {data}} = await userLogin(inputs);
+      console.log(data)
+      toast.success("All complete.",{
+          icon: "🎉"
+      })
+    }
+    catch(e) {
+        toast.error(e.response.data.data,{
+            icon: "😰"
+        })
+    }
   }
 
 
@@ -62,7 +80,7 @@ function SignUp() {
                 <input type={showHide ? "text" : "password"} name='password' value={inputs.password} onChange={handleInputChanges} placeholder="eg. stay strong" class="bg-secondary-light select-none input input-bordered w-full max-w-full relative" />
                 <span onClick={(e) => {
                   setShowHide(prev => !prev);
-                }} className='text-gray-600 cursor-pointer absolute right-6 h-12 flex items-center justify-center bottom-0'>{showHide ? "Show" : "Hide"}</span>
+                }} className='text-gray-600 cursor-pointer absolute right-6 h-12 flex items-center justify-center bottom-0'>{!showHide ? "Show" : "Hide"}</span>
               </div>
               <div className="flex w-full justify-between items-center mb-6">
                 <div className='checkbox-wrapper '>

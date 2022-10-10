@@ -2,10 +2,12 @@ import emailService from "../services/email.service.js";
 import hashOtpService from "../services/hash.service.js";
 import otpService from "../services/otp.service.js";
 import UserService from "../services/user.service.js";
+import tokenService from "../services/token.service.js"
 const {sendMail} = emailService
-const {hashOTP} = hashOtpService
+const {hashOTP,hashPassword,comparePassword} = hashOtpService
 const {verifyOtp,generateOTP} = otpService
 const {findUserByEmail, findUserByUsernameAndEmail} = UserService
+const {generateTokens} = tokenService
 import Jimp from "jimp"
 import path, { dirname } from "path"
 import { fileURLToPath } from 'url';
@@ -13,6 +15,8 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename)
 
 class AuthController {
+
+
     async sendOTP(req,res) {
         try {
             const {Email} = req.body;
@@ -21,7 +25,7 @@ class AuthController {
                 return res.status(500).json({reqStatus: false,data: "Please provide an Email."})
             }
             const otp = await generateOTP();
-            const ttl = 1000 * 60 * 5;
+            const ttl = 1000 * 60 * 50;
             const expire = Date.now()+ttl;
             const data = `${Email}.${otp}.${expire}`
             const hash = await hashOTP(data)
@@ -37,6 +41,9 @@ class AuthController {
             return res.status(500).json({reqStatus: false,data: "Failed to process request."})
         }
     }
+
+
+
     async verifyOTP(req,res) {
         const { otp, hash, Email } = req.body;
         if (!otp || !hash || !Email) {
@@ -49,7 +56,7 @@ class AuthController {
         }
 
         const data = `${Email}.${otp}.${expires}`;
-        const isValid = verifyOtp(data,hashedOtp);
+        const isValid = await verifyOtp(data,hashedOtp);
         if (!isValid) {
             return res.status(400).json({reqStatus: false, data: 'Invalid OTP'});
         }
@@ -57,7 +64,7 @@ class AuthController {
             const user = await findUserByEmail({ email: Email });
 
             if (!user) {
-                await UserService.createUser({ email: Email,username: "null",fullName: "null",password: "null",avatar: "null", activated: true });
+                await UserService.createUser({ email: Email,username: "null",fullName: "null",password: "null",avatar: "null", activated: false,isVarified: true });
             }
         } catch (err) {
             console.log(err)
@@ -65,18 +72,10 @@ class AuthController {
         }
         return res.json({reqStatus: true, data: "Otp verified."})
 
-        // const { accessToken, refreshToken } = tokenService.generateTokens({
-        //     _id: user._id,
-        //     activated: false,
-        // });
-
-        // res.cookie('refreshToken', refreshToken, {
-        //     maxAge: 1000 * 60 * 60 * 24 * 30,
-        //     httpOnly: true,
-        // });
-        // const userDto = new UserDto(user);
-        // res.json({ accessToken, user: userDto });
     }
+
+
+
     async createAccount(req,res) {
         const {Email,password,username,fullName,avatar} = req.body;
         if (!Email || !password || !username || !fullName || !avatar) {
@@ -92,22 +91,26 @@ class AuthController {
                 .write(path.resolve(__dirname, `../storage/${imagePath}`))
         }
         catch(e) {
-            console.log(e.message)
             return res.status(500).json({reqStatus: false,data: "Error while creating new user."});
         }
         let user;
         try {
             user = await findUserByEmail({ email: Email });
-            if(user && !user.activated) {
+            if(user && !user.isVarified) {
                 return res.status(401).json({reqStatus: false, data: "User is not verified."})
             }
-            user = await UserService.ActivateUser(Email,{  username,fullName,password, avatar: `/storage/${imagePath}` });
+            const hashedPassword =  await hashPassword(password);
+            user = await UserService.ActivateUser(Email,{  username,fullName,password: hashedPassword, avatar: `/storage/${imagePath}`,activated: true });
+
         } catch (err) {
             console.log(err)
             return res.status(500).json({reqStatus: false,data: "Error while creating new user."});
         }
         return res.json({reqStatus: true,data: user})
     }
+
+
+
     async loginUser(req,res) {
         const {emailAndUsername,password} = req.body;
         if(!emailAndUsername || !password) {
@@ -117,15 +120,32 @@ class AuthController {
 
             const user = await findUserByUsernameAndEmail(emailAndUsername);
             if(!user) {
-                return res.status(401).json({reqStatus: false,data: "username or email is incorrect."});
+                return res.status(401).json({reqStatus: false,data: "username, email or password is incorrect."});
             }
-            // const passwordHash = awai
+            if(!user.activated) {
+                return res.status(401).json({reqStatus: false,data: "Please create account first."});
+            }
+            // console.log(user)
+            const isMatch = await comparePassword(user.password,password);
+            if(!isMatch) {
+                return res.status(401).json({reqStatus: false,data: "username, email or password is incorrect."});
+            }
+            const { accessToken, refreshToken } = await generateTokens({
+                _id: user._id,
+            });
+
+
+            res.cookie('refreshToken', refreshToken, {
+                maxAge: 1000 * 60 * 60 * 24 * 30,
+                httpOnly: true,
+            });
+            // const userDto = new UserDto(user);
+            res.json({ accessToken,user });
 
         }
         catch(e) {
             return res.status(500).json({reqStatus: false,data: "Error while creating new user."});
         }
-        return res.json({reqStatus: true,data: user})
     }
 }
 

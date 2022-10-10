@@ -8,7 +8,7 @@ class UserService {
         return await userModel.create(user)
     }
     async ActivateUser(key,user) {
-        return await userModel.findOneAndUpdate({email: {$eq: key}},{$set: {username: user.username,password: user.password,fullName: user.fullName, avatar: user.avatar}},{returnDocument: "after"})
+        return await userModel.findOneAndUpdate({email: {$eq: key}},{$set: {username: user.username,password: user.password,fullName: user.fullName, avatar: user.avatar, activated: user.activated}},{returnDocument: "after"})
     }
     async findUserByUsernameAndEmail(key) {
        return await userModel.findOne({$or: [{email: key},{username: key}]}); 

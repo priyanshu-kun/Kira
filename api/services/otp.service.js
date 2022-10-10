@@ -7,8 +7,8 @@ class OTPService {
     generateOTP() {
         return crypto.randomInt(100000,999999)
     }
-    verifyOtp(data,hashedOtp) {
-       const computedHash = hashOTP(data) 
+    async verifyOtp(data,hashedOtp) {
+       const computedHash = await hashOTP(data) 
        return computedHash === hashedOtp;
     }
 }

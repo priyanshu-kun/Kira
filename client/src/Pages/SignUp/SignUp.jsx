@@ -144,7 +144,7 @@ function SignUp() {
                     <input type={showHide ? "text" : "password"} name='password' value={inputs.password} onChange={handleInputChanges} placeholder="eg. stay strong" class="bg-secondary-light select-none input input-bordered w-full max-w-register-form-field relative" />
                     <span onClick={(e) => {
                       setShowHide(prev => !prev);
-                    }} className='text-gray-600 cursor-pointer absolute right-6 h-12 flex items-center justify-center bottom-0'>{showHide ? "Show" : "Hide"}</span>
+                    }} className='text-gray-600 cursor-pointer absolute right-6 h-12 flex items-center justify-center bottom-0'>{!showHide ? "Show" : "Hide"}</span>
                   </div>
                   <button className="btn btn-primary w-56 mt-8 rounded-full bg-button-main-light border-none hover:bg-button-main-light text-black normal-case">Sign up</button>
                 </div>
