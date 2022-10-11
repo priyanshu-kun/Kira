@@ -8,6 +8,7 @@ import "./SignIn.css"
 import { Link } from "react-router-dom"
 import Navbar from '../../components/Navbar';
 import { userLogin } from '../../http';
+  import {  toast } from 'react-toastify';
 
 // import pointingArrow from "../../assets/arrow.svg"
 const initialState = {
@@ -71,7 +72,7 @@ function SignUp() {
                 <label class="label">
                   <span class="label-text">Enter email or username</span>
                 </label>
-                <input type="email" name='emailAndUsername' value={inputs.emailAndUsername} onChange={handleInputChanges} placeholder="Email / Username" class="bg-secondary-light input input-bordered w-full max-w-full" />
+                <input type="text" name='emailAndUsername' value={inputs.emailAndUsername} onChange={handleInputChanges} placeholder="Email / Username" class="bg-secondary-light input input-bordered w-full max-w-full" />
               </div>
               <div class="form-control w-full max-w-full mb-2 relative select-none">
                 <label class="label">

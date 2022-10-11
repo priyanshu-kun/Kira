@@ -140,7 +140,7 @@ class AuthController {
                 httpOnly: true,
             });
             // const userDto = new UserDto(user);
-            res.json({ accessToken,user });
+            return res.json({reqStatus: true,data: { accessToken,user }});
 
         }
         catch(e) {
