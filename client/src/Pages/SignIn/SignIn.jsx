@@ -4,11 +4,13 @@ import { FaGoogle, FaGithub } from "react-icons/fa";
 import character from "../../assets/character.svg"
 import ContentEditable from "react-contenteditable"
 import avatar from "../../assets/avatar.jpg"
+import {useDispatch,useSelector} from "react-redux"
 import "./SignIn.css"
 import { Link } from "react-router-dom"
 import Navbar from '../../components/Navbar';
 import { userLogin } from '../../http';
   import {  toast } from 'react-toastify';
+import { setUser } from '../../store/user.slice';
 
 // import pointingArrow from "../../assets/arrow.svg"
 const initialState = {
@@ -21,6 +23,7 @@ function SignUp() {
   const [isChecked, setIsChecked] = useState(true);
   const [inputs, setInputs] = useState(initialState)
   const [showHide, setShowHide] = useState(false)
+  const dispatch = useDispatch()
 
 
 
@@ -44,9 +47,16 @@ function SignUp() {
           icon: "😓"
         })
       }
-      const {data: {data}} = await userLogin(inputs);
-      console.log(data)
-      toast.success("All complete.",{
+      const {data} = await userLogin(inputs);
+      if(data.reqStatus) {
+        const User = {
+          auth: data.data.auth,
+          user: data.data.userDto
+        }
+        dispatch(setUser(User))
+        setInputs(initialState)
+      }
+      toast.success("Welcome to Kira.",{
           icon: "🎉"
       })
     }

@@ -10,10 +10,12 @@ export const userSlice = createSlice({
   initialState,
   reducers: {
     setUser: (state,action) => {
-
+      const {auth,user} = action.payload; 
+      state.user = user
+      state.auth = auth
     },
     getUser: (state) => {
-
+      return {...state.user,isAuth: state.auth};
     }
   },
 })
