@@ -143,17 +143,26 @@ class AuthController {
                 maxAge: 1000 * 60 * 60 * 24 * 30,
                 httpOnly: true,
             });
-            res.cookie('accessToken', accessToken, {
-                maxAge: 1000 * 60 * 60 * 24 * 30,
-                httpOnly: true,
-            });
+            // res.cookie('accessToken', accessToken, {
+            //     maxAge: 1000 * 60 * 60 * 24 * 30,
+            //     httpOnly: true,
+            // });
             const userDto = new UserDto(user);
-            return res.json({ reqStatus: true, data: {  userDto, auth: true } });
+            return res.json({ reqStatus: true, data: { userDto, auth: true } });
 
         }
         catch (e) {
-            return res.status(500).json({ reqStatus: false, data: "Error while creating new user." });
+            return res.status(500).json({ reqStatus: false, data: "Error while login." });
         }
+    }
+    async getUser(req, res) {
+        try {
+            return res.json(req.user)
+        }
+        catch (e) {
+            return res.status(500).json({ reqStatus: false, data: "Cannot get user." });
+        }
+
     }
 }
 

@@ -1,6 +1,6 @@
-import React,{ useState } from 'react'
+import React, { useState } from 'react'
 import { Suspense } from 'react'
-import { Route, Routes } from 'react-router-dom'
+import { Route, Routes, Outlet, Navigate } from 'react-router-dom'
 import './App.css'
 // import Home from './Pages/Home/Home'
 // import ConfirmOTP from './Pages/Otp/Otp'
@@ -10,26 +10,48 @@ const SignUp = React.lazy(() => import('./Pages/SignUp/SignUp'))
 const Home = React.lazy(() => import('./Pages/Home/Home'))
 const ConfirmOTP = React.lazy(() => import('./Pages/Otp/Otp'))
 const SignIn = React.lazy(() => import('./Pages/SignIn/SignIn'))
-import {ErrorBoundary} from 'react-error-boundary'
-  import { ToastContainer } from 'react-toastify';
-  import 'react-toastify/dist/ReactToastify.css';
+import { ErrorBoundary } from 'react-error-boundary'
+import { ToastContainer } from 'react-toastify';
+import ProtectedRoutes  from "./ProtectedRoutes.jsx"
+import 'react-toastify/dist/ReactToastify.css';
+
+
+function UnProtectedRoutes() {
+    const User = {
+        auth: false
+    }
+
+    return (
+        !User.auth ? <Outlet /> : <Navigate to="/Home" />
+    )
+}
+
+
+
+
 
 function App() {
 
   return (
     <>
-    <Suspense fallback={<h1>Loading...</h1>}>
-      <Routes>
-        <Route path='/' element={<Home />} />
-        <Route path='/SignUp' element={<SignUp />} />
-        <Route path='/SignIn' element={<SignIn />} />
-        <Route path='/confirm-otp' element={<ConfirmOTP />} />
-        <Route path='*' element={<h1>Path didn't exists.</h1>} />
-      </Routes>
-    </Suspense>
-        <ToastContainer />
+      <Suspense fallback={<h1>Loading...</h1>}>
+        <Routes>
+          <Route element={<ProtectedRoutes />}>
+            <Route path='/Home' element={<Home />} />
+          </Route>
+          <Route element={<UnProtectedRoutes />}>
+            <Route path='/SignUp' element={<SignUp />} />
+            <Route path='/SignIn' element={<SignIn />} />
+            <Route path='/confirm-otp' element={<ConfirmOTP />} />
+          </Route>
+          <Route path='*' element={<h1>Path didn't exists.</h1>} />
+        </Routes>
+      </Suspense>
+      <ToastContainer />
     </>
   )
 }
+
+
 
 export default App

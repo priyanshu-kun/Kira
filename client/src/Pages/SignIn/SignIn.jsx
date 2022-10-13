@@ -4,13 +4,14 @@ import { FaGoogle, FaGithub } from "react-icons/fa";
 import character from "../../assets/character.svg"
 import ContentEditable from "react-contenteditable"
 import avatar from "../../assets/avatar.jpg"
-import {useDispatch,useSelector} from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import "./SignIn.css"
 import { Link } from "react-router-dom"
 import Navbar from '../../components/Navbar';
 import { userLogin } from '../../http';
-  import {  toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import { setUser } from '../../store/user.slice';
+import { useNavigate } from 'react-router-dom';
 
 // import pointingArrow from "../../assets/arrow.svg"
 const initialState = {
@@ -23,6 +24,7 @@ function SignUp() {
   const [isChecked, setIsChecked] = useState(true);
   const [inputs, setInputs] = useState(initialState)
   const [showHide, setShowHide] = useState(false)
+  const navigate = useNavigate()
   const dispatch = useDispatch()
 
 
@@ -42,28 +44,29 @@ function SignUp() {
   const handleSubmit = async e => {
     e.preventDefault()
     try {
-      if(!inputs.emailAndUsername || !inputs.password) {
-        return toast.error("All fields are required.",{
+      if (!inputs.emailAndUsername || !inputs.password) {
+        return toast.error("All fields are required.", {
           icon: "😓"
         })
       }
-      const {data} = await userLogin(inputs);
-      if(data.reqStatus) {
+      const { data } = await userLogin(inputs);
+      if (data.reqStatus) {
         const User = {
           auth: data.data.auth,
           user: data.data.userDto
         }
         dispatch(setUser(User))
         setInputs(initialState)
+        navigate('/Home')
       }
-      toast.success("Welcome to Kira.",{
-          icon: "🎉"
+      toast.success("Welcome to Kira.", {
+        icon: "🎉"
       })
     }
-    catch(e) {
-        toast.error(e.response.data.data,{
-            icon: "😰"
-        })
+    catch (e) {
+      toast.error(e.response.data.data, {
+        icon: "😰"
+      })
     }
   }
 
