@@ -11,11 +11,11 @@ import dbConnect from "./db/index.js"
 
 dbConnect()
 import cors from "cors"
-
+// Akira
 
 app.use(cors({
     credentials: true,
-    origin: "*",
+    origin: ['http://localhost:5173'],
 }));
 app.use('/storage', express.static("storage"))
 app.use(cookieParser())

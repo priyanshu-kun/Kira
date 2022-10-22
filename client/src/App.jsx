@@ -16,7 +16,7 @@ import ProtectedRoutes  from "./ProtectedRoutes.jsx"
 import 'react-toastify/dist/ReactToastify.css';
 
 
-function UnProtectedRoutes() {
+function AuthenticationRoutes() {
     const User = {
         auth: false
     }
@@ -39,7 +39,7 @@ function App() {
           <Route element={<ProtectedRoutes />}>
             <Route path='/Home' element={<Home />} />
           </Route>
-          <Route element={<UnProtectedRoutes />}>
+          <Route element={<AuthenticationRoutes />}>
             <Route path='/SignUp' element={<SignUp />} />
             <Route path='/SignIn' element={<SignIn />} />
             <Route path='/confirm-otp' element={<ConfirmOTP />} />

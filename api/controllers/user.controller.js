@@ -8,7 +8,7 @@ const { sendMail } = emailService
 const { hashOTP, hashPassword, comparePassword } = hashOtpService
 const { verifyOtp, generateOTP } = otpService
 const { createUser, findUserByEmail, findUserByUsernameAndEmail } = UserService
-const { generateTokens } = tokenService
+const { generateTokens,storeRefreshToken } = tokenService
 import Jimp from "jimp"
 import path, { dirname } from "path"
 import { fileURLToPath } from 'url';
@@ -138,15 +138,23 @@ class AuthController {
                 _id: user._id,
             });
 
+            try {
+
+                await storeRefreshToken(refreshToken,user._id)
+
+            }
+            catch(e) {
+                return res.status(500).json({ reqStatus: false, data: "Internal server error." });
+            }
 
             res.cookie('refreshToken', refreshToken, {
                 maxAge: 1000 * 60 * 60 * 24 * 30,
                 httpOnly: true,
             });
-            // res.cookie('accessToken', accessToken, {
-            //     maxAge: 1000 * 60 * 60 * 24 * 30,
-            //     httpOnly: true,
-            // });
+            res.cookie('accessToken', accessToken, {
+                maxAge: 1000 * 60 * 60 * 24 * 30,
+                httpOnly: true,
+            });
             const userDto = new UserDto(user);
             return res.json({ reqStatus: true, data: { userDto, auth: true } });
 
@@ -162,6 +170,10 @@ class AuthController {
         catch (e) {
             return res.status(500).json({ reqStatus: false, data: "Cannot get user." });
         }
+
+    }
+
+    async refresh(req,res) {
 
     }
 }
