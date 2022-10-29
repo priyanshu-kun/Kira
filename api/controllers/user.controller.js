@@ -8,7 +8,7 @@ const { sendMail } = emailService
 const { hashOTP, hashPassword, comparePassword } = hashOtpService
 const { verifyOtp, generateOTP } = otpService
 const { createUser, findUserByEmail, findUserByUsernameAndEmail } = UserService
-const { generateTokens,storeRefreshToken } = tokenService
+const { generateTokens, storeRefreshToken, verifyRefreshToken, findRefreshTokenInDB, updateRefreshToken } = tokenService
 import Jimp from "jimp"
 import path, { dirname } from "path"
 import { fileURLToPath } from 'url';
@@ -140,10 +140,10 @@ class AuthController {
 
             try {
 
-                await storeRefreshToken(refreshToken,user._id)
+                await storeRefreshToken(refreshToken, user._id)
 
             }
-            catch(e) {
+            catch (e) {
                 return res.status(500).json({ reqStatus: false, data: "Internal server error." });
             }
 
@@ -173,8 +173,64 @@ class AuthController {
 
     }
 
-    async refresh(req,res) {
+    async refresh(req, res) {
+        const { refreshToken } = req.cookies;
+        let userData;
+        try {
+            userData = await verifyRefreshToken(refreshToken)
+        }
+        catch (e) {
+            return res.status(500).json({ reqStatus: false, data: "Invalid refresh token." });
+        }
+        try {
+            const token = await findRefreshTokenInDB(
+                userData._id,
+                refreshToken
+            );
+            if (!token) {
+                return res.status(401).json({ reqStatus: false, data: "Invalid refresh token." });
+            }
+        }
+        catch (e) {
+            return res.status(500).json({ reqStatus: false, data: "Internal error." });
+        }
 
+        let user;
+        try {
+
+            user = await userService.findUser({ _id: userData._id });
+            if (!user) {
+                return res.status(401).json({ reqStatus: false, data: "No user found." });
+            }
+        }
+        catch (e) {
+            return res.status(500).json({ reqStatus: false, data: "Internal error." });
+        }
+
+        const { newAccessToken, newRefreshToken } = await generateTokens({
+            _id: user._id,
+        });
+
+
+        try {
+            await updateRefreshToken(userData._id, newRefreshToken)
+        }
+        catch (e) {
+            return res.status(500).json({ reqStatus: false, data: "Internal error." });
+        }
+
+
+        res.cookie('refreshToken', newRefreshToken, {
+            maxAge: 1000 * 60 * 60 * 24 * 30,
+            httpOnly: true,
+        });
+        res.cookie('accessToken', newAccessToken, {
+            maxAge: 1000 * 60 * 60 * 24 * 30,
+            httpOnly: true,
+        });
+
+        const userDto = new UserDto(user);
+        return res.json({ reqStatus: true, data: { userDto, auth: true } });
     }
 }
 

@@ -16,6 +16,15 @@ class TokenService {
     async storeRefreshToken(token,userId) {
         await refreshModel.create({token,userId})
     }
+    async verifyRefreshToken(token) {
+        await jwt.verify(token,process.env.JWT_REFRESH_TOKEN_SECRET)
+    }
+    async findRefreshTokenInDB(id,token) {
+        return await refreshModel.findOne({userId: id,token})
+    }
+    async updateRefreshToken(id,token) {
+        
+    }
 }
 
 export default new TokenService()
