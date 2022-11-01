@@ -3,7 +3,7 @@ import refreshModel from "../model/refresh.model.js";
 class TokenService {
     async generateTokens(payload) {
         const accessToken = jwt.sign(payload, process.env.JWT_ACCESS_TOKEN_SECRET, {
-            expiresIn: '1h'
+            expiresIn: '10m'
         });
         const refreshToken = jwt.sign(payload, process.env.JWT_REFRESH_TOKEN_SECRET, {
             expiresIn: "1y"
@@ -23,7 +23,7 @@ class TokenService {
         return await refreshModel.findOne({userId: id,token})
     }
     async updateRefreshToken(id,token) {
-        
+        return await refreshModel.updateOne({userId: id},{token})
     }
 }
 

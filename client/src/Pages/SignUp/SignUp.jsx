@@ -12,7 +12,7 @@ import { sendOTP } from "../../http/index"
 import Navbar from '../../components/Navbar';
 import { createAvatar } from '@dicebear/avatars';
 import * as style from '@dicebear/micah';
-  import {  toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 // import pointingArrow from "../../assets/arrow.svg"
 const initialState = {
   fullName: "",
@@ -57,6 +57,17 @@ function SignUp() {
     const file = e.target.files[0];
     const reader = new FileReader();
     reader.readAsDataURL(file)
+    // reader.onload = function (e) {
+    //   let image = new Image()
+    //   image.src = e.target.result;
+    //   image.onload = function () {
+    //     if (this.width > 2000 && this.height > 2000) {
+    //       setImage(avatar)
+    //       alert("Image is way to big.")
+    //       return;
+    //     }
+    //   }
+    // }
     reader.onloadend = function () {
       setImage(reader.result)
     }
@@ -75,8 +86,8 @@ function SignUp() {
       username: text.current,
       image
     }
-    if(!text.current || !image || !inputs.email || !inputs.fullName || !inputs.password) {
-      return toast.error("All fields are required.",{
+    if (!text.current || !image || !inputs.email || !inputs.fullName || !inputs.password) {
+      return toast.error("All fields are required.", {
         icon: "😓"
       })
     }
@@ -85,12 +96,12 @@ function SignUp() {
       dispatch(setAuth(formContent))
       dispatch(setOTPData(data));
       navigate("/confirm-otp")
-      toast.success("OTP has been sent.",{
+      toast.success("OTP has been sent.", {
         icon: "🎉"
       })
     }
     catch (e) {
-      toast.error(e.response.data.data,{
+      toast.error(e.response.data.data, {
         icon: "😰"
       })
     }

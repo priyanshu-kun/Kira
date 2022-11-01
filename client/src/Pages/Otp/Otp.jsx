@@ -41,7 +41,7 @@ function ConfirmOTP() {
             })
         }
         catch(e) {
-            toast.error(e.response.data.data,{
+            toast.error("OOPS, Something bad happen. Please try again",{
                 icon: "😰"
             })
         }

@@ -16,22 +16,35 @@ export const createAccount =  async (data) =>  await axios.post('http://localhos
 export const userLogin =  async (data) =>  await axios.post('http://localhost:5500/api/login-user',data)
 // export const refresh =  async () =>  await axios.get('http://localhost:5500/api/refresh')
 
+// Interceptors
+api.interceptors.response.use(
+    (config) => {
+        return config;
+    },
+    async (error) => {
+        const originalRequest = error.config;
+        if (
+            error.response.status === 401 &&
+            originalRequest &&
+            !originalRequest._isRetry
+        ) {
+            originalRequest.isRetry = true;
+            try {
+                await axios.get(
+                    `${process.env.REACT_APP_API_URL}/api/refresh`,
+                    {
+                        withCredentials: true,
+                    }
+                );
 
-api.interceptors.response.use((config) => {return config;}, async (error) => {
-    const originalReq = error.config;
-    console.log(originalReq)
-    if(error?.response?.status === 401 && originalReq && originalReq._isRetry) {
-        originalReq.isRetry = true;
-        try {
-            const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/refresh`,{withCredentials: true})
-            return api.request(originalReq)
+                return api.request(originalRequest);
+            } catch (err) {
+                console.log(err.message);
+            }
         }
-        catch(e) {
-            console.error(e)
-        }
+        throw error;
     }
-    throw error;
-})
+);
 
 
 export default api

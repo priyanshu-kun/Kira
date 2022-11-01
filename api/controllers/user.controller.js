@@ -175,12 +175,13 @@ class AuthController {
 
     async refresh(req, res) {
         const { refreshToken } = req.cookies;
+        console.log(refreshToken)
         let userData;
         try {
             userData = await verifyRefreshToken(refreshToken)
         }
         catch (e) {
-            return res.status(500).json({ reqStatus: false, data: "Invalid refresh token." });
+            return res.status(401).json({ reqStatus: false, data: "Invalid refresh token." });
         }
         try {
             const token = await findRefreshTokenInDB(
