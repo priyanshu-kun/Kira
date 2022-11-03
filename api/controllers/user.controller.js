@@ -147,11 +147,11 @@ class AuthController {
                 return res.status(500).json({ reqStatus: false, data: "Internal server error." });
             }
 
-            res.cookie('refreshToken', refreshToken, {
+            res.cookie('refreshToken', "refreshToken", {
                 maxAge: 1000 * 60 * 60 * 24 * 30,
                 httpOnly: true,
             });
-            res.cookie('accessToken', accessToken, {
+            res.cookie('accessToken', "accessToken", {
                 maxAge: 1000 * 60 * 60 * 24 * 30,
                 httpOnly: true,
             });
