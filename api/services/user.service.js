@@ -13,6 +13,9 @@ class UserService {
     async findUserByUsernameAndEmail(key) {
        return await userModel.findOne({$or: [{email: key},{username: key}]}); 
     }
+    async findUserById(id) {
+        return await userModel.findById(id)
+    }
 }
 
 export default new UserService()

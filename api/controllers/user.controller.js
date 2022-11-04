@@ -7,7 +7,7 @@ import UserDto from "../dto/user.dto.js";
 const { sendMail } = emailService
 const { hashOTP, hashPassword, comparePassword } = hashOtpService
 const { verifyOtp, generateOTP } = otpService
-const { createUser, findUserByEmail, findUserByUsernameAndEmail } = UserService
+const { createUser, findUserByEmail, findUserByUsernameAndEmail,findUserById } = UserService
 const { generateTokens, storeRefreshToken, verifyRefreshToken, findRefreshTokenInDB, updateRefreshToken } = tokenService
 import Jimp from "jimp"
 import path, { dirname } from "path"
@@ -146,12 +146,15 @@ class AuthController {
             catch (e) {
                 return res.status(500).json({ reqStatus: false, data: "Internal server error." });
             }
+            
 
-            res.cookie('refreshToken', "refreshToken", {
+
+
+            res.cookie('refreshToken', refreshToken, {
                 maxAge: 1000 * 60 * 60 * 24 * 30,
                 httpOnly: true,
             });
-            res.cookie('accessToken', "accessToken", {
+            res.cookie('accessToken', accessToken, {
                 maxAge: 1000 * 60 * 60 * 24 * 30,
                 httpOnly: true,
             });
@@ -174,11 +177,10 @@ class AuthController {
     }
 
     async refresh(req, res) {
-        const { refreshToken } = req.cookies;
-        console.log(refreshToken)
+        const { refreshToken: refreshTokenFromCookie } = req.cookies;
         let userData;
         try {
-            userData = await verifyRefreshToken(refreshToken)
+            userData = await verifyRefreshToken(refreshTokenFromCookie)
         }
         catch (e) {
             return res.status(401).json({ reqStatus: false, data: "Invalid refresh token." });
@@ -186,7 +188,7 @@ class AuthController {
         try {
             const token = await findRefreshTokenInDB(
                 userData._id,
-                refreshToken
+                refreshTokenFromCookie
             );
             if (!token) {
                 return res.status(401).json({ reqStatus: false, data: "Invalid refresh token." });
@@ -199,7 +201,7 @@ class AuthController {
         let user;
         try {
 
-            user = await userService.findUser({ _id: userData._id });
+            user = await findUserById(userData._id);
             if (!user) {
                 return res.status(401).json({ reqStatus: false, data: "No user found." });
             }
@@ -208,24 +210,24 @@ class AuthController {
             return res.status(500).json({ reqStatus: false, data: "Internal error." });
         }
 
-        const { newAccessToken, newRefreshToken } = await generateTokens({
+        const { refreshToken, accessToken } = await generateTokens({
             _id: user._id,
         });
 
 
         try {
-            await updateRefreshToken(userData._id, newRefreshToken)
+            await updateRefreshToken(userData._id, refreshToken)
         }
         catch (e) {
             return res.status(500).json({ reqStatus: false, data: "Internal error." });
         }
 
 
-        res.cookie('refreshToken', newRefreshToken, {
+        res.cookie('refreshToken', refreshToken, {
             maxAge: 1000 * 60 * 60 * 24 * 30,
             httpOnly: true,
         });
-        res.cookie('accessToken', newAccessToken, {
+        res.cookie('accessToken', accessToken, {
             maxAge: 1000 * 60 * 60 * 24 * 30,
             httpOnly: true,
         });

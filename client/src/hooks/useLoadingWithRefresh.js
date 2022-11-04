@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios';
-import { setUser } from '../src/store/user.slice';
+import { setUser } from '../store/user.slice';
 import { useDispatch } from 'react-redux';
+axios.defaults.withCredentials = true;
 
 export function useLoadingWithRefresh() {
   const [loading, setLoading] = useState(true);
@@ -15,7 +16,7 @@ export function useLoadingWithRefresh() {
             withCredentials: true,
           }
         );
-        console.log(data)
+        console.log("Inside refresh route: ",data)
         if (data.reqStatus) {
           const User = {
             auth: data.data.auth,

@@ -15,7 +15,7 @@ import { ToastContainer } from 'react-toastify';
 import ProtectedRoutes from "./ProtectedRoutes.jsx"
 import 'react-toastify/dist/ReactToastify.css';
 import { useSelector } from "react-redux"
-import { useLoadingWithRefresh } from '../hooks/useLoadingWithRefresh'
+import { useLoadingWithRefresh } from './hooks/useLoadingWithRefresh.js'
 
 
 function AuthenticationRoutes() {

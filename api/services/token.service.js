@@ -17,7 +17,7 @@ class TokenService {
         await refreshModel.create({token,userId})
     }
     async verifyRefreshToken(token) {
-        await jwt.verify(token,process.env.JWT_REFRESH_TOKEN_SECRET)
+        return await jwt.verify(token,process.env.JWT_REFRESH_TOKEN_SECRET)
     }
     async findRefreshTokenInDB(id,token) {
         return await refreshModel.findOne({userId: id,token})
