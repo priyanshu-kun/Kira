@@ -10,5 +10,6 @@ router.post('/api/create-account',authController.createAccount);
 router.post('/api/login-user',authController.loginUser);
 router.get('/api/user',authMiddleware ,authController.getUser);
 router.get('/api/refresh' ,authController.refresh);
+router.post('/api/logout-user' ,authController.logOutUser);
 
 export default  router

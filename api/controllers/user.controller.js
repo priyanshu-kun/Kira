@@ -8,7 +8,7 @@ const { sendMail } = emailService
 const { hashOTP, hashPassword, comparePassword } = hashOtpService
 const { verifyOtp, generateOTP } = otpService
 const { createUser, findUserByEmail, findUserByUsernameAndEmail,findUserById } = UserService
-const { generateTokens, storeRefreshToken, verifyRefreshToken, findRefreshTokenInDB, updateRefreshToken } = tokenService
+const { generateTokens, removeRefreshToken, storeRefreshToken, verifyRefreshToken, findRefreshTokenInDB, updateRefreshToken } = tokenService
 import Jimp from "jimp"
 import path, { dirname } from "path"
 import { fileURLToPath } from 'url';
@@ -234,6 +234,13 @@ class AuthController {
 
         const userDto = new UserDto(user);
         return res.json({ reqStatus: true, data: { userDto, auth: true } });
+    }
+    async logOutUser(req,res) {
+        const {refreshToken} = req.cookies;
+        await removeRefreshToken(refreshToken)
+        res.clearCookie('refreshToken')
+        res.clearCookie('accessToken')
+        return res.json({ reqStatus: true, data: { userDto: null, auth: false } });
     }
 }
 
