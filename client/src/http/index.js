@@ -16,6 +16,7 @@ export const sendOTP =  async (data) =>  await axios.post('http://localhost:5500
 export const verifyOTP =  async (data) =>  await axios.post('http://localhost:5500/api/verify-otp',data)
 export const createAccount =  async (data) =>  await axios.post('http://localhost:5500/api/create-account',data)
 export const userLogin =  async (data) =>  await axios.post('http://localhost:5500/api/login-user',data)
+export const userLogout =  async (data) =>  await axios.post('http://localhost:5500/api/logout-user',data)
 
 // Interceptors
 api.interceptors.response.use(

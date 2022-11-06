@@ -100,7 +100,7 @@ function SignUp() {
                 <div className='checkbox-wrapper '>
                   <label class="cursor-pointer label">
                     <input type="checkbox" className={isChecked ? "checked" : ""} checked={isChecked} onChange={(e) => setIsChecked(prev => !prev)} />
-                    <span class="label-text">Remember me</span>
+                    <span class="label-text">Terms & Conditions</span>
                   </label>
                 </div>
                 <label class="label">

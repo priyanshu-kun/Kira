@@ -57,3 +57,25 @@
 body {
     overflow: hidden;
 }
+
+
+.dashboard-left {
+    width: 350px;
+}
+
+
+.dashboard-right {
+    background-color: #0b0b0b;
+}
+
+
+.logout-button-pd {
+    padding: 10px;
+}
+
+
+.dashboard-logo {
+
+    font-family: './assets/fonts/HelveticaNowDisplay-ExtBlk.otf';
+    color: rgb(245, 245, 245);
+}
