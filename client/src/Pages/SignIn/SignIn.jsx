@@ -107,7 +107,11 @@ function SignUp() {
                   <a href="#" class="label-text-alt link text-sm  link-hover">Having trouble in sign in?</a>
                 </label>
               </div>
-              <button class="btn btn-primary w-56 rounded-full bg-button-main-light border-none hover:bg-button-main-light text-black normal-case">Sign in</button>
+              <button className="pushable normal-case mt-2 rounded-full">
+                <span className="front rounded-full w-56 py-3">
+                  Sign in
+                </span>
+              </button>
             </div>
             <div class="divider my-8">or Sign in with</div>
             <div class=" flex w-full text-center justify-center">

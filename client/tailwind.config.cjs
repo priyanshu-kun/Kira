@@ -5,6 +5,11 @@ module.exports = {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
+    borderWidth: {
+      DEFAULT: '1px',
+      '5px': '5px'
+
+    },
     fontFamily: {
       'extraBlack':['./assets/fonts/HelveticaNowDisplay-ExtBlk.otf'],
       'black':['HelveticaNowDisplay-Black.otf'],
@@ -14,13 +19,15 @@ module.exports = {
       'extraThin':['HelveticaNowDisplay-Hairline.otf']
     },
     maxWidth: {
-       'register-form-field': '24rem'
+       'register-form-field': '24rem',
+       'fullName': '208px'
     },
     extend: {
       colors: {
         'main-light': "#fff",
         'secondary-light': "#F5F2EA",
         'button-main-light': "#FDC886",
+        'accent-color': "#ffa500",
         'text-main-light': "#000"
       },
       spacing: {

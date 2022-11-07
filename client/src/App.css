@@ -61,6 +61,7 @@ body {
 
 .dashboard-left {
     width: 350px;
+    position: relative;
 }
 
 
@@ -78,4 +79,65 @@ body {
 
     font-family: './assets/fonts/HelveticaNowDisplay-ExtBlk.otf';
     color: rgb(245, 245, 245);
+    position: relative;
 }
+
+.dashboard-logo::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: -12px;
+    height: 70%;
+    width: 5px;
+    border-radius: 2px;
+    background-color: orange;
+}
+
+
+.navbar-username {
+    font-family: './assets/fonts/HelveticaNowDisplay-Black.otf';
+}
+
+.dashboard-left-userFullName {
+    font-family: './assets/fonts/HelveticaNowDisplay-ExtBlk.otf';
+    text-align: center;
+}
+
+
+.dashboard-left p::before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 5px;
+    border-radius: 3px;
+    bottom: -6px;
+    left: 0;
+    background-color: #ffa500;
+}
+
+
+.pushable {
+    background:  orange;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    outline-offset: 4px;
+  }
+  .front {
+    display: block;
+    font-family: './assets/fonts/HelveticaNowDisplay-Medium.otf';
+    font-size: 1rem;
+    font-weight: bold;
+    background:  #FDC886;
+    color: black;
+    transform: translateY(-6px);
+  }
+
+  .pushable:active .front {
+    transform: translateY(-2px);
+  }
+
+  .dashboard-navbar {
+    border-bottom: 2px solid rgb(37, 31, 24);
+  }

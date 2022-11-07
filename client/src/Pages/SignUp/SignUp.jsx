@@ -129,7 +129,7 @@ function SignUp() {
                 </label>
                 <button onClick={handleRemoveAvatar} className="btn btn-ghost btn-active rounded-full  border-none text-black hover:border-none px-8 normal-case">Remove</button>
               </div>
-              <div className='username-field text-lg opacity-60 relative flex'><span className='text-button-main-light mr-1'>@</span><ContentEditable html={text.current} onChange={handleChange} /></div>
+              <div className='username-field text-lg opacity-60 relative flex'><span className='text-accent-color mr-1'>@</span><ContentEditable html={text.current} onChange={handleChange} /></div>
             </div>
             <div class="divider divider-horizontal">AND</div>
             <div class="grid flex-grow card bg-transparent rounded-box place-items-center">
@@ -157,7 +157,11 @@ function SignUp() {
                       setShowHide(prev => !prev);
                     }} className='text-gray-600 cursor-pointer absolute right-6 h-12 flex items-center justify-center bottom-0'>{!showHide ? "Show" : "Hide"}</span>
                   </div>
-                  <button className="btn btn-primary w-56 mt-8 rounded-full bg-button-main-light border-none hover:bg-button-main-light text-black normal-case">Sign up</button>
+                  <button className="pushable normal-case mt-8  rounded-full">
+                    <span className="front rounded-full w-56 py-3">
+                      Sign up
+                    </span>
+                  </button>
                 </div>
                 <div class="divider my-8">or Sign up with</div>
                 <div class=" flex w-full text-center justify-center">

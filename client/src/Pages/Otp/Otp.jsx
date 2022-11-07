@@ -6,7 +6,7 @@ import { Link, useNavigate } from "react-router-dom"
 import Navbar from '../../components/Navbar';
 import { useSelector } from "react-redux"
 import { createAccount, verifyOTP } from '../../http';
-  import {  toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 
 function ConfirmOTP() {
     const authData = useSelector(state => state.auth)
@@ -16,7 +16,7 @@ function ConfirmOTP() {
 
 
     const handleSubmit = async (e) => {
-        try{
+        try {
             e.preventDefault();
             const createUser = {
                 hash: authData.otp.hash,
@@ -36,12 +36,12 @@ function ConfirmOTP() {
                 console.log(data)
             }
             navigate("/SignIn")
-            toast.success("Account created successfully.",{
+            toast.success("Account created successfully.", {
                 icon: "🎉"
             })
         }
-        catch(e) {
-            toast.error("OOPS, Something bad happen. Please try again",{
+        catch (e) {
+            toast.error("OOPS, Something bad happen. Please try again", {
                 icon: "😰"
             })
         }
@@ -57,13 +57,17 @@ function ConfirmOTP() {
                 <form className='w-full flex flex-col items-center justify-center' onSubmit={handleSubmit} action="">
                     <div className="form-control w-full mb-2">
                         <label htmlFor='otp' className="label">
-                            <span className="label-text">Confirm you otp</span>
+                            <span className="label-text">Confirm your otp</span>
                         </label>
                         <div>
                             <input onChange={(e) => setOtp(e.target.value)} type="text" id='otp' placeholder='eg. xxxxxx' className="block w-full text-center bg-secondary-light input input-bordered" />
                         </div>
                     </div>
-                    <button className="btn btn-primary w-56 mt-3 rounded-full bg-button-main-light border-none hover:bg-button-main-light text-black normal-case">Confirm Account</button>
+                    <button className="pushable normal-case mt-6 rounded-full">
+                        <span className="front rounded-full w-56 text-sm py-3">
+                            Confirm Account
+                        </span>
+                    </button>
                 </form>
             </div>
         </div>
