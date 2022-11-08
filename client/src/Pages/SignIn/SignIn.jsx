@@ -3,7 +3,7 @@ import { FiArrowRight } from "react-icons/fi";
 import { FaGoogle, FaGithub } from "react-icons/fa";
 import character from "../../assets/character.svg"
 import ContentEditable from "react-contenteditable"
-import avatar from "../../assets/avatar.jpg"
+import avatar from "../../assets/avatar.png"
 import { useDispatch, useSelector } from "react-redux"
 import "./SignIn.css"
 import { Link } from "react-router-dom"
@@ -57,7 +57,7 @@ function SignUp() {
         }
         dispatch(setUser(User))
         setInputs(initialState)
-        navigate('/Home')
+        navigate('/')
       }
       toast.success("Welcome to Kira.", {
         icon: "🎉"

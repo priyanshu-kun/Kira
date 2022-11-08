@@ -21,12 +21,10 @@ import { useLoadingWithRefresh } from './hooks/useLoadingWithRefresh.js'
 function AuthenticationRoutes() {
 
   const User = useSelector(state => state.user)
-  // const User = {
-  //     auth: false
-  // }
+
 
   return (
-    !User.auth ? <Outlet /> : <Navigate to="/Home" />
+    !User.auth ? <Outlet /> : <Navigate to="/" />
   )
 }
 
@@ -49,7 +47,7 @@ function App() {
         <Suspense fallback={<h1>Loading...</h1>}>
           <Routes>
             <Route element={<ProtectedRoutes />}>
-              <Route path='/Home' element={<Home />} />
+              <Route path='/' element={<Home />} />
             </Route>
             <Route element={<AuthenticationRoutes />}>
               <Route path='/SignUp' element={<SignUp />} />

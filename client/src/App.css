@@ -14,7 +14,7 @@
     left: 0;
     width: 200px;
     height: 1px;
-    background-color: rgb(0, 0, 0,0.6);
+    background-color: rgb(0, 0, 0, 0.6);
 }
 
 
@@ -23,6 +23,7 @@
     max-width: 600px;
     min-width: 100px;
 }
+
 .register-character-image {
     width: 400px;
     max-width: 600px;
@@ -39,12 +40,13 @@
     border: 4px solid #FDC886;
     border-radius: 24px;
 }
+
 .username-field::after {
     content: "";
     position: absolute;
     width: 100%;
     height: 1px;
-    background-color: rgb(0, 0, 0,0.2);
+    background-color: rgb(0, 0, 0, 0.2);
     bottom: -10px;
     left: 0;
 }
@@ -118,26 +120,53 @@ body {
 
 
 .pushable {
-    background:  orange;
+    background: orange;
     border: none;
     padding: 0;
     cursor: pointer;
     outline-offset: 4px;
-  }
-  .front {
+}
+
+.front {
     display: block;
     font-family: './assets/fonts/HelveticaNowDisplay-Medium.otf';
     font-size: 1rem;
     font-weight: bold;
-    background:  #FDC886;
+    background: #FDC886;
     color: black;
     transform: translateY(-6px);
-  }
+    will-change: transform;
+    transition: transform 250ms;
+    transition:
+        transform 600ms cubic-bezier(.3, .7, .4, 1);
 
-  .pushable:active .front {
+}
+
+.pushable:hover .front {
+    transform: translateY(-8px);
+    transition:
+        transform 250ms cubic-bezier(.3, .7, .4, 1.5);
+}
+
+.pushable:active .front {
     transform: translateY(-2px);
-  }
+    transition: transform 34ms;
+}
 
-  .dashboard-navbar {
+
+
+.dashboard-navbar {
     border-bottom: 2px solid rgb(37, 31, 24);
-  }
+}
+
+
+.dashboard-left ul li button {
+    font-family: './assets/fonts/HelveticaNowDisplay-Black.otf';
+    font-size: 0.9rem;
+}
+
+
+.dashboard-left ul li button:hover {
+    transition: transform 300ms;
+  transition-timing-function: ease-in;
+}

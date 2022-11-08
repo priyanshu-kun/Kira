@@ -4,15 +4,15 @@ import { FaGoogle, FaGithub } from "react-icons/fa";
 import character from "../../assets/character.svg"
 import { Link, useNavigate } from "react-router-dom"
 import Navbar from '../../components/Navbar';
-import { useSelector } from "react-redux"
 import { createAccount, verifyOTP } from '../../http';
 import { toast } from 'react-toastify';
+import {useSelector} from "react-redux"
 
 function ConfirmOTP() {
     const authData = useSelector(state => state.auth)
     const [Otp, setOtp] = useState("");
+    const {user: {email}} = useSelector(state => state.auth)
     const navigate = useNavigate()
-
 
 
     const handleSubmit = async (e) => {
@@ -53,7 +53,7 @@ function ConfirmOTP() {
             <img className='login-character-image absolute bottom-10 right-20' src={character} alt="" />
             <div className='form-body px-12 py-12 bg-white  w-form-width-otp  relative z-50 rounded-3xl shadow-sm'>
                 <h1 className='signup__form__welcome text-center mb-4 text-2xl'>Agent Confirm</h1>
-                <p className='text-center pt-2 pb-6 opacity-80 w-72 mx-auto'>Hey, we have just sent a verification code to  <span className='text-green-400 ml-2'> jhonedoe@gmail.com</span>.</p>
+                <p className='text-center pt-2 pb-6 opacity-80 w-72 mx-auto'>Hey, we have just sent a verification code to  <span className='text-green-400'>{email}</span>.</p>
                 <form className='w-full flex flex-col items-center justify-center' onSubmit={handleSubmit} action="">
                     <div className="form-control w-full mb-2">
                         <label htmlFor='otp' className="label">

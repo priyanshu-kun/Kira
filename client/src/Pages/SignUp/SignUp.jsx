@@ -1,19 +1,16 @@
 import React, { useRef, useState } from 'react'
-import { FiArrowRight } from "react-icons/fi";
 import { FaGoogle, FaGithub } from "react-icons/fa";
 import character from "../../assets/character.svg"
 import ContentEditable from "react-contenteditable"
-import avatar from "../../assets/avatar.jpg"
 import "./SignUp.css"
 import { Link, useNavigate } from "react-router-dom"
 import { useDispatch, useSelector } from 'react-redux';
 import { setAuth, setOTPData } from "../../store/auth.slice"
 import { sendOTP } from "../../http/index"
 import Navbar from '../../components/Navbar';
-import { createAvatar } from '@dicebear/avatars';
-import * as style from '@dicebear/micah';
+import avatar from "../../assets/avatar.png"
 import { toast } from 'react-toastify';
-// import pointingArrow from "../../assets/arrow.svg"
+const MAX = 1000000
 const initialState = {
   fullName: "",
   email: "",
@@ -31,12 +28,6 @@ function SignUp() {
   const [showHide, setShowHide] = useState(false)
 
 
-  let svg = createAvatar(style, {
-    seed: 'human',
-    // ... and other options
-  });
-  // console.log(svg)
-
 
   const handleChange = evt => {
     text.current = evt.target.value;
@@ -53,21 +44,11 @@ function SignUp() {
   }
 
 
+
   const captureImage = (e) => {
     const file = e.target.files[0];
     const reader = new FileReader();
     reader.readAsDataURL(file)
-    // reader.onload = function (e) {
-    //   let image = new Image()
-    //   image.src = e.target.result;
-    //   image.onload = function () {
-    //     if (this.width > 2000 && this.height > 2000) {
-    //       setImage(avatar)
-    //       alert("Image is way to big.")
-    //       return;
-    //     }
-    //   }
-    // }
     reader.onloadend = function () {
       setImage(reader.result)
     }
@@ -86,7 +67,7 @@ function SignUp() {
       username: text.current,
       image
     }
-    if (!text.current || !image || !inputs.email || !inputs.fullName || !inputs.password) {
+    if (!text.current || image === avatar || !inputs.email || !inputs.fullName || !inputs.password) {
       return toast.error("All fields are required.", {
         icon: "😓"
       })
@@ -119,7 +100,7 @@ function SignUp() {
             <div class="flex flex-col items-center justify-center  card bg-transparent rounded-box px-6">
               <div class="avatar mb-8">
                 <div class="avatar-cover w-28 overflow-hidden rounded-3xl">
-                  <img className='object-cover' src={image} />
+                  <img  className='object-cover' src={image} />
                 </div>
               </div>
               <div className='avatar-buttons mb-16'>
