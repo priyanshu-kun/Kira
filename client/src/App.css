@@ -162,11 +162,10 @@ body {
 
 .dashboard-left ul li button {
     font-family: './assets/fonts/HelveticaNowDisplay-Black.otf';
-    font-size: 0.9rem;
+    /* font-size: 0.9rem; */
 }
 
 
-.dashboard-left ul li button:hover {
-    transition: transform 300ms;
-  transition-timing-function: ease-in;
+.dashboard-left ul li button {
+    transition: height 0.3s ease;
 }

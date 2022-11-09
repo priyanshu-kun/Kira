@@ -7,7 +7,8 @@ module.exports = {
   theme: {
     borderWidth: {
       DEFAULT: '1px',
-      '5px': '5px'
+      '5px': '5px',
+      '2px': '2px'
 
     },
     fontFamily: {
