@@ -169,3 +169,21 @@ body {
 .dashboard-left ul li button {
     transition: height 0.3s ease;
 }
+
+
+.dashboard-right-header-title {
+    font-family: './assets/fonts/HelveticaNowDisplay-ExtBlk.otf';
+}
+
+
+.dashboard-right-header-title::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: -12px;
+    height: 70%;
+    width: 5px;
+    border-radius: 2px;
+    background-color: orange;
+}
