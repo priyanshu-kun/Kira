@@ -29,7 +29,8 @@ module.exports = {
         'secondary-light': "#F5F2EA",
         'button-main-light': "#FDC886",
         'accent-color': "#ffa500",
-        'text-main-light': "#000"
+        'text-main-light': "#000",
+        'dark-bg': '#121212'
       },
       spacing: {
         'form-width': '900px',

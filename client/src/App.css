@@ -187,3 +187,8 @@ body {
     border-radius: 2px;
     background-color: orange;
 }
+
+
+.modal-box h3 {
+    font-family: './assets/fonts/HelveticaNowDisplay-ExtBlk.otf';
+}
