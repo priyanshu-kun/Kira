@@ -1,27 +1,58 @@
 import React,{useState} from 'react'
+import { toast } from 'react-toastify'
+import { createNewProject } from '../../../http'
+import {useSelector} from "react-redux"
+
 
 const initialState = {
     title: "",
-    tags: []
+    tags: ""
 }
 
 function ProjectModal() {
 
     const [projectState,setProjectState] = useState(initialState)
+    const {user: {username}} = useSelector(state => state.user)
 
     const handleProjectState = (e) => {
         setProjectState(prev => {
             return {
                 ...prev,
-                [e.target.name]: [e.target.value]
+                [e.target.name]: e.target.value
             }
         })
     }
 
+    const convertStringIntoArray = (str) => {
+        return  str.split(",").map(s => s.trim());
+    }
 
-    const handleProjectSubmit = (e) => {
+
+    const handleProjectSubmit = async (e) => {
         e.preventDefault();
-
+        if(!projectState.tags || !projectState.title) {
+            return toast.error("All fields are required.", {
+                icon: "😓"
+            })
+        }
+        const topicArray = convertStringIntoArray(projectState.tags) 
+        const dataForServer = {
+            ...projectState,
+            tags: topicArray,
+            projectLead: username 
+        }
+        try {
+            const res = await createNewProject(dataForServer)
+            setProjectState(initialState)
+            return toast.success(`${projectState.title} has been created.`, {
+                icon: "👏"
+            })
+        }
+        catch(e) {
+            return toast.error("Something bad happen.", {
+                icon: "😓"
+            })
+        }
     }
 
 
@@ -35,15 +66,15 @@ function ProjectModal() {
                     <form action="" className="mb-14 mt-3">
                         <div className="form-control mb-2 w-full max-w-xs">
                             <label className="label">
-                                <span className="label-text">Enter project title!</span>
+                                <span className="label-text opacity-60">Enter project title!</span>
                             </label>
-                            <input type="text" value={projectState.title} onChange={handleProjectState} placeholder="eg. my cool project" className="input text-base py-2 input-bordered bg-black w-full max-w-xs" />
+                            <input type="text" name='title' value={projectState.title} onChange={handleProjectState} placeholder="eg. my cool project" className="input text-base py-2 input-bordered bg-black w-full max-w-xs" />
                         </div>
                         <div className="form-control w-full max-w-xs">
                             <label className="label">
-                                <span className="label-text">Enter project tags seprated by comma!</span>
+                                <span className="label-text opacity-60">Enter project tags seprated by comma!</span>
                             </label>
-                            <input type="text" value={projectState.tags} onChange={handleProjectState} placeholder="eg. reactjs,nodejs,cpp" className="input text-base py-2 input-bordered bg-black w-full max-w-xs" />
+                            <input type="text" name='tags' value={projectState.tags} onChange={handleProjectState} placeholder="eg. reactjs,nodejs,cpp" className="input text-base py-2 input-bordered bg-black w-full max-w-xs" />
                         </div>
                     </form>
                     <div className="modal-action flex justify-around">

@@ -7,7 +7,7 @@ import UserDto from "../dto/user.dto.js";
 const { sendMail } = emailService
 const { hashOTP, hashPassword, comparePassword } = hashOtpService
 const { verifyOtp, generateOTP } = otpService
-const { createUser, findUserByEmail, findUserByUsernameAndEmail,findUserById } = UserService
+const { createUser, findUserByEmail, findUserByUsernameAndEmail,findUserById,findUserByUsername } = UserService
 const { generateTokens, removeRefreshToken, storeRefreshToken, verifyRefreshToken, findRefreshTokenInDB, updateRefreshToken } = tokenService
 import Jimp from "jimp"
 import path, { dirname } from "path"
@@ -83,6 +83,15 @@ class AuthController {
         const { Email, password, username, fullName, avatar } = req.body;
         if (!Email || !password || !username || !fullName || !avatar) {
             return res.status(400).json({ reqStatus: false, data: 'All fields are required.' });
+        }
+        try {
+            const userByUsername = await findUserByUsername(username)
+            if(userByUsername) {
+                return res.status(400).json({ reqStatus: false, data: 'Username already exists.' });
+            }
+        }
+        catch(e) {
+            return res.status(500).json({ reqStatus: false, data: 'Internal server error.' });
         }
         let imagePath;
         try {

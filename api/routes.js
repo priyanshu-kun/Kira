@@ -10,8 +10,8 @@ router.post('/api/verify-otp',authController.verifyOTP);
 router.post('/api/create-account',authController.createAccount);
 router.post('/api/login-user',authController.loginUser);
 router.get('/api/user',authMiddleware ,authController.getUser);
-router.get('/api/refresh' ,authController.refresh);
-router.post('/api/logout-user' ,authController.logOutUser);
-router.post('/api/create-project', projectController.createProject)
+router.get('/api/refresh',authController.refresh);
+router.post('/api/logout-user',authMiddleware,authController.logOutUser);
+router.post('/api/create-project',authMiddleware, projectController.createProject)
 
 export default  router
