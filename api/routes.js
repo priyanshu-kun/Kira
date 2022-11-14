@@ -13,5 +13,6 @@ router.get('/api/user',authMiddleware ,authController.getUser);
 router.get('/api/refresh',authController.refresh);
 router.post('/api/logout-user',authMiddleware,authController.logOutUser);
 router.post('/api/create-project',authMiddleware, projectController.createProject)
+router.get('/api/fetch/user/projects',authMiddleware, projectController.fetchUserProjects)
 
 export default  router

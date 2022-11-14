@@ -192,3 +192,13 @@ body {
 .modal-box h3 {
     font-family: './assets/fonts/HelveticaNowDisplay-ExtBlk.otf';
 }
+
+
+thead th {
+    font-family: './assets/fonts/HelveticaNowDisplay-ExtBlk.otf';
+}
+
+
+.project-lead,.project-title, .project-index {
+    font-family: './assets/fonts/HelveticaNowDisplay-Black.otf';
+}

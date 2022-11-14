@@ -18,6 +18,11 @@ export const createAccount =  async (data) =>  await axios.post('http://localhos
 export const userLogin =  async (data) =>  await axios.post('http://localhost:5500/api/login-user',data)
 export const userLogout =  async (data) =>  await axios.post('http://localhost:5500/api/logout-user',data)
 export const createNewProject =  async (data) =>  await axios.post('http://localhost:5500/api/create-project',data)
+export const fetchUserProjects =  async (userId) =>  await axios.get('http://localhost:5500/api/fetch/user/projects',{
+    params: {
+        id: userId
+    }
+})
 
 
 // Interceptors

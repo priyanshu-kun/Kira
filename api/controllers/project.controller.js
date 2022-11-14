@@ -1,5 +1,5 @@
 import projectService from "../services/project.service.js";
-const {createNewProject} = projectService;
+const {createNewProject,fetchUserProjects} = projectService;
 
 
 class ProjectController {
@@ -13,6 +13,18 @@ class ProjectController {
        catch(e) {
             return res.status(500).json({ reqStatus: false, data: "Internal server error." });
        }
+    }
+
+    async fetchUserProjects(req,res) {
+        try {
+            const projects = await fetchUserProjects(req.query.id)
+            return res.json({
+                reqStatus: true, data: projects
+            })
+        }
+        catch(e) {
+            return res.status(500).json({ reqStatus: false, data: "Internal server error." });
+        }
     }
 }
 
