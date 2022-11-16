@@ -1,7 +1,6 @@
 import React, { useRef, useState } from 'react'
 import { FaGoogle, FaGithub } from "react-icons/fa";
 import character from "../../assets/character.svg"
-import ContentEditable from "react-contenteditable"
 import "./SignUp.css"
 import { Link, useNavigate } from "react-router-dom"
 import { useDispatch, useSelector } from 'react-redux';
@@ -12,6 +11,7 @@ import avatar from "../../assets/avatar.png"
 import { toast } from 'react-toastify';
 const MAX = 1000000
 const initialState = {
+  username: "",
   fullName: "",
   email: "",
   password: ""
@@ -22,15 +22,20 @@ function SignUp() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
-  const text = useRef("Username")
   const [inputs, setInputs] = useState(initialState)
   const [image, setImage] = useState(avatar)
   const [showHide, setShowHide] = useState(false)
 
 
 
-  const handleChange = evt => {
-    text.current = evt.target.value;
+  const handleChange = e => {
+    if(e.keyCode === 13) return;
+    setInputs(prev => {
+      return {
+        ...prev,
+        username: e.target.value
+      }
+    })
   };
 
 
@@ -64,10 +69,9 @@ function SignUp() {
     e.preventDefault()
     const formContent = {
       ...inputs,
-      username: text.current,
       image
     }
-    if (!text.current || image === avatar || !inputs.email || !inputs.fullName || !inputs.password) {
+    if (!inputs.username || image === avatar || !inputs.email || !inputs.fullName || !inputs.password) {
       return toast.error("All fields are required.", {
         icon: "😓"
       })
@@ -110,7 +114,11 @@ function SignUp() {
                 </label>
                 <button onClick={handleRemoveAvatar} className="btn btn-ghost btn-active rounded-full  border-none text-black hover:border-none px-8 normal-case">Remove</button>
               </div>
-              <div className='username-field text-lg opacity-60 relative flex'><span className='text-accent-color mr-1'>@</span><ContentEditable html={text.current} onChange={handleChange} /></div>
+              <div className='username-field text-lg opacity-60 relative flex'><span className='text-accent-color mr-1'>
+                @
+                </span>
+                <input className=' outline-none w-36 block' onChange={handleChange} value={inputs.username} type="text" placeholder='Username' />
+                </div>
             </div>
             <div class="divider divider-horizontal">AND</div>
             <div class="grid flex-grow card bg-transparent rounded-box place-items-center">

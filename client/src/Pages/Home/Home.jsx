@@ -22,8 +22,9 @@ function Home() {
   const Component = map[tabs]
 
   return (
-    <div className=' min-h-screen max-h-screen text-black bg-black flex'>
+    <div className=' min-h-screen max-h-screen text-black bg-black flex relative'>
       <Navbar />
+      <div className='cheap-ambient-mode w-full h-64 absolute'></div>
       <Sidebar handleTabs={handleTabs} tabs={tabs} />
       <div className='dashboard-right w-full'>
         <Component />

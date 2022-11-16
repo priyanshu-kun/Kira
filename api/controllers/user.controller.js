@@ -14,6 +14,11 @@ import path, { dirname } from "path"
 import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename)
+const cookieOptions = {
+    maxAge: 1000 * 60 * 60 * 24 * 30,
+    httpOnly: true,
+    sameSite: 'lax',
+}
 
 class AuthController {
 
@@ -155,18 +160,11 @@ class AuthController {
             catch (e) {
                 return res.status(500).json({ reqStatus: false, data: "Internal server error." });
             }
+
             
 
-
-
-            res.cookie('refreshToken', refreshToken, {
-                maxAge: 1000 * 60 * 60 * 24 * 30,
-                httpOnly: true,
-            });
-            res.cookie('accessToken', accessToken, {
-                maxAge: 1000 * 60 * 60 * 24 * 30,
-                httpOnly: true,
-            });
+            res.cookie('refreshToken', refreshToken, cookieOptions);
+            res.cookie('accessToken', accessToken, cookieOptions);
             const userDto = new UserDto(user);
             return res.json({ reqStatus: true, data: { userDto, auth: true } });
 
@@ -187,6 +185,7 @@ class AuthController {
 
     async refresh(req, res) {
         const { refreshToken: refreshTokenFromCookie } = req.cookies;
+        // console.log(refreshTokenFromCookie)
         let userData;
         try {
             userData = await verifyRefreshToken(refreshTokenFromCookie)
@@ -232,14 +231,8 @@ class AuthController {
         }
 
 
-        res.cookie('refreshToken', refreshToken, {
-            maxAge: 1000 * 60 * 60 * 24 * 30,
-            httpOnly: true,
-        });
-        res.cookie('accessToken', accessToken, {
-            maxAge: 1000 * 60 * 60 * 24 * 30,
-            httpOnly: true,
-        });
+        res.cookie('refreshToken', refreshToken, cookieOptions);
+        res.cookie('accessToken', accessToken, cookieOptions);
 
         const userDto = new UserDto(user);
         return res.json({ reqStatus: true, data: { userDto, auth: true } });

@@ -202,3 +202,34 @@ thead th {
 .project-lead,.project-title, .project-index {
     font-family: './assets/fonts/HelveticaNowDisplay-Black.otf';
 }
+
+
+.cheap-ambient-mode {
+
+	background: linear-gradient(-45deg, #ea5c42, #e73c7e, #23d585, #dfbe45);
+	background-size: 400% 400%;
+	animation: gradient 15s ease infinite;
+	height: 100vh;
+     filter: blur(90px);
+  -webkit-filter: blur(90px);
+  opacity: 0.2;
+
+}
+
+@keyframes gradient {
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
+}
+
+
+
+.empty-project-placeholder-heading {
+    font-family: './assets/fonts/HelveticaNowDisplay-ExtBlk.otf';
+}
