@@ -4,7 +4,7 @@ const {verifyAccessToken} = tokenService
 export default async function (req, res, next) {
     try {
         const { accessToken } = req.cookies;
-        // console.log("accesstoken at auth.midd 7: ",accessToken)
+        console.log("accesstoken at auth.midd 7: ",accessToken)
         if (!accessToken) {
             throw new Error();
         }

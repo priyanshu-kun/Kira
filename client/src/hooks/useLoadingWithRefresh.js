@@ -16,7 +16,6 @@ export function useLoadingWithRefresh() {
             withCredentials: true,
           }
         );
-        console.log("Inside refresh route: ",data)
         if (data.reqStatus) {
           const User = {
             auth: data.data.auth,
