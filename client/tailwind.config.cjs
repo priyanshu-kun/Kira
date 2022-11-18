@@ -30,7 +30,8 @@ module.exports = {
         'button-main-light': "#FDC886",
         'accent-color': "#ffa500",
         'text-main-light': "#000",
-        'dark-bg': '#121212'
+        'dark-bg': '#121212',
+        'preloader-bg': '#020300'
       },
       spacing: {
         'form-width': '900px',

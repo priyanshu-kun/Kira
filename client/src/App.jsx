@@ -16,6 +16,7 @@ import ProtectedRoutes from "./ProtectedRoutes.jsx"
 import 'react-toastify/dist/ReactToastify.css';
 import { useSelector } from "react-redux"
 import { useLoadingWithRefresh } from './hooks/useLoadingWithRefresh.js'
+import PrimaryLoader from './PrimaryLoader'
 
 
 function AuthenticationRoutes() {
@@ -39,12 +40,12 @@ function App() {
 
 
   if (loading) {
-    return <h1>Loading...</h1>
+    return <PrimaryLoader /> 
   }
   else {
     return (
       <>
-        <Suspense fallback={<h1>Loading...</h1>}>
+        <Suspense fallback={<PrimaryLoader />}>
           <Routes>
             <Route element={<ProtectedRoutes />}>
               <Route path='/' element={<Home />} />

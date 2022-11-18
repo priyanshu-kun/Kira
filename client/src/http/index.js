@@ -23,6 +23,11 @@ export const fetchUserProjects =  async (userId) =>  await axios.get('http://loc
         id: userId
     }
 })
+export const fetchProjectDetails =  async (userId) =>  await axios.get('http://localhost:5500/api/fetch/user/project/details',{
+    params: {
+        id: userId
+    }
+})
 
 
 // Interceptors

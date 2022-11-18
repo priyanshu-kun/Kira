@@ -7,6 +7,9 @@ class ProjectService {
     async fetchUserProjects(id) {
         return await projectModel.find({owner: id})
     }
+    async fetchDetails(id) {
+        return await projectModel.findOne({_id: id})
+    }
 }
 
 export default new ProjectService()

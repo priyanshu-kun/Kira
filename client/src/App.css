@@ -230,6 +230,6 @@ thead th {
 
 
 
-.empty-project-placeholder-heading {
+.empty-project-placeholder-heading,.loader-text {
     font-family: './assets/fonts/HelveticaNowDisplay-ExtBlk.otf';
 }

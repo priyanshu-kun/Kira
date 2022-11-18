@@ -14,5 +14,6 @@ router.get('/api/refresh',authController.refresh);
 router.post('/api/logout-user',authMiddleware,authController.logOutUser);
 router.post('/api/create-project',authMiddleware, projectController.createProject)
 router.get('/api/fetch/user/projects',authMiddleware, projectController.fetchUserProjects)
+router.get('/api/fetch/user/project/details',authMiddleware, projectController.fetchProjectDetails)
 
 export default  router
