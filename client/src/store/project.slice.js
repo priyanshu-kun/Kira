@@ -1,7 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
-    projects: []
+    projects: [],
+    details: null
 }
 
 export const projectsSlice = createSlice({
@@ -13,11 +14,17 @@ export const projectsSlice = createSlice({
     },
     getProjects: (state) => {
         return [...state.projects];
+    },
+    setProjectDetails: (state,action) => {
+      state.details = action.payload;
+    },
+    getProjectDetails: (state,action) => {
+      return state.details;
     }
   },
 })
 
 // Action creators are generated for each case reducer function
-export const { setProjects,getProjects } = projectsSlice.actions
+export const { setProjects,getProjects,setProjectDetails,getProjectDetails } = projectsSlice.actions
 
 export default projectsSlice.reducer
