@@ -21,7 +21,8 @@ module.exports = {
     },
     maxWidth: {
        'register-form-field': '24rem',
-       'fullName': '208px'
+       'fullName': '208px',
+        'avatars-container-overflow': '70rem'
     },
     extend: {
       colors: {

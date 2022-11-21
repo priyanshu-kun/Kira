@@ -67,7 +67,7 @@ function Dashboard() {
     }
   }
 
-  const handleDetailsClick =  (e) => {
+  const handleDetailsClick = (e) => {
     e.preventDefault();
     dispatch(setProjectDetails(null));
   }
@@ -89,7 +89,11 @@ function Dashboard() {
         </div>
         {
           details !== null ? (
-            <button className='btn'>Create issue</button>
+            < label htmlFor="create-project" className="pushable normal-case bg-green-600 rounded-full">
+              <span className="front rounded-full w-36 bg-green-400 py-3 flex items-center justify-center">
+                Create Issue
+              </span>
+            </label >
           ) : (
             projects.length !== 0 && (
               < label htmlFor="create-project" className="pushable normal-case bg-green-600 rounded-full">

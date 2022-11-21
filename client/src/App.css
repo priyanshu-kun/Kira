@@ -233,3 +233,23 @@ thead th {
 .empty-project-placeholder-heading,.loader-text {
     font-family: './assets/fonts/HelveticaNowDisplay-ExtBlk.otf';
 }
+
+
+
+.avatars-list {
+    width: 100%;
+    max-width: 76rem;
+    height: 80px;
+    background: blue;
+    overflow: hidden;
+    display: flex;
+}
+
+.avatar-comp {
+    width: 80px;
+    height: 80px;
+    min-width: none;
+    overflow: hidden;
+    background-color: red;
+    margin-right: 2px;
+}
