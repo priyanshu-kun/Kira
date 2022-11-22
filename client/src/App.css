@@ -230,8 +230,15 @@ thead th {
 
 
 
-.empty-project-placeholder-heading,.loader-text {
+.empty-project-placeholder-heading,.loader-text,.font-exBold,.lead-font-black {
     font-family: './assets/fonts/HelveticaNowDisplay-ExtBlk.otf';
+}
+
+.font-exBold {
+    color: #ffffff;
+    margin-right: 3px;
+    font-size: 12px;
+    opacity: 0.6;
 }
 
 
