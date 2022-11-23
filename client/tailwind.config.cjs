@@ -24,6 +24,9 @@ module.exports = {
        'fullName': '208px',
         'avatars-container-overflow': '70rem'
     },
+    maxHeight: {
+       'users-list': '30rem',
+    },
     extend: {
       colors: {
         'main-light': "#fff",

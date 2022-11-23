@@ -105,7 +105,7 @@ function Dashboard() {
           )
         }
       </div>
-      <div className='dashboard-right-body text-white mt-12'>
+      <div className='dashboard-right-body text-white mt-12 relative'>
         {
           preloader ? <Preloader /> : <Component projects={projects} handleProject={handleProject} details={details} />
         }
