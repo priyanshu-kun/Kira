@@ -185,7 +185,6 @@ class AuthController {
 
     async refresh(req, res) {
         const { refreshToken: refreshTokenFromCookie } = req.cookies;
-        console.log(refreshTokenFromCookie)
         let userData;
         try {
             userData = await verifyRefreshToken(refreshTokenFromCookie)

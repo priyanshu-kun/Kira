@@ -16,7 +16,6 @@ function Dashboard() {
   const dispatch = useDispatch()
   const { projects, details } = useSelector(state => state.projects);
   const [fetchingProjectFlag, setFetchingProjectFlag] = useState(false);
-  const [preloader, setPreloader] = useState(true);
   const [componentMap, setComponentMap] = useState(0);
 
   const Comp = {
@@ -29,13 +28,9 @@ function Dashboard() {
     (async () => {
       try {
         const { data: { data: projectsData } } = await fetchUserProjects(id)
-        if (projectsData) {
-          setPreloader(!preloader);
-        }
         dispatch(setProjects(projectsData))
       }
       catch (e) {
-        setPreloader(!preloader);
         return toast.error("Cannot able to fetch projects.", {
           icon: "😓"
         })
@@ -57,7 +52,6 @@ function Dashboard() {
   const handleProject = async (id) => {
     try {
       const { data: { data: Details } } = await fetchProjectDetails(id)
-
       dispatch(setProjectDetails(Details));
     }
     catch (e) {
@@ -105,9 +99,9 @@ function Dashboard() {
           )
         }
       </div>
-      <div className='dashboard-right-body text-white mt-12 relative'>
+      <div className='dashboard-right-body text-white mt-12 relative '>
         {
-          preloader ? <Preloader /> : <Component projects={projects} handleProject={handleProject} details={details} />
+          projects.length === 0 ? <ProjectPlaceholder />: <Component projects={projects} handleProject={handleProject} details={details} />
         }
         <ProjectModal fetchingProjectFlag={fetchingProjectFlag} setFetchingProjectFlag={setFetchingProjectFlag} />
       </div>

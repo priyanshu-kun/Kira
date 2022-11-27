@@ -225,9 +225,11 @@ thead th {
 
 
 
-.empty-project-placeholder-heading,.loader-text,.font-exBold,.lead-font-black {
+.empty-project-placeholder-heading,.loader-text,.font-exBold,.lead-font-black,.paginate-buttons {
     font-family: './assets/fonts/HelveticaNowDisplay-ExtBlk.otf';
 }
+
+
 
 .font-exBold {
     color: #ffffff;

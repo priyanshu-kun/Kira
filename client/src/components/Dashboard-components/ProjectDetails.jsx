@@ -12,7 +12,7 @@ function ProjectDetails({ details }) {
         <h1> <span className='font-exBold'>LEAD: </span> @{details?.projectLead}</h1>
         <h1> <span className='font-exBold'>OWNER:</span>  {details?.owner}</h1>
         <div className='my-3 w-fit pl-12'>
-          {details?.tags.map(m => <span className='badge px-2 py-3 mr-3 uppercase font-bold text-sm'>{m}</span>)}</div>
+          {details?.tags.map((m,idx) => <span key={idx} className='badge px-2 py-3 mr-3 uppercase font-bold text-sm'>{m}</span>)}</div>
       </div>
       <div className='issue-table-placeholder'>
         <div className='w-full flex flex-col items-center justify-center'>

@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-    baseURL: "http://localhost:5500",
+    baseURL: "http://localhost:5500/api",
     withCredentials: true,
     headers: {
         'Content-type': 'application/json',
@@ -9,43 +9,42 @@ const api = axios.create({
     },
 });
 
-axios.defaults.withCredentials = true;
+// const dispatch = useDispatch()
 
 
-export const sendOTP =  async (data) =>  await axios.post('http://localhost:5500/api/send-otp',data)
-export const verifyOTP =  async (data) =>  await axios.post('http://localhost:5500/api/verify-otp',data)
-export const createAccount =  async (data) =>  await axios.post('http://localhost:5500/api/create-account',data)
-export const userLogin =  async (data) =>  await axios.post('http://localhost:5500/api/login-user',data)
-export const userLogout =  async (data) =>  await axios.post('http://localhost:5500/api/logout-user',data)
-export const createNewProject =  async (data) =>  await axios.post('http://localhost:5500/api/create-project',data)
-export const fetchUserProjects =  async (userId) =>  await axios.get('http://localhost:5500/api/fetch/user/projects',{
+export const sendOTP = async (data) => await api.post('http://localhost:5500/api/send-otp', data)
+export const verifyOTP = async (data) => await api.post('http://localhost:5500/api/verify-otp', data)
+export const createAccount = async (data) => await api.post('http://localhost:5500/api/create-account', data)
+export const userLogin = async (data) => await api.post('http://localhost:5500/api/login-user', data)
+export const userLogout = async (data) => await api.post('http://localhost:5500/api/logout-user', data)
+export const createNewProject = async (data) => await api.post('http://localhost:5500/api/create-project', data)
+export const fetchUserProjects = async (userId) => await api.get('http://localhost:5500/api/fetch/user/projects', {
     params: {
         id: userId
     }
 })
-export const fetchProjectDetails =  async (userId) =>  await axios.get('http://localhost:5500/api/fetch/user/project/details',{
+export const fetchProjectDetails = async (userId) => await api.get('http://localhost:5500/api/fetch/user/project/details', {
     params: {
         id: userId
     }
 })
 
 
-// Interceptors
-api.interceptors.response.use(
-    (config) => {
-        return config;
-    },
-    async (error) => {
-        const originalRequest = error.config;
+
+api.interceptors.response.use(function (response) {
+    return response;
+  }, async function (error) {
+     const originalRequest = error.config;
         if (
             error.response.status === 401 &&
             originalRequest &&
             !originalRequest._isRetry
         ) {
             originalRequest.isRetry = true;
+            console.log(originalRequest.isRetry)
             try {
                 await axios.get(
-                    `${process.env.REACT_APP_API_URL}/api/refresh`,
+                    `http://localhost:5500/api/refresh`,
                     {
                         withCredentials: true,
                     }
@@ -53,12 +52,13 @@ api.interceptors.response.use(
 
                 return api.request(originalRequest);
             } catch (err) {
-                console.log("inside interse: ",err.message);
+                console.log(err.message);
             }
         }
+
+
         throw error;
-    }
-);
+  });
 
 
 export default api

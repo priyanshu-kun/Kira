@@ -1,7 +1,8 @@
 import React,{useState} from 'react'
 import { toast } from 'react-toastify'
 import { createNewProject } from '../../../http'
-import {useSelector} from "react-redux"
+import {useDispatch, useSelector} from "react-redux"
+import { setProjectDetails } from '../../../store/project.slice'
 
 
 const initialState = {
@@ -13,6 +14,7 @@ function ProjectModal({fetchingProjectFlag,setFetchingProjectFlag}) {
 
     const [projectState,setProjectState] = useState(initialState)
     const {user: {username, id}} = useSelector(state => state.user)
+    const dispatch = useDispatch()
 
     const handleProjectState = (e) => {
         setProjectState(prev => {
@@ -29,7 +31,6 @@ function ProjectModal({fetchingProjectFlag,setFetchingProjectFlag}) {
 
 
     const handleProjectSubmit = async (e) => {
-        e.preventDefault();
         if(!projectState.tags || !projectState.title) {
             return toast.error("All fields are required.", {
                 icon: "😓"
@@ -43,7 +44,10 @@ function ProjectModal({fetchingProjectFlag,setFetchingProjectFlag}) {
             projectLead: username 
         }
         try {
-            const {data} = await createNewProject(dataForServer)
+            const {data: {reqStatus,data}} = await createNewProject(dataForServer)
+            if(reqStatus) {
+                dispatch(setProjectDetails(data));
+            }
             setFetchingProjectFlag(!fetchingProjectFlag)
             setProjectState(initialState)
             return toast.success(`*${projectState.title}* - has been created.`, {
@@ -85,7 +89,7 @@ function ProjectModal({fetchingProjectFlag,setFetchingProjectFlag}) {
                                 Cancel
                             </span>
                         </label >
-                        < label onClick={handleProjectSubmit} htmlFor="create-project" className="pushable normal-case bg-green-600 rounded-full">
+                        < label  onClick={handleProjectSubmit} htmlFor="create-project" className="pushable normal-case bg-green-600 rounded-full">
                             <span className="front rounded-full w-36 bg-green-400 py-3 flex items-center justify-center">
                                 Submit
                             </span>
