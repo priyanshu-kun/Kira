@@ -10,6 +10,9 @@ class ProjectService {
     async fetchDetails(id) {
         return await projectModel.findOne({_id: id})
     }
+    async removeProjectFromDB(id) {
+        return await projectModel.deleteOne({_id: id})
+    }
 }
 
 export default new ProjectService()

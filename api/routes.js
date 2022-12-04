@@ -15,5 +15,7 @@ router.post('/api/logout-user',authMiddleware,authController.logOutUser);
 router.post('/api/create-project',authMiddleware, projectController.createProject)
 router.get('/api/fetch/user/projects',authMiddleware, projectController.fetchUserProjects)
 router.get('/api/fetch/user/project/details',authMiddleware, projectController.fetchProjectDetails)
+router.delete('/api/user/remove-project',authMiddleware, projectController.removeProject)
+router.get('/api/invite/user/project/:id',projectController.saveUserInProject)
 
 export default  router

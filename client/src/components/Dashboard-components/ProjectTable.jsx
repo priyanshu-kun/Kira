@@ -1,5 +1,5 @@
 import React from 'react'
-import PaginateComp from '../PaginateComp'
+import PaginateComp from './PaginateComp'
 
 function ProjectTable({ projects, handleProject }) {
   return (
@@ -18,9 +18,6 @@ function ProjectTable({ projects, handleProject }) {
           <PaginateComp itemsPerPage={6} items={projects} handleProject={handleProject} />
         </tbody>
       </table>
-        {/* <div className=' w-4/5 rounded-bl-3xl rounded-br-3xl h-6 bg-black mx-auto'>
-
-        </div> */}
     </>
   )
 }

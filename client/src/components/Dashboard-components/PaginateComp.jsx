@@ -1,10 +1,36 @@
-import React,{useState} from 'react'
+import React, { useState } from 'react'
 import ReactPaginate from "react-paginate"
-import { FiMoreHorizontal } from 'react-icons/fi'
+import { FiMoreHorizontal, FiTrash } from 'react-icons/fi'
+import { fetchUserProjects, removeProject } from '../../http'
+import { toast } from 'react-toastify'
+import { setProjects } from '../../store/project.slice'
+import { useDispatch, useSelector } from "react-redux"
 
 
 
-function Items({currentItems,handleProject}) {
+function Items({ currentItems, handleProject }) {
+
+
+    const dispatch = useDispatch();
+    const { user: { id } } = useSelector(state => state.user);
+
+    async function handleRemoveProject(projectId, title) {
+        try {
+            await removeProject(projectId)
+            const { data: { data: projectsData } } = await fetchUserProjects(id)
+            dispatch(setProjects(projectsData))
+            return toast.success(title + " deleted.", {
+                icon: "😌"
+            })
+        }
+        catch (e) {
+            return toast.error("Cannot able to remove project.", {
+                icon: "😓"
+            })
+        }
+    }
+
+
     return (
         currentItems.map(({ _id, title, tags, projectLead }, index) => {
             return (
@@ -17,8 +43,8 @@ function Items({currentItems,handleProject}) {
                     <td className='bg-slate-600/20 text-blue-400 project-lead text-sm'>@{projectLead}</td>
                     <td onClick={(e) => {
                         e.stopPropagation()
-                    }} className='bg-slate-600/20 text-center'>
-                        <span className='w-12 h-12 flex items-center justify-center rounded-full hover:bg-slate-400/30 transition-all cursor-pointer'><FiMoreHorizontal className='text-2xl' /></span>
+                    }} className='bg-slate-600/20 text-center relative'>
+                        <span onClick={() => handleRemoveProject(_id, title)} className='drawer-btn w-12 h-12 flex items-center justify-center rounded-full hover:bg-red-400 transition-all cursor-pointer'><FiTrash className='text-2xl' /></span>
                     </td>
                 </tr>
             )
@@ -26,7 +52,7 @@ function Items({currentItems,handleProject}) {
     )
 }
 
-function PaginateComp({ items,itemsPerPage,handleProject }) {
+function PaginateComp({ items, itemsPerPage, handleProject }) {
     const [itemOffset, setItemOffset] = useState(0);
     const endOffset = itemOffset + itemsPerPage;
     const currentItems = items.slice(itemOffset, endOffset);

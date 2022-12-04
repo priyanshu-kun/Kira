@@ -1,15 +1,25 @@
 import React from 'react'
 import { FiCopy } from 'react-icons/fi'
+import InviteModal from './Modals/InviteModal'
 import ProjectModal from './Modals/ProjectModal'
 
 function ProjectDetails({ details }) {
+
+
+  function handleSendInvite(e,data) {
+    e.preventDefault()
+    alert(data) 
+  }
+
+
   return (
     <div className='dashboard-right-body text-white mt-12'>
       <div className=' w-4/5 bg-black border-2px border-solid border-white/10 mx-auto mt-5 px-3 flex items-center justify-around h-28 rounded-3xl'>
-        <h1 className='flex items-center'><span className='font-exBold'>PROJECT ID:</span> {details?._id}
+        <h1 ><span className='font-exBold'>PROJECT ID:</span> {details?._id}
+        </h1>
+        <h1 className='flex items-center'> <span className='font-exBold'>LEAD: </span> @{details?.projectLead}
           <FiCopy className='ml-2 text-xl cursor-pointer' />
         </h1>
-        <h1> <span className='font-exBold'>LEAD: </span> @{details?.projectLead}</h1>
         <h1> <span className='font-exBold'>OWNER:</span>  {details?.owner}</h1>
         <div className='my-3 w-fit pl-12'>
           {details?.tags.map((m,idx) => <span key={idx} className='badge px-2 py-3 mr-3 uppercase font-bold text-sm'>{m}</span>)}</div>
@@ -29,8 +39,9 @@ function ProjectDetails({ details }) {
           </div>
          
         </div>
-        <button className='btn mt-3'>Invite</button>
+        <label htmlFor="my-modal-4" className="btn mt-3">Invite</label>
       </div>
+      <InviteModal handleSendInvite={handleSendInvite} />
       {/* <ProjectModal fetchingProjectFlag={fetchingProjectFlag} setFetchingProjectFlag={setFetchingProjectFlag} /> */}
     </div>
   )
