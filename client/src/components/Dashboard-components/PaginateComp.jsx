@@ -44,7 +44,7 @@ function Items({ currentItems, handleProject }) {
                     <td onClick={(e) => {
                         e.stopPropagation()
                     }} className='bg-slate-600/20 text-center relative'>
-                        <span onClick={() => handleRemoveProject(_id, title)} className='drawer-btn w-12 h-12 flex items-center justify-center rounded-full hover:bg-red-400 transition-all cursor-pointer'><FiTrash className='text-2xl' /></span>
+                        <span onClick={() => handleRemoveProject(_id, title)} className='drawer-btn w-12 h-12 flex items-center justify-center rounded-full hover:bg-red-400 transition-all cursor-pointer'><FiTrash className='text-xl' /></span>
                     </td>
                 </tr>
             )
