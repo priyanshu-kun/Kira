@@ -60,6 +60,9 @@ class ProjectController {
             Location: `https://piped.kavin.rocks/watch?v=LuNmfDmeCTc&list=49ae4cb4-5cda-4ff6-9e03-ced182c17ccd&index=6`
         }).end();
     }
+    async sendInvite(req,res) {
+        res.send(req.body)
+    }
 }
 
 export default new ProjectController()

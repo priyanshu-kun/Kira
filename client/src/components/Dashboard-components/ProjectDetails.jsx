@@ -1,14 +1,28 @@
 import React from 'react'
 import { FiCopy } from 'react-icons/fi'
+import { toast } from 'react-toastify'
+import { invitePerson } from '../../http'
 import InviteModal from './Modals/InviteModal'
 import ProjectModal from './Modals/ProjectModal'
 
 function ProjectDetails({ details }) {
 
 
-  function handleSendInvite(e,data) {
+  async function handleSendInvite(e, data) {
     e.preventDefault()
-    alert(data) 
+    const inviteInfo = {
+      invitationKey: data,
+      projectId: details?._id
+    }
+    try {
+        const {data} = await invitePerson(inviteInfo)
+        console.log(data)
+    } 
+    catch(e) {
+        return toast.error("Cannot able to send invitation.", {
+            icon: "😓"
+        })
+    }
   }
 
 
@@ -22,7 +36,7 @@ function ProjectDetails({ details }) {
         </h1>
         <h1> <span className='font-exBold'>OWNER:</span>  {details?.owner}</h1>
         <div className='my-3 w-fit pl-12'>
-          {details?.tags.map((m,idx) => <span key={idx} className='badge px-2 py-3 mr-3 uppercase font-bold text-sm'>{m}</span>)}</div>
+          {details?.tags.map((m, idx) => <span key={idx} className='badge px-2 py-3 mr-3 uppercase font-bold text-sm'>{m}</span>)}</div>
       </div>
       <div className='issue-table-placeholder'>
         <div className='w-full flex flex-col items-center justify-center'>
@@ -37,7 +51,7 @@ function ProjectDetails({ details }) {
               <img src="https://placeimg.com/192/192/people" />
             </div>
           </div>
-         
+
         </div>
         <label htmlFor="my-modal-4" className="btn mt-3">Invite</label>
       </div>

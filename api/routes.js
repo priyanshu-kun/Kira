@@ -17,5 +17,6 @@ router.get('/api/fetch/user/projects',authMiddleware, projectController.fetchUse
 router.get('/api/fetch/user/project/details',authMiddleware, projectController.fetchProjectDetails)
 router.delete('/api/user/remove-project',authMiddleware, projectController.removeProject)
 router.get('/api/invite/user/project/:id',projectController.saveUserInProject)
+router.post('/api/fetch/user/project/send-invite',authMiddleware,projectController.sendInvite)
 
 export default  router

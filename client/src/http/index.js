@@ -33,6 +33,7 @@ export const fetchProjectDetails = async (userId) => await api.get('http://local
         id: userId
     }
 })
+export const invitePerson = async (data) => await api.post('http://localhost:5500/api/fetch/user/project/send-invite',data)
 
 
 
