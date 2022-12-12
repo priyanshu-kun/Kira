@@ -3,6 +3,7 @@ import hashOtpService from "../services/hash.service.js";
 import otpService from "../services/otp.service.js";
 import UserService from "../services/user.service.js";
 import tokenService from "../services/token.service.js"
+import url from "url"
 import UserDto from "../dto/user.dto.js";
 const { sendMail } = emailService
 const { hashOTP, hashPassword, comparePassword } = hashOtpService
@@ -86,6 +87,9 @@ class AuthController {
 
     async createAccount(req, res) {
         const { Email, password, username, fullName, avatar } = req.body;
+        const parsedUrl = url.parse(req.url, true);
+        const queryParams = parsedUrl.query;
+        console.log(queryParams.data)
         if (!Email || !password || !username || !fullName || !avatar) {
             return res.status(400).json({ reqStatus: false, data: 'All fields are required.' });
         }

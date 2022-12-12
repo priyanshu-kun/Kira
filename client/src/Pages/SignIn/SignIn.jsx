@@ -11,7 +11,7 @@ import Navbar from '../../components/Navbar';
 import { userLogin } from '../../http';
 import { toast } from 'react-toastify';
 import { setUser } from '../../store/user.slice';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate,useSearchParams } from 'react-router-dom';
 
 // import pointingArrow from "../../assets/arrow.svg"
 const initialState = {
@@ -25,9 +25,11 @@ function SignUp() {
   const [inputs, setInputs] = useState(initialState)
   const [showHide, setShowHide] = useState(false)
   const navigate = useNavigate()
+  const [queryParams] = useSearchParams();
   const dispatch = useDispatch()
 
 
+  // console.log(queryParams.get("data"))
 
 
 
@@ -49,7 +51,8 @@ function SignUp() {
           icon: "😓"
         })
       }
-      const { data } = await userLogin(inputs);
+      const queryData = queryParams.get("data");
+      const { data } = await userLogin({inputs,params: queryData});
       if (data.reqStatus) {
         const User = {
           auth: data.data.auth,

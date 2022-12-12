@@ -28,6 +28,15 @@ class TokenService {
     async removeRefreshToken(token) {
         return await refreshModel.deleteOne({token})
     }
+    async generateTokensForInvitation(payload) {
+        const invitationToken = jwt.sign(payload, process.env.JWT_ACCESS_TOKEN_SECRET_FOR_INVITE, {
+            expiresIn: '1h'
+        });
+        return {invitationToken}
+    }
+    async verifyAccessTokenForInvite(token) {
+        return jwt.verify(token, process.env.JWT_ACCESS_TOKEN_SECRET_FOR_INVITE);
+    }
 }
 
 export default new TokenService()
