@@ -66,7 +66,7 @@ class ProjectController {
             const user = await findUserByEmail({email: key});
             if(!user) {
                 return res.writeHead(301, {
-                    Location: `${process.env.FRONT_URL}/SignUp?data=${key+"."+projectId}`
+                    Location: `${process.env.FRONT_URL}/SignUp?data=${key+"*"+projectId}`
                 }).end();
             }
             const project = await projectModel.findOne({_id: projectId});

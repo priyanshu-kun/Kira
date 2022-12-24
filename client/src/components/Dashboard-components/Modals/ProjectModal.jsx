@@ -10,7 +10,7 @@ const initialState = {
     tags: ""
 }
 
-function ProjectModal({fetchingProjectFlag,setFetchingProjectFlag}) {
+function ProjectModal() {
 
     const [projectState,setProjectState] = useState(initialState)
     const {user: {username, id}} = useSelector(state => state.user)
@@ -48,8 +48,6 @@ function ProjectModal({fetchingProjectFlag,setFetchingProjectFlag}) {
             if(reqStatus) {
                 dispatch(setProjectDetails(data));
             }
-            setFetchingProjectFlag(!fetchingProjectFlag)
-            setProjectState(initialState)
             return toast.success(`*${projectState.title}* - has been created.`, {
                 icon: "👏"
             })

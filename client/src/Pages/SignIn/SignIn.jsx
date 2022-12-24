@@ -25,11 +25,9 @@ function SignUp() {
   const [inputs, setInputs] = useState(initialState)
   const [showHide, setShowHide] = useState(false)
   const navigate = useNavigate()
-  const [queryParams] = useSearchParams();
   const dispatch = useDispatch()
 
 
-  // console.log(queryParams.get("data"))
 
 
 
@@ -51,8 +49,7 @@ function SignUp() {
           icon: "😓"
         })
       }
-      const queryData = queryParams.get("data");
-      const { data } = await userLogin({inputs,params: queryData});
+      const { data } = await userLogin(inputs);
       if (data.reqStatus) {
         const User = {
           auth: data.data.auth,

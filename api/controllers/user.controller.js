@@ -89,7 +89,7 @@ class AuthController {
         const { Email, password, username, fullName, avatar } = req.body;
         const parsedUrl = url.parse(req.url, true);
         const queryParams = parsedUrl.query;
-        console.log(queryParams.data)
+        console.log("Query paramaters: ",queryParams.data)
         if (!Email || !password || !username || !fullName || !avatar) {
             return res.status(400).json({ reqStatus: false, data: 'All fields are required.' });
         }

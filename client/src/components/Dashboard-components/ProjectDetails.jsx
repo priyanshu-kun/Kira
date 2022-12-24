@@ -1,18 +1,30 @@
 import React from 'react'
-import { FiCopy } from 'react-icons/fi'
+import { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
-import { invitePerson } from '../../http'
-import InviteModal from './Modals/InviteModal'
+import { fetchProjectDetails, invitePerson } from '../../http'
 import ProjectModal from './Modals/ProjectModal'
+import ProjectDetailsBody from './ProjectDetailsBody'
+import Preloader from './Preloader';
+import { FiArrowLeft } from 'react-icons/fi'
+import { useState } from 'react'
+import Navbar from './Navbar'
 
-function ProjectDetails({ details }) {
+function ProjectDetails() {
+
+
+  const {id} = useParams()
+  const navigate = useNavigate()
+  const [details, setDetails] = useState({})
+  const [loader, setLoader] = useState(true)
 
 
   async function handleSendInvite(e, data) {
     e.preventDefault()
     const inviteInfo = {
       invitationKey: data,
-      projectId: details?._id
+      projectId: id
     }
     try {
         const {data} = await invitePerson(inviteInfo)
@@ -26,38 +38,52 @@ function ProjectDetails({ details }) {
   }
 
 
-  return (
-    <div className='dashboard-right-body text-white mt-12'>
-      <div className=' w-4/5 bg-black border-2px border-solid border-white/10 mx-auto mt-5 px-3 flex items-center justify-around h-28 rounded-3xl'>
-        <h1 ><span className='font-exBold'>PROJECT ID:</span> {details?._id}
-        </h1>
-        <h1 className='flex items-center'> <span className='font-exBold'>LEAD: </span> @{details?.projectLead}
-          <FiCopy className='ml-2 text-xl cursor-pointer' />
-        </h1>
-        <h1> <span className='font-exBold'>OWNER:</span>  {details?.owner}</h1>
-        <div className='my-3 w-fit pl-12'>
-          {details?.tags.map((m, idx) => <span key={idx} className='badge px-2 py-3 mr-3 uppercase font-bold text-sm'>{m}</span>)}</div>
-      </div>
-      <div className='issue-table-placeholder'>
-        <div className='w-full flex flex-col items-center justify-center'>
-          <img className=' mt-24 w-60 opacity-60 h-auto' src="https://jira-frontend-static.prod.public.atl-paas.net/assets/no-issues-glyph.949ad1d8fb4a226dbb5166d65ac12663.8.svg" alt="empty issues" />
-          <h1 className='issue-e-msg mt-14 font-bold opacity-30 text-lg'>No issues were found matching your search.</h1>
-        </div>
-      </div>
-      <div className='absolute  max-h-users-list  right-16   top-32  flex flex-col items-center justify-between overflow-hidden'>
-        <div className='p-1 w-full  max-h-users-list bg-black rounded-3xl border-2px border-solid border-white/10 flex items-center justify-center overflow-scroll flex-col'>
-          <div className="avatar m-2">
-            <div className=" w-16 mask mask-squircle">
-              <img src="https://placeimg.com/192/192/people" />
-            </div>
-          </div>
+  useEffect(() => {
+    (async () => {
+      try {
+        const { data: { data: Details } } = await fetchProjectDetails(id)
+        setDetails(Details)
+        setLoader(false)
+      }
+      catch (e) {
+        setLoader(false)
+        return toast.error("Cannot able to fetch details.", {
+          icon: "😓"
+        })
+      }
+    })()
+  },[])
 
+
+  console.log(details)
+
+
+  return (
+    <>
+      <Navbar />
+    <div className='h-[calc(100vh-4rem)] mt-16 w-full bg-black'>
+      <div className='dashboard-right-header flex h-28 px-36 items-center justify-between border-b-2px border-solid border-b-white/5'>
+        <div className='flex items-center justify-center'>
+          <button onClick={() => {
+            navigate("/")
+          }} className='btn mr-6 cursor-pointer bg-transparent border border-solid border-white/10 rounded-full hover:bg-transparent hover:border-transparent transition-all transform hover:-translate-x-2'><FiArrowLeft className='text-white text-3xl' /></button>
+          <h1 className='dashboard-right-header-title text-white text-2xl relative'>{details?.title}</h1>
         </div>
-        <label htmlFor="my-modal-4" className="btn mt-3">Invite</label>
+        < label htmlFor="create-project" className="pushable normal-case bg-green-600 rounded-full">
+          <span className="front rounded-full w-36 bg-green-400 py-3 flex items-center justify-center">
+            Create Issue
+          </span>
+        </label >
       </div>
-      <InviteModal handleSendInvite={handleSendInvite} />
-      {/* <ProjectModal fetchingProjectFlag={fetchingProjectFlag} setFetchingProjectFlag={setFetchingProjectFlag} /> */}
+      <div className='dashboard-right-body text-white mt-12 relative '>
+        {
+          loader ? <Preloader />: <ProjectDetailsBody details={details}  handleSendInvite={handleSendInvite} />
+        }
+        <ProjectModal />
+      </div>
     </div>
+    </>
+
   )
 }
 

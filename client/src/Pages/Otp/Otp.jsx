@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react'
 import { FiArrowRight } from "react-icons/fi";
 import { FaGoogle, FaGithub } from "react-icons/fa";
 import character from "../../assets/character.svg"
-import { Link, useNavigate } from "react-router-dom"
+import { Link, useNavigate, useSearchParams } from "react-router-dom"
 import Navbar from '../../components/Navbar';
 import { createAccount, verifyOTP } from '../../http';
 import { toast } from 'react-toastify';
@@ -13,6 +13,7 @@ function ConfirmOTP() {
     const [Otp, setOtp] = useState("");
     const {user: {email}} = useSelector(state => state.auth)
     const navigate = useNavigate()
+    const [queryParams] = useSearchParams();
 
 
     const handleSubmit = async (e) => {
@@ -32,7 +33,8 @@ function ConfirmOTP() {
                 avatar: authData.user.image
             }
             if (otpData.reqStatus) {
-                const { data } = await createAccount(user)
+                const queryData = queryParams.get("data");
+                const { data } = await createAccount({user, query: queryData})
                 console.log(data)
             }
             navigate("/SignIn")

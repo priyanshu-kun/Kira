@@ -7,21 +7,19 @@ import { setProjectDetails, setProjects } from '../../store/project.slice';
 import ProjectPlaceholder from './ProjectPlaceholder';
 import ProjectTable from './ProjectTable';
 import { toast } from 'react-toastify';
-import Preloader from './Preloader';
 import ProjectDetails from './ProjectDetails';
+import { useNavigate } from 'react-router-dom';
+import Preloader from './Preloader';
 
 function Dashboard() {
 
   const { user: { id } } = useSelector(state => state.user);
   const dispatch = useDispatch()
-  const { projects, details } = useSelector(state => state.projects);
+  const navigate = useNavigate()
+  const { projects } = useSelector(state => state.projects);
   const [fetchingProjectFlag, setFetchingProjectFlag] = useState(false);
-  const [componentMap, setComponentMap] = useState(0);
+  const [loader,setLoader] = useState(true);
 
-  const Comp = {
-    0: ProjectTable,
-    1: ProjectDetails
-  }
 
 
   useEffect(() => {
@@ -29,8 +27,10 @@ function Dashboard() {
       try {
         const { data: { data: projectsData } } = await fetchUserProjects(id)
         dispatch(setProjects(projectsData))
+        setLoader(false)
       }
       catch (e) {
+        setLoader(false)
         return toast.error("Cannot able to fetch projects.", {
           icon: "😓"
         })
@@ -39,69 +39,32 @@ function Dashboard() {
   }, [fetchingProjectFlag])
 
 
-  useEffect(() => {
-    if (details !== null) {
-      setComponentMap(1)
-    }
-    if (details === null) {
-      setComponentMap(0)
-    }
-  }, [details])
-
 
   const handleProject = async (id) => {
-    try {
-      const { data: { data: Details } } = await fetchProjectDetails(id)
-      dispatch(setProjectDetails(Details));
-    }
-    catch (e) {
-      return toast.error("Cannot able to fetch details.", {
-        icon: "😓"
-      })
-    }
-  }
-
-  const handleDetailsClick = (e) => {
-    e.preventDefault();
-    dispatch(setProjectDetails(null));
+    navigate("/details/project/" + id)
   }
 
 
-  const Component = Comp[componentMap];
+
 
 
   return (
     <div className='h-[calc(100vh-4rem)] mt-16 w-full'>
       <div className='dashboard-right-header flex h-28 px-36 items-center justify-between border-b-2px border-solid border-b-white/5'>
-        <div className='flex items-center justify-center'>
-          {
-            details !== null && (
-              <button onClick={handleDetailsClick} className='btn mr-6 cursor-pointer bg-transparent border border-solid border-white/10 rounded-full hover:bg-transparent hover:border-transparent transition-all transform hover:-translate-x-2'><FiArrowLeft className='text-white text-3xl' /></button>
-            )
-          }
-          <h1 className='dashboard-right-header-title text-white text-2xl relative'>{details !== null ? details.title : "Projects"}</h1>
-        </div>
+        <h1 className='dashboard-right-header-title text-white text-2xl relative'>Projects</h1>
         {
-          details !== null ? (
+          projects.length !== 0 && (
             < label htmlFor="create-project" className="pushable normal-case bg-green-600 rounded-full">
               <span className="front rounded-full w-36 bg-green-400 py-3 flex items-center justify-center">
-                Create Issue
+                Create
               </span>
             </label >
-          ) : (
-            projects.length !== 0 && (
-              < label htmlFor="create-project" className="pushable normal-case bg-green-600 rounded-full">
-                <span className="front rounded-full w-36 bg-green-400 py-3 flex items-center justify-center">
-                  Create
-                </span>
-              </label >
-            )
           )
         }
       </div>
       <div className='dashboard-right-body text-white mt-12 relative '>
         {
-          projects.length === 0 ? <ProjectPlaceholder />: <Component projects={projects} handleProject={handleProject} details={details} />
+          loader ? <Preloader /> : projects.length == 0 ? <ProjectPlaceholder /> : <ProjectTable projects={projects} handleProject={handleProject} />
         }
         <ProjectModal fetchingProjectFlag={fetchingProjectFlag} setFetchingProjectFlag={setFetchingProjectFlag} />
       </div>

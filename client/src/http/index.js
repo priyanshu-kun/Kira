@@ -14,9 +14,9 @@ const api = axios.create({
 
 export const sendOTP = async (data) => await api.post('http://localhost:5500/api/send-otp', data)
 export const verifyOTP = async (data) => await api.post('http://localhost:5500/api/verify-otp', data)
-export const createAccount = async (data) => await api.post('http://localhost:5500/api/create-account', data)
-export const userLogin = async ({inputs,params}) =>  {
-    return await api.post(`http://localhost:5500/api/login-user${params !== null ? `?data=${params}`: ""}`, inputs)
+export const createAccount = async ({user,query}) => await api.post(`http://localhost:5500/api/create-account${query !== null ? `?data=${query}`: ""}`, user)
+export const userLogin = async (inputs) =>  {
+    return await api.post(`http://localhost:5500/api/login-user`, inputs)
 }
 export const userLogout = async (data) => await api.post('http://localhost:5500/api/logout-user', data)
 export const createNewProject = async (data) => await api.post('http://localhost:5500/api/create-project', data)

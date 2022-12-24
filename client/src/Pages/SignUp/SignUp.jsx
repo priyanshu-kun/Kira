@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react'
 import { FaGoogle, FaGithub } from "react-icons/fa";
 import character from "../../assets/character.svg"
 import "./SignUp.css"
-import { Link, useNavigate } from "react-router-dom"
+import { Link, useNavigate, useSearchParams } from "react-router-dom"
 import { useDispatch, useSelector } from 'react-redux';
 import { setAuth, setOTPData } from "../../store/auth.slice"
 import { sendOTP } from "../../http/index"
@@ -25,6 +25,7 @@ function SignUp() {
   const [inputs, setInputs] = useState(initialState)
   const [image, setImage] = useState(avatar)
   const [showHide, setShowHide] = useState(false)
+  const [queryParams] = useSearchParams();
 
 
 
@@ -65,6 +66,7 @@ function SignUp() {
   }
 
 
+
   const handleSubmit = async e => {
     e.preventDefault()
     const formContent = {
@@ -80,7 +82,8 @@ function SignUp() {
       const { data: { data } } = await sendOTP({ Email: formContent.email })
       dispatch(setAuth(formContent))
       dispatch(setOTPData(data));
-      navigate("/confirm-otp")
+      const queryData = queryParams.get("data");
+      navigate(`/confirm-otp${queryData != null ? "?data="+queryData: ""}`)
       toast.success("OTP has been sent.", {
         icon: "🎉"
       })
