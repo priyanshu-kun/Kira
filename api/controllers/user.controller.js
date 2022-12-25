@@ -3,12 +3,14 @@ import hashOtpService from "../services/hash.service.js";
 import otpService from "../services/otp.service.js";
 import UserService from "../services/user.service.js";
 import tokenService from "../services/token.service.js"
+import projectService from "../services/project.service.js";
 import url from "url"
 import UserDto from "../dto/user.dto.js";
+const {createNewProject,fetchUserProjects,fetchDetails,removeProjectFromDB} = projectService;
 const { sendMail } = emailService
 const { hashOTP, hashPassword, comparePassword } = hashOtpService
 const { verifyOtp, generateOTP } = otpService
-const { createUser, findUserByEmail, findUserByUsernameAndEmail,findUserById,findUserByUsername } = UserService
+const { createUser,findAllUsers, findUserByEmail, findUserByUsernameAndEmail,findUserById,findUserByUsername } = UserService
 const { generateTokens, removeRefreshToken, storeRefreshToken, verifyRefreshToken, findRefreshTokenInDB, updateRefreshToken } = tokenService
 import Jimp from "jimp"
 import path, { dirname } from "path"
@@ -89,7 +91,6 @@ class AuthController {
         const { Email, password, username, fullName, avatar } = req.body;
         const parsedUrl = url.parse(req.url, true);
         const queryParams = parsedUrl.query;
-        console.log("Query paramaters: ",queryParams.data)
         if (!Email || !password || !username || !fullName || !avatar) {
             return res.status(400).json({ reqStatus: false, data: 'All fields are required.' });
         }
@@ -124,8 +125,28 @@ class AuthController {
             user = await UserService.ActivateUser(Email, { username, fullName, password: hashedPassword, avatar: `${process.env.BASE_URL}/storage/${imagePath}`, activated: true });
 
         } catch (err) {
-            console.log(err)
             return res.status(500).json({ reqStatus: false, data: "Error while creating new user." });
+        }
+        if(queryParams.data) {
+            try {
+                const queryParamsRes = queryParams.data.split("*");
+                const projectId = queryParamsRes[1];
+                const mail = queryParamsRes[0]
+                const project = await fetchDetails(projectId)
+                if(project.users.length >= 50) {
+                    return res.writeHead(301, {
+                        Location: `${process.env.FRONT_URL}/`
+                    }).end();
+                }
+                const isUserAlreadyInProject = project.users.find(s => s === mail);
+                if(!isUserAlreadyInProject) {
+                    project.users.push(mail);
+                    project.save()
+                }
+            }
+            catch(e) {
+                return res.status(500).json({ reqStatus: false, data: "Error while creating new user." });
+            }
         }
         const userDto = new UserDto(user)
         return res.json({ reqStatus: true, data: userDto })
@@ -246,6 +267,16 @@ class AuthController {
         res.clearCookie('refreshToken')
         res.clearCookie('accessToken')
         return res.json({ reqStatus: true, data: { userDto: null, auth: false } });
+    }
+    async findUsers(req,res) {
+        try {
+           const users = await findAllUsers()
+           const userDto = users.map(u => new UserDto(u));
+           return res.json({ reqStatus: true, data: { userDto, auth: true } });
+        }
+        catch(e) {
+            return res.status(500).json({ reqStatus: false, data: "Internal error." });
+        }
     }
 }
 

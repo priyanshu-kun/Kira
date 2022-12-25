@@ -5,7 +5,7 @@ import tokenService from "../services/token.service.js"
 import projectModel from "../model/project.model.js";
 const {createNewProject,fetchUserProjects,fetchDetails,removeProjectFromDB} = projectService;
 const { sendMail } = emailService
-const {findUserByEmail} = UserService
+const {findUserByEmail,findUserById} = UserService
 const {generateTokensForInvitation,verifyAccessTokenForInvite} = tokenService
 
 class ProjectController {
@@ -23,7 +23,8 @@ class ProjectController {
 
     async fetchUserProjects(req,res) {
         try {
-            const projects = await fetchUserProjects(req.query.id)
+            const user = await findUserById(req.query.id)
+            const projects = await fetchUserProjects({id: user._id,mail: user.email})
             return res.json({
                 reqStatus: true, data: projects
             })
@@ -69,11 +70,22 @@ class ProjectController {
                     Location: `${process.env.FRONT_URL}/SignUp?data=${key+"*"+projectId}`
                 }).end();
             }
-            const project = await projectModel.findOne({_id: projectId});
+            const project = await fetchDetails(projectId);
+            if(project.users.length >= 50) {
+                return res.writeHead(301, {
+                    Location: `${process.env.FRONT_URL}/`
+                }).end();
+            }
+            const isUserAlreadyInProject = project.users.find(s => s === key);
+            if(isUserAlreadyInProject) {
+                return res.writeHead(301, {
+                    Location: `${process.env.FRONT_URL}/details/project/`+project._id
+                }).end();
+            }
             project.users.push(key);
             project.save()
             return res.writeHead(301, {
-                Location: `${process.env.FRONT_URL}/SignIn`
+                Location: `${process.env.FRONT_URL}/details/project/`+projectId
             }).end();
         }
         catch(e) {
@@ -92,6 +104,9 @@ class ProjectController {
             catch(e) {
                 return res.status(500).json({ reqStatus: false, data: "Cannot able to send invitation." });
             }
+            return res.json({
+                reqStatus: true, data: {}
+            })
         }
         catch(e) {
             return res.status(500).json({ reqStatus: false, data: "Internal server error." });

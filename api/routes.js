@@ -1,5 +1,6 @@
 import express from "express"
 import projectController from "./controllers/project.controller.js";
+// import userController from "./controllers/user.controller.js";
 const router = express.Router()
 import authController from "./controllers/user.controller.js"
 import authMiddleware from "./middleware/auth.middleware.js";
@@ -18,5 +19,6 @@ router.get('/api/fetch/user/project/details',authMiddleware, projectController.f
 router.delete('/api/user/remove-project',authMiddleware, projectController.removeProject)
 router.get('/api/invite/user/project/:id',projectController.saveUserInProject)
 router.post('/api/fetch/user/project/send-invite',authMiddleware,projectController.sendInvite)
+router.get('/api/fetch-all-users',authMiddleware,authController.findUsers)
 
 export default  router

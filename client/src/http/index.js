@@ -36,6 +36,7 @@ export const fetchProjectDetails = async (userId) => await api.get('http://local
     }
 })
 export const invitePerson = async (data) => await api.post('http://localhost:5500/api/fetch/user/project/send-invite',data)
+export const findAllUsers = async () => await api.get('http://localhost:5500/api/fetch-all-users')
 
 
 

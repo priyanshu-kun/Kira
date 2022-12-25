@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux'
 import { setProjectDetails } from '../../store/project.slice'
 import { toast } from 'react-toastify'
 
-function ProjectDetailsBody({details,handleSendInvite}) {
+function ProjectDetailsBody({ details,invitedUser, handleSendInvite }) {
   return (
     <div className='dashboard-right-body text-white mt-12'>
       <div className=' w-4/5 bg-black border-2px border-solid border-white/10 mx-auto mt-5 px-3 flex items-center justify-around h-28 rounded-3xl'>
@@ -27,11 +27,23 @@ function ProjectDetailsBody({details,handleSendInvite}) {
       </div>
       <div className='absolute  max-h-users-list  right-16   top-32  flex flex-col items-center justify-between overflow-hidden'>
         <div className='p-1 w-full  max-h-users-list bg-black rounded-3xl border-2px border-solid border-white/10 flex items-center justify-center overflow-scroll flex-col'>
+          {
+            invitedUser.length === 0? (
           <div className="avatar m-2">
             <div className=" w-16 mask mask-squircle">
               <img src="https://placeimg.com/192/192/people" />
             </div>
           </div>
+            ): (
+              invitedUser.map(u => (
+                <div className="avatar m-2">
+                  <div className=" w-16 mask mask-squircle">
+                    <img src={u.avatar} />
+                  </div>
+                </div>
+              ))
+            )
+          }
 
         </div>
         <label htmlFor="my-modal-4" className="btn mt-3">Invite</label>

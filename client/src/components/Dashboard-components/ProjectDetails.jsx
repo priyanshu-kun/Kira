@@ -3,7 +3,7 @@ import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
-import { fetchProjectDetails, invitePerson } from '../../http'
+import { fetchProjectDetails, findAllUsers, invitePerson } from '../../http'
 import ProjectModal from './Modals/ProjectModal'
 import ProjectDetailsBody from './ProjectDetailsBody'
 import Preloader from './Preloader';
@@ -18,6 +18,7 @@ function ProjectDetails() {
   const navigate = useNavigate()
   const [details, setDetails] = useState({})
   const [loader, setLoader] = useState(true)
+  const [invitedUser, setInvitedUser] = useState([])
 
 
   async function handleSendInvite(e, data) {
@@ -28,7 +29,9 @@ function ProjectDetails() {
     }
     try {
         const {data} = await invitePerson(inviteInfo)
-        console.log(data)
+        return toast.success("Email Sent, Please check the inbox", {
+            icon: "📨"
+        })
     } 
     catch(e) {
         return toast.error("Cannot able to send invitation.", {
@@ -42,7 +45,12 @@ function ProjectDetails() {
     (async () => {
       try {
         const { data: { data: Details } } = await fetchProjectDetails(id)
+        const {data: {data: {userDto}}} = await findAllUsers()
+        const Users = userDto.filter(u => {
+          return Details.users.find(e => e === u.email)
+        })
         setDetails(Details)
+        setInvitedUser(Users)
         setLoader(false)
       }
       catch (e) {
@@ -54,8 +62,6 @@ function ProjectDetails() {
     })()
   },[])
 
-
-  console.log(details)
 
 
   return (
@@ -77,7 +83,7 @@ function ProjectDetails() {
       </div>
       <div className='dashboard-right-body text-white mt-12 relative '>
         {
-          loader ? <Preloader />: <ProjectDetailsBody details={details}  handleSendInvite={handleSendInvite} />
+          loader ? <Preloader />: <ProjectDetailsBody details={details} invitedUser={invitedUser} handleSendInvite={handleSendInvite} />
         }
         <ProjectModal />
       </div>

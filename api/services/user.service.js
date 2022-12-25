@@ -19,6 +19,9 @@ class UserService {
     async findUserByUsername(username) {
         return await userModel.findOne({username})
     }
+    async findAllUsers() {
+        return await userModel.find();
+    }
 }
 
 export default new UserService()
