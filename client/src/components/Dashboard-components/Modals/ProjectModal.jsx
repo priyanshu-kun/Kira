@@ -3,6 +3,7 @@ import { toast } from 'react-toastify'
 import { createNewProject } from '../../../http'
 import {useDispatch, useSelector} from "react-redux"
 import { setProjectDetails } from '../../../store/project.slice'
+import {useNavigate} from "react-router-dom"
 
 
 const initialState = {
@@ -13,7 +14,9 @@ const initialState = {
 function ProjectModal() {
 
     const [projectState,setProjectState] = useState(initialState)
-    const {user: {username, id}} = useSelector(state => state.user)
+    const navigate = useNavigate()
+    const {user} = useSelector(state => state.user)
+    const {username, id} = user !== null ? user: {username: "", id: ""} 
     const dispatch = useDispatch()
 
     const handleProjectState = (e) => {
@@ -48,6 +51,7 @@ function ProjectModal() {
             if(reqStatus) {
                 dispatch(setProjectDetails(data));
             }
+            navigate("/details/project/"+data._id)
             return toast.success(`*${projectState.title}* - has been created.`, {
                 icon: "👏"
             })

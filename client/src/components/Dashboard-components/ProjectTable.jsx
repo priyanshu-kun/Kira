@@ -4,14 +4,14 @@ import PaginateComp from './PaginateComp'
 function ProjectTable({ projects, handleProject }) {
   return (
     <>
-      <table className="table h-auto w-4/5 mx-auto   ">
-        <thead>
+      <table className="mx-auto w-4/5 ">
+        <thead className='h-20 transform scale-105 text-left'>
           <tr>
-            <th className='bg-black cursor-pointer text-center rounded-tl-3xl'>No.</th>
-            <th className='bg-black cursor-pointer pl-6'>Title</th>
-            <th className='bg-black cursor-pointer'>Tags</th>
-            <th className='bg-black cursor-pointer'>Lead</th>
-            <th className='bg-black rounded-tr-3xl'></th>
+            <th className="table-head-bg pl-2 text-center rounded-tl-lg rounded-bl-lg">No.</th>
+            <th className="table-head-bg pl-10 py-2">Title</th>
+            <th className="table-head-bg pl-6 py-2">Tag</th>
+            <th className="table-head-bg pl-2 py-2">Lead</th>
+            <th className="table-head-bg pl-8 py-2 rounded-tr-lg rounded-br-lg"></th>
           </tr>
         </thead>
         <tbody>

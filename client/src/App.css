@@ -257,3 +257,15 @@ thead th {
     background-color: red;
     margin-right: 2px;
 }
+
+
+.table-head-bg {
+    background: #000;
+}
+
+
+.table-title {
+
+    font-family: './assets/fonts/HelveticaNowDisplay-Black.otf';
+}
+

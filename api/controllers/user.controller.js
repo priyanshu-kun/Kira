@@ -78,7 +78,6 @@ class AuthController {
                 await createUser({ email: Email, username: "null", fullName: "null", password: "null", avatar: "null", activated: false, isVarified: true });
             }
         } catch (err) {
-            console.log(err)
             return res.status(500).json({ reqStatus: false, data: "Error while creating new user." });
         }
         return res.json({ reqStatus: true, data: "Otp verified." })

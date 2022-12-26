@@ -4,14 +4,14 @@ import { userLogout } from '../../http'
 import { useDispatch } from 'react-redux'
 import { setUser } from "../../store/user.slice"
 import { toast } from 'react-toastify'
-import {useNavigate} from "react-router-dom"
-import {useSelector} from "react-redux"
+import { useNavigate } from "react-router-dom"
+import { useSelector } from "react-redux"
 
 function Navbar() {
 
     const dispatch = useDispatch()
-  const navigate = useNavigate()
-  const {user: {username}} = useSelector(state => state.user)
+    const navigate = useNavigate()
+    const { user } = useSelector(state => state.user)
 
     async function handleSignOut() {
         try {
@@ -43,7 +43,7 @@ function Navbar() {
             <div className='dashboard-logo text-lg text-white'>Kira</div>
             <div className='flex justify-between items-center'>
                 <div className='flex justify-between items-center mr-8'>
-                    <p className='navbar-username text-white opacity-80'><span className='text-button-main-light mr-1'>@</span>{username}</p>
+                    <p className='navbar-username text-white opacity-80'><span className='text-button-main-light mr-1'>@</span>{user !== null ? user.username: "Username"}</p>
                 </div>
                 <button onClick={handleSignOut} className='logout-button-pd bg-red-400 p-2 rounded-full'><FaSignOutAlt className='text-white text-base' /></button>
             </div>

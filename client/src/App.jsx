@@ -9,15 +9,14 @@ import './App.css'
 const SignUp = React.lazy(() => import('./Pages/SignUp/SignUp'))
 const Home = React.lazy(() => import('./Pages/Home/Home'))
 const ConfirmOTP = React.lazy(() => import('./Pages/Otp/Otp'))
+const ProjectDetails = React.lazy(() => import('./components/Dashboard-components/ProjectDetails'))
 const SignIn = React.lazy(() => import('./Pages/SignIn/SignIn'))
-import { ErrorBoundary } from 'react-error-boundary'
 import { ToastContainer } from 'react-toastify';
 import ProtectedRoutes from "./ProtectedRoutes.jsx"
 import 'react-toastify/dist/ReactToastify.css';
 import { useSelector } from "react-redux"
 import { useLoadingWithRefresh } from './hooks/useLoadingWithRefresh.js'
 import PrimaryLoader from './PrimaryLoader'
-import ProjectDetails from './components/Dashboard-components/ProjectDetails'
 
 
 function AuthenticationRoutes() {

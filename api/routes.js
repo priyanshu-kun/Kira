@@ -4,7 +4,7 @@ import projectController from "./controllers/project.controller.js";
 const router = express.Router()
 import authController from "./controllers/user.controller.js"
 import authMiddleware from "./middleware/auth.middleware.js";
-
+import bugsController from "./controllers/bugs.controller.js";
 
 router.post('/api/send-otp',authController.sendOTP);
 router.post('/api/verify-otp',authController.verifyOTP);
@@ -20,5 +20,6 @@ router.delete('/api/user/remove-project',authMiddleware, projectController.remov
 router.get('/api/invite/user/project/:id',projectController.saveUserInProject)
 router.post('/api/fetch/user/project/send-invite',authMiddleware,projectController.sendInvite)
 router.get('/api/fetch-all-users',authMiddleware,authController.findUsers)
+router.post('/api/create-bug',authMiddleware,bugsController.createNewBug)
 
 export default  router

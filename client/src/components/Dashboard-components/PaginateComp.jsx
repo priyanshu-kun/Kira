@@ -34,16 +34,18 @@ function Items({ currentItems, handleProject }) {
     return (
         currentItems.map(({ _id, title, tags, projectLead }, index) => {
             return (
-                <tr onClick={(e) => handleProject(_id)} key={_id} className="cursor-pointer hover:opacity-80 transition-all">
-                    <th className='bg-slate-600/20 project-index opacity-60 text-center text-sm'>{index}</th>
-                    <td className='bg-slate-600/20 project-title pl-6'>{title}</td>
-                    <td className='bg-slate-600/20'>{
-                        tags.map((b, idx) => <span key={idx} className="badge bg-button-main-light text-black mr-1">{b}</span>)
-                    }</td>
-                    <td className='bg-slate-600/20 text-blue-400 project-lead text-sm'>@{projectLead}</td>
+                <tr onClick={(e) => handleProject(_id)} key={_id} className="border-b-2px border-b-solid border-b-white/10 h-16  cursor-pointer hover:bg-white/5 transition-all">
+                    <td className="px-4 py-2 ">{index}</td>
+                    <td className="px-4 py-2 table-title">{title}</td>
+                    <td className="px-4 py-2 text-left">
+                        {
+                            tags.map((b, idx) => <span key={idx} className="badge bg-button-main-light text-black mr-1">{b}</span>)
+                        }
+                    </td>
+                    <td className="px-4 py-2">@{projectLead}</td>
                     <td onClick={(e) => {
                         e.stopPropagation()
-                    }} className='bg-slate-600/20 text-center relative'>
+                    }} className=' text-center relative'>
                         <span onClick={() => handleRemoveProject(_id, title)} className='drawer-btn w-12 h-12 flex items-center justify-center rounded-full hover:bg-red-400 transition-all cursor-pointer'><FiTrash className='text-xl' /></span>
                     </td>
                 </tr>

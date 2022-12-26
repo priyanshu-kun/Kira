@@ -5,6 +5,7 @@ import { fetchProjectDetails } from '../../http'
 import { useDispatch } from 'react-redux'
 import { setProjectDetails } from '../../store/project.slice'
 import { toast } from 'react-toastify'
+import IssueModal from './Modals/IssueModal'
 
 function ProjectDetailsBody({ details,invitedUser, handleSendInvite }) {
   return (
@@ -49,7 +50,7 @@ function ProjectDetailsBody({ details,invitedUser, handleSendInvite }) {
         <label htmlFor="my-modal-4" className="btn mt-3">Invite</label>
       </div>
       <InviteModal handleSendInvite={handleSendInvite} />
-      {/* <ProjectModal fetchingProjectFlag={fetchingProjectFlag} setFetchingProjectFlag={setFetchingProjectFlag} /> */}
+
     </div>
   )
 }
