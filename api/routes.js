@@ -21,5 +21,6 @@ router.get('/api/invite/user/project/:id',projectController.saveUserInProject)
 router.post('/api/fetch/user/project/send-invite',authMiddleware,projectController.sendInvite)
 router.get('/api/fetch-all-users',authMiddleware,authController.findUsers)
 router.post('/api/create-bug',authMiddleware,bugsController.createNewBug)
+router.get('/api/fetch-all-bugs/:id',authMiddleware,bugsController.fetchRelatedToAProject)
 
 export default  router

@@ -190,7 +190,7 @@ body {
 
 
 thead th {
-    font-family: './assets/fonts/HelveticaNowDisplay-ExtBlk.otf';
+    font-family: './assets/fonts/HelveticaNowDisplay-Medium.otf';
 }
 
 
@@ -269,3 +269,28 @@ thead th {
     font-family: './assets/fonts/HelveticaNowDisplay-Black.otf';
 }
 
+.input-fields {
+    background-color: rgb(12, 12, 12) !important;
+}
+
+.table-head {
+  background-color: #0a0a0a;
+  border: 2px solid rgb(255, 255, 255,0.1);
+  border-radius: 20px;
+  width: 80%;
+  margin: 40px auto 0 auto;
+  height: 80px;
+  display: flex;
+}
+
+
+
+.column-name {
+  color: rgb(255, 255, 255,0.8);
+  font-size: 16px;
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: './assets/fonts/HelveticaNowDisplay-Black.otf';
+}

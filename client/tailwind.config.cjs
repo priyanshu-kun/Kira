@@ -32,6 +32,9 @@ module.exports = {
     minWidth: {
     },
     extend: {
+      boxShadow: {
+        'table-side': 'inset 5px 0 0 0 #ffa500',
+      },
       colors: {
         'main-light': "#fff",
         'secondary-light': "#F5F2EA",

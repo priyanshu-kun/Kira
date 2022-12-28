@@ -11,6 +11,7 @@ import { FiArrowLeft } from 'react-icons/fi'
 import { useState } from 'react'
 import Navbar from './Navbar'
 import IssueModal from './Modals/IssueModal'
+import {setProjectDetails} from "../../store/project.slice"
 
 function ProjectDetails() {
 
@@ -20,6 +21,7 @@ function ProjectDetails() {
   const [details, setDetails] = useState({})
   const [loader, setLoader] = useState(true)
   const [invitedUser, setInvitedUser] = useState([])
+  const dispatch = useDispatch()
 
 
   async function handleSendInvite(e, data) {
@@ -51,6 +53,7 @@ function ProjectDetails() {
           return Details.users.find(e => e === u.email)
         })
         setDetails(Details)
+        dispatch(setProjectDetails(Details))
         setInvitedUser(Users)
         setLoader(false)
       }
@@ -61,7 +64,7 @@ function ProjectDetails() {
         })
       }
     })()
-  },[])
+  },[id])
 
 
 

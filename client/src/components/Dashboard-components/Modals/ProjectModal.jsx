@@ -16,7 +16,7 @@ function ProjectModal() {
     const [projectState,setProjectState] = useState(initialState)
     const navigate = useNavigate()
     const {user} = useSelector(state => state.user)
-    const {username, id} = user !== null ? user: {username: "", id: ""} 
+    const {username, id,email} = user !== null ? user: {username: "", id: ""} 
     const dispatch = useDispatch()
 
     const handleProjectState = (e) => {
@@ -44,7 +44,8 @@ function ProjectModal() {
             ...projectState,
             tags: topicArray,
             owner: id,
-            projectLead: username 
+            projectLead: username,
+            users: [email] 
         }
         try {
             const {data: {reqStatus,data}} = await createNewProject(dataForServer)

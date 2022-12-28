@@ -46,8 +46,13 @@ class ProjectController {
     }
     async removeProject(req,res) {
         try {
+            const {_id} = req.user;
             const id = req.body.projectId
             try {
+                const details = await fetchDetails(id);
+                if(details.owner.toString() !== _id.toString()) {
+                    return res.status(400).json({ reqStatus: false, data: 'Only owner can delete the project.' });
+                }
                 await removeProjectFromDB(id)
             }
             catch(e) {

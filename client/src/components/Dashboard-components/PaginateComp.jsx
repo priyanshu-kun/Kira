@@ -24,7 +24,7 @@ function Items({ currentItems, handleProject }) {
             })
         }
         catch (e) {
-            return toast.error("Cannot able to remove project.", {
+            return toast.error(e.response.data.data, {
                 icon: "😓"
             })
         }
@@ -35,9 +35,9 @@ function Items({ currentItems, handleProject }) {
         currentItems.map(({ _id, title, tags, projectLead }, index) => {
             return (
                 <tr onClick={(e) => handleProject(_id)} key={_id} className="border-b-2px border-b-solid border-b-white/10 h-16  cursor-pointer hover:bg-white/5 transition-all">
-                    <td className="px-4 py-2 ">{index}</td>
+                    <td className="px-4 py-2 text-center">{index}</td>
                     <td className="px-4 py-2 table-title">{title}</td>
-                    <td className="px-4 py-2 text-left">
+                    <td className="px-4 py-2 ">
                         {
                             tags.map((b, idx) => <span key={idx} className="badge bg-button-main-light text-black mr-1">{b}</span>)
                         }

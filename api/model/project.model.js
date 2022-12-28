@@ -4,7 +4,7 @@ const projectSchema = mongoose.Schema({
     title: {type: String, required: true},
     tags: [String],
     users: [String],
-    owner: {type: mongoose.Schema.Types.ObjectId, required: true},
+    owner: {type: mongoose.Schema.Types.ObjectId, required: true,ref: "User"},
     projectLead: {type: String, required: true}
 })
 

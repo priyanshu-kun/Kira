@@ -30,7 +30,7 @@ function SignUp() {
 
 
   const handleChange = e => {
-    if(e.keyCode === 13) return;
+    if (e.keyCode === 13) return;
     setInputs(prev => {
       return {
         ...prev,
@@ -83,7 +83,7 @@ function SignUp() {
       dispatch(setAuth(formContent))
       dispatch(setOTPData(data));
       const queryData = queryParams.get("data");
-      navigate(`/confirm-otp${queryData != null ? "?data="+queryData: ""}`)
+      navigate(`/confirm-otp${queryData != null ? "?data=" + queryData : ""}`)
       toast.success("OTP has been sent.", {
         icon: "🎉"
       })
@@ -107,7 +107,7 @@ function SignUp() {
             <div class="flex flex-col items-center justify-center  card bg-transparent rounded-box px-6">
               <div class="avatar mb-8">
                 <div class="avatar-cover w-28 overflow-hidden rounded-3xl">
-                  <img  className='object-cover' src={image} />
+                  <img className='object-cover' src={image} />
                 </div>
               </div>
               <div className='avatar-buttons mb-16'>
@@ -119,9 +119,9 @@ function SignUp() {
               </div>
               <div className='username-field text-lg opacity-60 relative flex'><span className='text-accent-color mr-1'>
                 @
-                </span>
+              </span>
                 <input className=' outline-none w-36 block' onChange={handleChange} value={inputs.username} type="text" placeholder='Username' />
-                </div>
+              </div>
             </div>
             <div class="divider divider-horizontal">AND</div>
             <div class="grid flex-grow card bg-transparent rounded-box place-items-center">

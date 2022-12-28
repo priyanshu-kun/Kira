@@ -17,6 +17,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useSelector } from "react-redux"
 import { useLoadingWithRefresh } from './hooks/useLoadingWithRefresh.js'
 import PrimaryLoader from './PrimaryLoader'
+import BugDetails from './components/Dashboard-components/BugDetails'
 
 
 function AuthenticationRoutes() {
@@ -50,6 +51,7 @@ function App() {
             <Route element={<ProtectedRoutes />}>
               <Route path='/' element={<Home />} />
               <Route path='/details/project/:id' element={<ProjectDetails />} />
+              <Route path='/bug/:id' element={<BugDetails />} />
             </Route>
             <Route element={<AuthenticationRoutes />}>
               <Route path='/SignUp' element={<SignUp />} />
