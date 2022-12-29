@@ -1,18 +1,23 @@
 import React, { useEffect, useState } from 'react'
 import InviteModal from './Modals/InviteModal'
 import { FiCopy, FiDisc } from 'react-icons/fi'
-import { FaComments, FaEllipsisH } from 'react-icons/fa'
-import { fetchAllBugsRelatedToProject, fetchProjectDetails } from '../../http'
+import { FaCheckCircle, FaComments, FaEllipsisH, FaLink, FaShare, FaTimesCircle, FaTrash } from 'react-icons/fa'
+import { fetchAllBugsRelatedToProject, fetchProjectDetails, removeBugFromProject } from '../../http'
 import { useDispatch, useSelector } from 'react-redux'
 import { setProjectDetails } from '../../store/project.slice'
 import { toast } from 'react-toastify'
 import moment from "moment"
+import { useNavigate } from "react-router-dom"
+import copy from "copy-to-clipboard"
 
 function ProjectDetailsBody({ details, invitedUser, handleSendInvite }) {
 
 
   const [projectBugs, setProjectBugs] = useState([])
   const [loader, setLoader] = useState(true)
+  const [drawerValue, setDrawerValue] = useState(null)
+  const [drawer, setDrawer] = useState(true)
+  const navigate = useNavigate()
 
   useEffect(() => {
     (async () => {
@@ -32,9 +37,40 @@ function ProjectDetailsBody({ details, invitedUser, handleSendInvite }) {
     })()
   }, [details])
 
+
+  async function handleCopyLine(e,id) {
+      const link = `http://localhost:5173/bug/${details?._id}/${id}`;
+      copy(link)
+      return toast.success("Link is copied to clipboard", {
+        icon: "💥"
+      })
+  }
+
+  async function handleRemoveBug(e,id) {
+    try {
+      await removeBugFromProject(id)
+        const { data: { data: bugs } } = await fetchAllBugsRelatedToProject(details._id)
+        setProjectBugs(prev => {
+          return [...bugs]
+        })
+      return toast.success("The bug has been removed from the project.", {
+        icon: "💥"
+      })
+    } 
+    catch(e) {
+        return toast.error("Cannot able to remove bug.", {
+          icon: "😓"
+        })
+    }
+  }
+
+  function handleBugRoute(e, id) {
+    navigate("/bug/"+details?._id+"/" + id)
+  }
+
   return (
     <div className='dashboard-right-body text-white mt-12'>
-      <div className=' w-4/5 bg-black border-2px border-solid border-white/10 mx-auto mt-5 px-3 flex items-center justify-around h-28 rounded-3xl'>
+      <div className=' w-4/5 bg-[#0a0a0a] border-2px border-solid border-white/10 mx-auto mt-5 px-3 flex items-center justify-around h-28 rounded-3xl'>
         <h1 ><span className='font-exBold'>PROJECT ID:</span> {details?._id}
         </h1>
         <h1 className='flex items-center'> <span className='font-exBold'>LEAD: </span> @{details?.projectLead}
@@ -71,18 +107,33 @@ function ProjectDetailsBody({ details, invitedUser, handleSendInvite }) {
               <tbody>
                 {
                   projectBugs.map(bug => {
-                    console.log(bug)
                     return (
-                      <tr className="border-b-2px bg-white/5 border-b-solid border-b-white/10 h-16  cursor-pointer hover:bg-white/10 transition-all">
-                        <td className="px-4 py-2  shadow-table-side">{bug.Name}</td>
-                        <td className="px-4 py-2 table-title text-[rgb(255,203,107,0.8)]">@{bug.ReporterName}</td>
-                        <td className="px-4 py-2 ">{bug.Type}</td>
+                      <tr key={bug._id} onClick={(e) => handleBugRoute(e, bug._id)} className="border-b-2px bg-white/5 border-b-solid border-b-white/10 h-16  cursor-pointer hover:bg-white/10 transition-all">
+                        <td className="px-4 py-2 table-title shadow-table-side">{bug.Name}</td>
+                        <td className="px-4 py-2 text-sm font-black text-blue-400">@{bug.ReporterName}</td>
+                        <td className="px-4 py-2">{bug.Type}</td>
                         <td className="px-4 py-2">{bug.Priority}</td>
                         <td className='px-4 py-2'>{bug.Severity}</td>
                         <td className='px-4 py-2'>{moment(bug.createdAt).format("MMM D, YYYY")}</td>
                         <td className='px-4 py-2'>12</td>
-                        <td className='px-4 py-2'>{bug.isResolve ? "Open": "Closed"}</td>
-                        <td className='px-4 py-2'><FaEllipsisH /></td>
+                        <td className='px-4 py-2'>{!bug.isResolve ? <span className='flex items-center'>Open<FaCheckCircle className='ml-2 text-green-400' /></span> : <span className='flex items-center' >Closed<FaTimesCircle className='ml-2 text-red-400' /></span>}</td>
+                        <td className='py-4 px-2 relative'>
+                          <span onClick={(e) => {
+                            e.stopPropagation()
+                            if (drawer) {
+                              setDrawerValue(bug._id)
+                              setDrawer(false)
+                            }
+                            else {
+                              setDrawerValue(null)
+                              setDrawer(true)
+                            }
+                          }} className='relative w-8 h-8 rounded-full flex items-center justify-center bg-white/10 hover:bg-white/30 '><FaEllipsisH />
+                            <div className={`absolute flex px-6 py-4 top-8 rounded-xl z-50 left-0 bg-[#0a0a0a] border-[3px] border-solid border-white/10  ${drawerValue === bug._id ? "block" : "hidden"}`}><span onClick={(e) => {
+                                handleCopyLine(e,bug._id)
+                            }}><FaLink className='mr-8 hover:text-green-400' /></span><span onClick={(e) => handleRemoveBug(e,bug._id)}><FaTrash className='hover:text-red-400' /></span></div>
+                          </span>
+                        </td>
                       </tr>
                     )
                   })

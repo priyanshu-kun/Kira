@@ -4,13 +4,14 @@ import { useSelector } from 'react-redux'
 import { createNewBug } from '../../../http'
 import { toast } from 'react-toastify'
 import { useNavigate } from 'react-router-dom'
+import { isFulfilled } from '@reduxjs/toolkit'
 
 const initialState = {
     Name: "",
-    Type: "",
+    Type: "Bug",
     Description: "",
-    Priority: "",
-    Severity: "",
+    Priority: "Low",
+    Severity: "Minor",
     ReporterName: "",
     ProjectName: "",
     AssignedTo: ""
@@ -31,11 +32,19 @@ function IssueModal() {
     const [image, setImage] = useState("")
     const projectDetails = useSelector(state => state.projects)
     const { user: { id, username } } = useSelector(state => state.user)
-    const  navigate = useNavigate();
+    const navigate = useNavigate();
+    const [users,setUsers] = useState([])
 
+
+    function handleSuggetions(value) {
+/// first fetch all users then handle suggetions        
+    }
 
 
     function handleIssueChange(e) {
+        if(e.target.name === "AssignedTo") {
+            handleSuggetions(e.target.value)
+        }
         setIssueForm(prev => {
             return {
                 ...prev,
@@ -64,19 +73,24 @@ function IssueModal() {
             ProjectId: projectDetails.details._id,
             Reporter: id
         }
+        if (issueForm.Name.length > 50) {
+            return toast.error("Bug Name must be less than 50 characters long.", {
+                icon: "😓"
+            })
+        }
         if (payloadToServer.Name === "" || payloadToServer.Priority === "" || payloadToServer.ProjectName === ""
-            || payloadToServer.ReporterName === "" || payloadToServer.Severity === "" || payloadToServer.Type === "" || payloadToServer.Description === "" || payloadToServer.ProjectId === "" || payloadToServer.Reporter === ""
+            || payloadToServer.ReporterName === "" || payloadToServer.Severity === "" || payloadToServer.Type === "" || payloadToServer.ProjectId === "" || payloadToServer.Reporter === ""
         ) {
             return toast.error("All fields are required.", {
                 icon: "😓"
             })
         }
         try {
-            const {data: {data: {_id}}} = await createNewBug(payloadToServer)
+            const { data: { data: { _id } } } = await createNewBug(payloadToServer)
             setIssueForm(initialState)
             setImage("")
             setProfile(initialProfileState)
-            navigate("/bug/"+_id)
+            navigate("/bug/" + projectDetails.details._id + "/" + _id)
         }
         catch (e) {
             return toast.error("Cannot able to create new issue.", {
@@ -103,7 +117,7 @@ function IssueModal() {
                 <div className="modal-box bg-black py-12 border-2px border-solid border-white/10 h-issue-form-height w-issue-form-width">
                     <div>
                         <h3 className="font-bold text-xl text-white">Create Issue</h3>
-                        <p className="py-1 font-bold  text-red-300">You can change these details anytime you want.</p>
+                        <p className="py-1 font-bold  text-red-300">You cannot change those details after they have been set. Except the fields that are don't required</p>
                     </div>
                     <form className='w-full  mt-6'>
                         <label htmlFor="projectName" >
@@ -129,8 +143,8 @@ function IssueModal() {
                             </select>
                         </label>
                         <label htmlFor="Description" className='mt-4 block'>
-                            <span className='ml-2'><span className='opacity-60'>Issue Description</span> <span className='text-red-400'>*</span></span>
-                            <textarea name='Description' value={issueForm.Description} onChange={handleIssueChange} className="textarea textarea-bordered mt-2 bg-black w-full h-28 border-2px border-solid border-white/10  text-base" placeholder=" Description"></textarea>
+                            <span className='ml-2'><span className='opacity-60'>Issue Description</span></span>
+                            <textarea name='Description' value={issueForm.Description} onChange={handleIssueChange} className="textarea textarea-bordered mt-2 bg-black w-full h-28 border-2px border-solid border-white/10  text-base" placeholder="Add description"></textarea>
                         </label>
                         <label htmlFor="priority" className='mt-4 block'>
                             <span className='ml-2'><span className='opacity-60'>Issue Priority</span> <span className='text-red-400'>*</span></span>
@@ -144,7 +158,7 @@ function IssueModal() {
                         </label>
                         <label htmlFor="Attachment" className='mt-4 block'>
                             <span className='opacity-60 ml-2'>Attachment</span>
-                            <div className='bg-white/5 border-2px border-solid border-white/10 rounded-xl mt-2'>
+                            <label htmlFor='file-upload' className='bg-white/5 focus-within:outline-none focus-within:ring-2 focus-within:ring-green-400 focus-within:ring-offset-2 cursor-pointer block border-2px border-solid border-white/10 rounded-xl mt-2'>
                                 <div className="mt-1 flex justify-center relative rounded-md border-2 border-dashed border-gray-300 px-6 pt-5 pb-6">
                                     {
                                         image !== "" ? (
@@ -159,18 +173,18 @@ function IssueModal() {
                                                     <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                                                 </svg>
                                                 <div className="flex text-sm text-gray-600">
-                                                    <label htmlFor="file-upload" className="relative cursor-pointer rounded-md bg-transparent font-medium text-green-300 focus-within:outline-none focus-within:ring-2 focus-within:ring-green-300 font-black underline focus-within:ring-offset-2 hover:text-green-300">
+                                                    <label className="relative cursor-pointer rounded-md bg-transparent font-medium text-green-300  font-black underline  hover:text-green-300">
                                                         <span>Upload a file</span>
                                                         <input id="file-upload" onChange={captureImage} name="file-upload" type="file" className="sr-only" />
                                                     </label>
                                                     <p className="pl-1">or drag and drop</p>
                                                 </div>
-                                                <p className="text-xs text-gray-500">PNG, JPG, GIF up to 10MB</p>
+                                                <p className="text-xs text-gray-500">PNG, JPG, JPEG up to 10MB</p>
                                             </div>
                                         )
                                     }
                                 </div>
-                            </div>
+                            </label>
                         </label>
                         <label htmlFor="severity" className='mt-4 block'>
                             <span className='ml-2'><span className='opacity-60'>Issue Severity</span> <span className='text-red-400'>*</span></span>

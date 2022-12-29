@@ -45,7 +45,9 @@ function Navbar() {
                 <div className='flex justify-between items-center mr-8'>
                     <p className='navbar-username text-white opacity-80'><span className='text-button-main-light mr-1'>@</span>{user !== null ? user.username: "Username"}</p>
                 </div>
-                <button onClick={handleSignOut} className='logout-button-pd bg-red-400 p-2 rounded-full'><FaSignOutAlt className='text-white text-base' /></button>
+                {
+                    user && <button onClick={handleSignOut} className='logout-button-pd bg-red-400 p-2 rounded-full'><FaSignOutAlt className='text-white text-base' /></button>
+                }
             </div>
         </div>
     )

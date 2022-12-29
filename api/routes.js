@@ -22,5 +22,7 @@ router.post('/api/fetch/user/project/send-invite',authMiddleware,projectControll
 router.get('/api/fetch-all-users',authMiddleware,authController.findUsers)
 router.post('/api/create-bug',authMiddleware,bugsController.createNewBug)
 router.get('/api/fetch-all-bugs/:id',authMiddleware,bugsController.fetchRelatedToAProject)
+router.get('/api/fetch-details/:id',bugsController.fetchBugDetails)
+router.delete('/api/remove-bug/:id',authMiddleware,bugsController.removeBugFromProject)
 
 export default  router

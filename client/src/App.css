@@ -294,3 +294,12 @@ thead th {
   justify-content: center;
   font-family: './assets/fonts/HelveticaNowDisplay-Black.otf';
 }
+
+
+.bug-details {
+    font-family: './assets/fonts/HelveticaNowDisplay-Medium.otf';
+}
+
+.bug-details-left h1,.profile,.profile-span, .Details-box h1,.details span {
+    font-family: './assets/fonts/HelveticaNowDisplay-ExtBlk.otf';
+}

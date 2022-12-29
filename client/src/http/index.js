@@ -39,6 +39,8 @@ export const invitePerson = async (data) => await api.post('http://localhost:550
 export const findAllUsers = async () => await api.get('http://localhost:5500/api/fetch-all-users')
 export const createNewBug = async (data) => await api.post('http://localhost:5500/api/create-bug',data)
 export const fetchAllBugsRelatedToProject = async (id) => await api.get('http://localhost:5500/api/fetch-all-bugs/'+id)
+export const fetchBugsFromProject = async (id) => await api.get('http://localhost:5500/api/fetch-details/'+id)
+export const removeBugFromProject = async (id) => await api.delete('http://localhost:5500/api/remove-bug/'+id)
 
 
 

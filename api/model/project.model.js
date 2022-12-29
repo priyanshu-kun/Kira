@@ -1,4 +1,5 @@
 import mongoose, {Schema,model, mongo} from "mongoose";
+import bugsModel from "./bugs.model.js";
 
 const projectSchema = mongoose.Schema({
     title: {type: String, required: true},

@@ -158,6 +158,7 @@ class AuthController {
         if (!emailAndUsername || !password) {
             return res.status(400).json({ reqStatus: false, data: 'All fields are required.' });
         }
+        console.log(req.url)
         try {
 
             const user = await findUserByUsernameAndEmail(emailAndUsername);

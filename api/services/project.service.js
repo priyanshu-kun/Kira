@@ -1,3 +1,4 @@
+import bugsModel from "../model/bugs.model.js";
 import projectModel from "../model/project.model.js"
 
 class ProjectService {
@@ -16,6 +17,7 @@ class ProjectService {
         return await projectModel.findOne({ _id: id })
     }
     async removeProjectFromDB(id) {
+        await bugsModel.deleteMany({ ProjectId: id });
         return await projectModel.deleteOne({ _id: id })
     }
 }

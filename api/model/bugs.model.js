@@ -13,7 +13,6 @@ const bugSchema = new mongoose.Schema({
   },
   Description: {
     type: String,
-    required: true
     // done
   },
   ProjectId: {
@@ -27,7 +26,7 @@ const bugSchema = new mongoose.Schema({
     enum: ['Low', 'Medium', 'High','Urgent','Immediate'],
     // done
   },
-  Attachment: Buffer,
+  Attachment: String,
   Severity: {
     type: String,
     required: true,
@@ -44,7 +43,7 @@ const bugSchema = new mongoose.Schema({
   },
   isResolve: {
     type: Boolean,
-    default: true
+    default: false
   },
   isAssigned: {
     type: Boolean,

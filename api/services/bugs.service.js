@@ -8,6 +8,12 @@ class BugsService {
     async fetchProjectBugs(id) {
         return await bugsModel.find({ProjectId: id}).populate("ProjectId").exec()
     }
+    async fetchBugsDetails(id) {
+        return await bugsModel.findOne({_id: id})
+    }
+    async removeBug(id) {
+        return await bugsModel.deleteOne({_id: id});
+    }
 }
 
 export default new BugsService()

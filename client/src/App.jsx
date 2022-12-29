@@ -51,7 +51,7 @@ function App() {
             <Route element={<ProtectedRoutes />}>
               <Route path='/' element={<Home />} />
               <Route path='/details/project/:id' element={<ProjectDetails />} />
-              <Route path='/bug/:id' element={<BugDetails />} />
+              <Route path='/bug/:projectId/:id' element={<BugDetails />} />
             </Route>
             <Route element={<AuthenticationRoutes />}>
               <Route path='/SignUp' element={<SignUp />} />
