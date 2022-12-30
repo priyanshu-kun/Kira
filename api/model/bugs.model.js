@@ -26,7 +26,11 @@ const bugSchema = new mongoose.Schema({
     enum: ['Low', 'Medium', 'High','Urgent','Immediate'],
     // done
   },
-  Attachment: String,
+  Attachment: {
+    img: String,
+    width: Number,
+    height: Number,
+  },
   Severity: {
     type: String,
     required: true,

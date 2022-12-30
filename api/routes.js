@@ -24,5 +24,7 @@ router.post('/api/create-bug',authMiddleware,bugsController.createNewBug)
 router.get('/api/fetch-all-bugs/:id',authMiddleware,bugsController.fetchRelatedToAProject)
 router.get('/api/fetch-details/:id',bugsController.fetchBugDetails)
 router.delete('/api/remove-bug/:id',authMiddleware,bugsController.removeBugFromProject)
+router.patch('/api/update-bug/:id',authMiddleware,bugsController.updateBug)
+router.get('/api/resolve-bug/:id',authMiddleware,bugsController.resolveBug)
 
 export default  router

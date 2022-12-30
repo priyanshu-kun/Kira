@@ -41,6 +41,8 @@ export const createNewBug = async (data) => await api.post('http://localhost:550
 export const fetchAllBugsRelatedToProject = async (id) => await api.get('http://localhost:5500/api/fetch-all-bugs/'+id)
 export const fetchBugsFromProject = async (id) => await api.get('http://localhost:5500/api/fetch-details/'+id)
 export const removeBugFromProject = async (id) => await api.delete('http://localhost:5500/api/remove-bug/'+id)
+export const updateBug = async (id,data) => await api.patch('http://localhost:5500/api/update-bug/'+id,data)
+export const resolveBug = async (id) => await api.get('http://localhost:5500/api/resolve-bug/'+id)
 
 
 

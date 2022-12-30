@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import ReactPaginate from "react-paginate"
-import { FiMoreHorizontal, FiTrash } from 'react-icons/fi'
+import { FiArrowLeft, FiArrowRight, FiArrowUpLeft, FiMoreHorizontal, FiTrash } from 'react-icons/fi'
 import { fetchUserProjects, removeProject } from '../../http'
 import { toast } from 'react-toastify'
 import { setProjects } from '../../store/project.slice'
@@ -69,13 +69,13 @@ function PaginateComp({ items, itemsPerPage, handleProject }) {
             <Items currentItems={currentItems} handleProject={handleProject} />
             <ReactPaginate
                 breakLabel="..."
-                nextLabel='Next'
+                nextLabel={<FiArrowRight className='text-xl' />}
                 onPageChange={handlePageClick}
                 pageRangeDisplayed={5}
                 pageCount={pageCount}
-                previousLabel='Prev'
+                previousLabel={<FiArrowLeft className='text-xl' />}
                 renderOnZeroPageCount={null}
-                className=" text-white/60 mt-6 flex justify-between items-center px-6 py-3 border-2px border-solid border-white/10 bg-black rounded-full absolute max-w-pagenation-comp left-1/2 transform -translate-x-1/2"
+                className=" text-white/60 mt-6 flex justify-between items-center px-6 py-3 absolute max-w-pagenation-comp left-1/2 transform -translate-x-1/2"
                 activeLinkClassName="text-button-main-light border border-solid py-2 px-3 bg-button-main-light/10 border-button-main-light/30 rounded-md text-white"
                 previousClassName='paginate-buttons hover:text-white mr-4'
                 nextClassName=' paginate-buttons hover:text-white ml-4'

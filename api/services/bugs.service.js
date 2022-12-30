@@ -14,6 +14,9 @@ class BugsService {
     async removeBug(id) {
         return await bugsModel.deleteOne({_id: id});
     }
+    async UpdateBug(id,payload) {
+        return await bugsModel.updateOne({_id: id},payload)
+    }
 }
 
 export default new BugsService()

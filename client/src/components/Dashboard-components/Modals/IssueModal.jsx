@@ -29,7 +29,7 @@ function IssueModal() {
 
     const [issueForm, setIssueForm] = useState(initialState)
     const [profile, setProfile] = useState(initialProfileState)
-    const [image, setImage] = useState("")
+    const [image, setImage] = useState({img: "",width: 0,height: 0})
     const projectDetails = useSelector(state => state.projects)
     const { user: { id, username } } = useSelector(state => state.user)
     const navigate = useNavigate();
@@ -105,7 +105,15 @@ function IssueModal() {
         const reader = new FileReader();
         reader.readAsDataURL(file)
         reader.onloadend = function () {
-            setImage(reader.result)
+            const image = new Image();
+            image.src = reader.result;
+            image.onload = function () {
+              setImage({
+                img: reader.result,
+                width: image.naturalWidth,
+                height: image.naturalHeight,
+              });
+            };
         }
     }
 
@@ -161,9 +169,9 @@ function IssueModal() {
                             <label htmlFor='file-upload' className='bg-white/5 focus-within:outline-none focus-within:ring-2 focus-within:ring-green-400 focus-within:ring-offset-2 cursor-pointer block border-2px border-solid border-white/10 rounded-xl mt-2'>
                                 <div className="mt-1 flex justify-center relative rounded-md border-2 border-dashed border-gray-300 px-6 pt-5 pb-6">
                                     {
-                                        image !== "" ? (
+                                        image.img !== "" ? (
                                             <>
-                                                <img src={image} alt="upload image" className='rounded-lg' />
+                                                <img src={image.img} alt="upload image" className='rounded-lg' />
                                                 <span onClick={(e) => setImage("")} className='absolute  top-2 right-2 rounded-full cursor-pointer bg-black'><FiXCircle className='text-3xl text-white' /></span>
                                             </>
                                         ) : (
