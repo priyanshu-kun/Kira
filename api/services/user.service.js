@@ -1,3 +1,5 @@
+import bugsModel from "../model/bugs.model.js";
+import projectModel from "../model/project.model.js";
 import userModel from "../model/user.model.js"
 
 class UserService {
@@ -21,6 +23,12 @@ class UserService {
     }
     async findAllUsers() {
         return await userModel.find();
+    }
+    async update(id,payload) {
+        return await userModel.updateOne({_id: id},payload)
+    }
+    async deleteAccountFromDB(id) {
+        return await userModel.deleteOne({_id: id})
     }
 }
 

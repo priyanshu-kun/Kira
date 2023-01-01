@@ -37,6 +37,9 @@ class TokenService {
     async verifyAccessTokenForInvite(token) {
         return jwt.verify(token, process.env.JWT_ACCESS_TOKEN_SECRET_FOR_INVITE);
     }
+    async deleteAllRefreshTokens(id) {
+        await refreshModel.deleteMany({userId: id})
+    } 
 }
 
 export default new TokenService()

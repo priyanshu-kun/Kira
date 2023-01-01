@@ -7,7 +7,7 @@ function Sidebar({handleTabs,tabs}) {
     const { user: { fullName, avatar } } = useSelector(state => state.user)
 
     return (
-        <div className='dashboard-left h-screen flex flex-col items-center justify-center relative z-40 bg-black'>
+        <div className='dashboard-left h-screen fixed flex flex-col items-center justify-center z-40 bg-black'>
             <div className='flex items-center justify-center flex-col'>
                 <div className='w-28 h-28 rounded-3xl border-5px overflow-hidden border-solid border-button-main-light'>
                     <img className='w-full h-full object-cover' src={avatar} alt="user avatar" />

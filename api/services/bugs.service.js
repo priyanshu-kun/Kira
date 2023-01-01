@@ -17,6 +17,9 @@ class BugsService {
     async UpdateBug(id,payload) {
         return await bugsModel.updateOne({_id: id},payload)
     }
+    async deleteAllBugsRelatedToUser(id) {
+        return await bugsModel.deleteMany({Reporter: id})
+    }
 }
 
 export default new BugsService()

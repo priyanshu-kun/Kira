@@ -20,6 +20,12 @@ class ProjectService {
         await bugsModel.deleteMany({ ProjectId: id });
         return await projectModel.deleteOne({ _id: id })
     }
+    async deleteAllProjectsRelatedToUser(id) {
+        return await projectModel.deleteMany({owner: id})
+    }
+    async updateAllProjectWhereUserInvited(key) {
+        return await projectModel.updateMany({'users': {$in: [key]}},{$pull: {"users": key}})
+    }
 }
 
 export default new ProjectService()

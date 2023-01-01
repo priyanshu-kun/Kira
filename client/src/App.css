@@ -303,3 +303,8 @@ thead th {
 .bug-details-left h1,.profile,.profile-span, .Details-box h1,.details span {
     font-family: './assets/fonts/HelveticaNowDisplay-ExtBlk.otf';
 }
+
+
+.profile-section input,textarea {
+    background-color: #0C0C0C !important;
+}

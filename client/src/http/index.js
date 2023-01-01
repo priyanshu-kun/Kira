@@ -18,8 +18,11 @@ export const createAccount = async ({user,query}) => await api.post(`http://loca
 export const userLogin = async (inputs) =>  {
     return await api.post(`http://localhost:5500/api/login-user`, inputs)
 }
+export const updateUser = async (id,data) => await api.patch('http://localhost:5500/api/update-user/'+id,data)
+export const deleteAccount = async (id) => await api.delete('http://localhost:5500/api/delete-account/'+id)
 export const userLogout = async (data) => await api.post('http://localhost:5500/api/logout-user', data)
 export const createNewProject = async (data) => await api.post('http://localhost:5500/api/create-project', data)
+export const showPass = async (id,data) => await api.post("http://localhost:5500/api/show-password/"+id,data)
 export const removeProject = async (projectId) => await api.delete('http://localhost:5500/api/user/remove-project', {
     data: {
         projectId

@@ -12,6 +12,9 @@ router.post('/api/create-account',authController.createAccount);
 router.post('/api/login-user',authController.loginUser);
 router.get('/api/user',authMiddleware ,authController.getUser);
 router.get('/api/refresh',authController.refresh);
+router.patch('/api/update-user/:id',authMiddleware,authController.updateUser);
+router.post('/api/show-password/:id',authMiddleware,authController.showPassword)
+router.delete('/api/delete-account/:id',authMiddleware,authController.deleteAccount);
 router.post('/api/logout-user',authMiddleware,authController.logOutUser);
 router.post('/api/create-project',authMiddleware, projectController.createProject)
 router.get('/api/fetch/user/projects',authMiddleware, projectController.fetchUserProjects)

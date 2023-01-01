@@ -162,7 +162,7 @@ function BugDetails() {
                             !bugDetails.isResolve ? (
                               <button onClick={handleResolve} className='btn bg-green-400 hover:bg-green-500 text-white w-24 normal-case mr-6'>Open</button>
                             ) : (
-                              <button className='btn bg-red-400 hover:bg-red-500 text-white w-28 normal-case mr-6'>Closed<FaTimes className='text-white ml-1 text-lg' /></button>
+                              <p className='bg-red-400 rounded-xl flex items-center justify-center h-14  text-white w-28 normal-case mr-6'>Closed<FaTimes className='text-white ml-1 text-lg' /></p>
                             )
                           }
                         </>

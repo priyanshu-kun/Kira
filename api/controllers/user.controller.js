@@ -4,14 +4,17 @@ import otpService from "../services/otp.service.js";
 import UserService from "../services/user.service.js";
 import tokenService from "../services/token.service.js"
 import projectService from "../services/project.service.js";
+import getImageURL from "../services/image.service.js"
+import bugsService from "../services/bugs.service.js";
 import url from "url"
 import UserDto from "../dto/user.dto.js";
-const {createNewProject,fetchUserProjects,fetchDetails,removeProjectFromDB} = projectService;
+const { createNewProject, fetchUserProjects, fetchDetails, removeProjectFromDB, deleteAllProjectsRelatedToUser,updateAllProjectWhereUserInvited } = projectService;
+const {deleteAllBugsRelatedToUser} = bugsService
 const { sendMail } = emailService
 const { hashOTP, hashPassword, comparePassword } = hashOtpService
 const { verifyOtp, generateOTP } = otpService
-const { createUser,findAllUsers, findUserByEmail, findUserByUsernameAndEmail,findUserById,findUserByUsername } = UserService
-const { generateTokens, removeRefreshToken, storeRefreshToken, verifyRefreshToken, findRefreshTokenInDB, updateRefreshToken } = tokenService
+const { createUser, findAllUsers, findUserByEmail, findUserByUsernameAndEmail, findUserById, findUserByUsername,update,deleteAccountFromDB } = UserService
+const { generateTokens, removeRefreshToken, storeRefreshToken, verifyRefreshToken,deleteAllRefreshTokens, findRefreshTokenInDB, updateRefreshToken } = tokenService
 import Jimp from "jimp"
 import path, { dirname } from "path"
 import { fileURLToPath } from 'url';
@@ -95,11 +98,11 @@ class AuthController {
         }
         try {
             const userByUsername = await findUserByUsername(username)
-            if(userByUsername) {
+            if (userByUsername) {
                 return res.status(400).json({ reqStatus: false, data: 'Username already exists.' });
             }
         }
-        catch(e) {
+        catch (e) {
             return res.status(500).json({ reqStatus: false, data: 'Internal server error.' });
         }
         let imagePath;
@@ -126,24 +129,24 @@ class AuthController {
         } catch (err) {
             return res.status(500).json({ reqStatus: false, data: "Error while creating new user." });
         }
-        if(queryParams.data) {
+        if (queryParams.data) {
             try {
                 const queryParamsRes = queryParams.data.split("*");
                 const projectId = queryParamsRes[1];
                 const mail = queryParamsRes[0]
                 const project = await fetchDetails(projectId)
-                if(project.users.length >= 50) {
+                if (project.users.length >= 50) {
                     return res.writeHead(301, {
                         Location: `${process.env.FRONT_URL}/`
                     }).end();
                 }
                 const isUserAlreadyInProject = project.users.find(s => s === mail);
-                if(!isUserAlreadyInProject) {
+                if (!isUserAlreadyInProject) {
                     project.users.push(mail);
                     project.save()
                 }
             }
-            catch(e) {
+            catch (e) {
                 return res.status(500).json({ reqStatus: false, data: "Error while creating new user." });
             }
         }
@@ -186,7 +189,7 @@ class AuthController {
                 return res.status(500).json({ reqStatus: false, data: "Internal server error." });
             }
 
-            
+
 
             res.cookie('refreshToken', refreshToken, cookieOptions);
             res.cookie('accessToken', accessToken, cookieOptions);
@@ -261,18 +264,89 @@ class AuthController {
         const userDto = new UserDto(user);
         return res.json({ reqStatus: true, data: { userDto, auth: true } });
     }
-    async logOutUser(req,res) {
-        const {refreshToken} = req.cookies;
+    async logOutUser(req, res) {
+        const { refreshToken } = req.cookies;
         await removeRefreshToken(refreshToken)
         res.clearCookie('refreshToken')
         res.clearCookie('accessToken')
         return res.json({ reqStatus: true, data: { userDto: null, auth: false } });
     }
-    async findUsers(req,res) {
+    async findUsers(req, res) {
         try {
-           const users = await findAllUsers()
-           const userDto = users.map(u => new UserDto(u));
-           return res.json({ reqStatus: true, data: { userDto, auth: true } });
+            const users = await findAllUsers()
+            const userDto = users.map(u => new UserDto(u));
+            return res.json({ reqStatus: true, data: { userDto, auth: true } });
+        }
+        catch (e) {
+            return res.status(500).json({ reqStatus: false, data: "Internal error." });
+        }
+    }
+    async updateUser(req, res) {
+        try {
+            const { id } = req.params;
+            const Payload = {
+                ...req.body
+            }
+            const avatar = req.body.avatar;
+            if (avatar !== "") {
+                const imgPayloadAvatar = {
+                    Attachment: {
+                        img: avatar,
+                        type: "avatar"
+                    }
+                }
+                const result = await getImageURL(imgPayloadAvatar);
+                Payload.avatar = result.img;
+            }
+            const Banner = req.body.Banner;
+            if (Banner !== "") {
+                const imgPayloadBanner = {
+                    Attachment: {
+                        img: Banner,
+                    }
+                }
+                const result = await getImageURL(imgPayloadBanner);
+                Payload.Banner = result.img;
+            }
+            const filteredPayload = Object.fromEntries(
+            Object.entries(Payload).filter(([key, value]) => value !== '')
+            );
+            await update(id,filteredPayload)
+            const user = await findUserById(id)
+            const userDto = new UserDto(user);
+            return res.json({ reqStatus: true, data: {userDto,auth: true} });
+        }
+        catch (e) {
+            return res.status(500).json({ reqStatus: false, data: "Internal error." });
+        }
+    }
+
+    async deleteAccount(req,res) {
+        try {
+            const {id} = req.params;
+            await deleteAllBugsRelatedToUser(id)
+            await deleteAllProjectsRelatedToUser(id)
+            const user = await findUserById(id)
+            const email = user.email
+            await updateAllProjectWhereUserInvited(email)
+            await deleteAccountFromDB(id)
+            await deleteAllRefreshTokens(id)
+            return res.json({ reqStatus: true, data: {userDto: {},auth: false} });
+        }
+        catch(e) {
+            return res.status(500).json({ reqStatus: false, data: "Internal error." });
+        }
+    }
+    async showPassword(req,res) {
+        try {
+            const {id} = req.params;
+            const user = await findUserById(id);
+            if(comparePassword(req.body.pass,user.password)) {
+                return res.json({ reqStatus: true, data: {} });
+            }
+            else {
+                return res.json({ reqStatus: false, data: {}});
+            }
         }
         catch(e) {
             return res.status(500).json({ reqStatus: false, data: "Internal error." });

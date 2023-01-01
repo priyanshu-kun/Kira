@@ -172,7 +172,7 @@ function IssueModal() {
                                         image.img !== "" ? (
                                             <>
                                                 <img src={image.img} alt="upload image" className='rounded-lg' />
-                                                <span onClick={(e) => setImage("")} className='absolute  top-2 right-2 rounded-full cursor-pointer bg-black'><FiXCircle className='text-3xl text-white' /></span>
+                                                <span onClick={(e) => setImage({img: "",width: 0,height: 0})} className='absolute  top-2 right-2 rounded-full cursor-pointer bg-black'><FiXCircle className='text-3xl text-white' /></span>
                                             </>
                                         ) : (
 
