@@ -1,8 +1,11 @@
 import React from 'react'
+import Timeline from './Timeline'
 
 function ClosedBugs() {
   return (
-    <div className='h-screen text-6xl text-white flex items-center justify-center'>ClosedBugs</div>
+    <div>
+      <Timeline />
+    </div>
   )
 }
 

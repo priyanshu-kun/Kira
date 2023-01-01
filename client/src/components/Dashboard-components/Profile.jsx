@@ -112,6 +112,11 @@ function Profile() {
 
 
   async function handleDeleteAccount() {
+    if (username === "Guest") {
+      return toast.error("You cannot delete this account.", {
+        icon: "😓"
+      })
+    }
     try {
       setDeleteLoader(true)
       const { data } = await deleteAccount(id)
@@ -187,7 +192,7 @@ function Profile() {
       </div>
       <div className='w-[80%] min-w-[200px] flex text-white justify-between items-center mx-auto mt-[320px] relative z-[20]'>
         <div className='flex items-center'>
-          <div className='w-[150px] h-[150px] relative rounded-full border-[3px] border-solid border-white overflow-hidden'>
+          <div className='w-[150px] h-[150px] relative rounded-full border-[3px] border-solid border-white overflow-hidden bg-black'>
             {
               Avatar ? (
                 <img src={Avatar} alt="avatar" className='w-full h-full object-cover' />
@@ -218,11 +223,13 @@ function Profile() {
                 <button onClick={handleSubmit} className='btn  bg-accent-color ml-4 hover:bg-accent-color text-black h-[50px] w-[100px] normal-case flex items-center justify-center'>{loader ? <img src={loaderForBtn} className="w-[40px] object-contain" alt="loader" /> : "Done"}</button>
               </div>
             ) : (
-              <button onClick={() => {
-                setEdit(true)
-              }} className='p-2 rounded-md bg-transparent border border-solid border-white/10 flex text-center justify-center hover:bg-white/10'>
-                <FaEdit className='text-xl' />
-              </button>
+              username !== "Guest" && (
+                <button onClick={() => {
+                  setEdit(true)
+                }} className='p-2 rounded-md bg-transparent border border-solid border-white/10 flex text-center justify-center hover:bg-white/10'>
+                  <FaEdit className='text-xl' />
+                </button>
+              )
             )
           }
         </div>
@@ -287,7 +294,7 @@ function Profile() {
       <div className='profile-section w-[100%] pl-[200px] py-20  text-white bg-red-400/10 mt-28'>
         <h1 className="dashboard-logo w-fit font-['./assets/fonts/HelveticaNowDisplay-ExtBlk.otf'] text-2xl mr-2 mb-8">Delete Account</h1>
         <p className='mb-4 opacity-60'>Please be certain before deleting your account as it cannot be undone. This process may take a while.</p>
-        <label htmlFor='confirm' className='btn w-[200px] h-[40px] bg-red-400 text-black normal-case hover:bg-red-500'>Delete Account</label>
+        <label htmlFor='confirm' className={`btn w-[200px] h-[40px] ${username === "Guest" ? "bg-gray-500 cursor-not-allowed pointer-events-none hover:bg-gray-500" : "bg-red-400  cursor-default  pointer-events-auto hover:bg-red-500"} text-black normal-case`}>Delete Account</label>
       </div>
       <footer className="footer footer-center p-4 bg-[#0a0a0a] text-white/60 border-t-2px border-solid border-white/10">
         <div>

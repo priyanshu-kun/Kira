@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react'
 import { FiArrowRight } from "react-icons/fi";
-import { FaGoogle, FaGithub } from "react-icons/fa";
+import { FaGoogle, FaGithub, FaUserSecret } from "react-icons/fa";
 import character from "../../assets/character.svg"
 import ContentEditable from "react-contenteditable"
 import avatar from "../../assets/avatar.png"
@@ -11,7 +11,7 @@ import Navbar from '../../components/Navbar';
 import { userLogin } from '../../http';
 import { toast } from 'react-toastify';
 import { setUser } from '../../store/user.slice';
-import { useNavigate,useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 // import pointingArrow from "../../assets/arrow.svg"
 const initialState = {
@@ -71,6 +71,35 @@ function SignUp() {
   }
 
 
+
+  async function handleGuestLogin(e) {
+    e.preventDefault()
+    try {
+      const payload = {
+        emailAndUsername: "Guest",
+        password: "Guest"
+      }
+      const { data } = await userLogin(payload);
+      if (data.reqStatus) {
+        const User = {
+          auth: data.data.auth,
+          user: data.data.userDto
+        }
+        dispatch(setUser(User))
+        navigate('/')
+      }
+      toast.success("You are logged in as a guest.", {
+        icon: "🎉"
+      })
+    }
+    catch (e) {
+      toast.error(e.response.data.data, {
+        icon: "😰"
+      })
+    }
+  }
+
+
   return (
     <div className='bg-secondary-light text-black min-h-screen max-h-screen flex items-center justify-center'>
       <Navbar _Route={"SignUp"} />
@@ -113,10 +142,9 @@ function SignUp() {
                 </span>
               </button>
             </div>
-            <div class="divider my-8">or Sign in with</div>
+            <div class="divider my-8">Alternatively, you may give a guest visit.</div>
             <div class=" flex w-full text-center justify-center">
-              <button className="btn mr-3 normal-case rounded-xl bg-transparent border-1 border-solid border-black/10 text-black hover:bg-transparent"><FaGoogle className='mr-2 text-xl' /> Google</button>
-              <button className="btn normal-case rounded-xl bg-transparent border-1  border-solid border-black/10 text-black hover:bg-transparent"><FaGithub className='mr-2 text-xl' /> Github</button>
+              <button onClick={handleGuestLogin} className="btn mr-3 normal-case rounded-xl bg-transparent border-1 border-solid border-black/10 text-black hover:bg-transparent"><FaUserSecret className='mr-2' />Guest Visit</button>
             </div>
           </div>
           <p className='text-sm text-center mt-6'><span className='text-gray-500 mr-2'>Don't have an account?</span>
