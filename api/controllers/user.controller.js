@@ -6,15 +6,17 @@ import tokenService from "../services/token.service.js"
 import projectService from "../services/project.service.js";
 import getImageURL from "../services/image.service.js"
 import bugsService from "../services/bugs.service.js";
+import timelineService from "../services/timeline.service.js";
 import url from "url"
 import UserDto from "../dto/user.dto.js";
-const { createNewProject, fetchUserProjects, fetchDetails, removeProjectFromDB, deleteAllProjectsRelatedToUser,updateAllProjectWhereUserInvited } = projectService;
-const {deleteAllBugsRelatedToUser} = bugsService
-const { sendMail } = emailService
+const { createNewProject, fetchUserProjects, fetchDetails, removeProjectFromDB, deleteAllProjectsRelatedToUser, updateAllProjectWhereUserInvited } = projectService;
+const { deleteAllBugsRelatedToUser } = bugsService
+const { sendMail,sendMailForTroubleShooting } = emailService
 const { hashOTP, hashPassword, comparePassword } = hashOtpService
 const { verifyOtp, generateOTP } = otpService
-const { createUser, findAllUsers, findUserByEmail, findUserByUsernameAndEmail, findUserById, findUserByUsername,update,deleteAccountFromDB } = UserService
-const { generateTokens, removeRefreshToken, storeRefreshToken, verifyRefreshToken,deleteAllRefreshTokens, findRefreshTokenInDB, updateRefreshToken } = tokenService
+const { createUser, findAllUsers, findUserByEmail, findUserByUsernameAndEmail, findUserById, findUserByUsername, update, deleteAccountFromDB } = UserService
+const { generateTokens, removeRefreshToken, storeRefreshToken, verifyRefreshToken, deleteAllRefreshTokens, findRefreshTokenInDB, updateRefreshToken,generateTokensForTroubleShooting } = tokenService
+const { createNewActivity } = timelineService;
 import Jimp from "jimp"
 import path, { dirname } from "path"
 import { fileURLToPath } from 'url';
@@ -150,6 +152,21 @@ class AuthController {
                 return res.status(500).json({ reqStatus: false, data: "Error while creating new user." });
             }
         }
+        try {
+            const payload = {
+                activityType: "newUserCreated",
+                activityId: user._id,
+                avatar: user.avatar,
+                activity: {
+                    title: user.username,
+                    body: "Joined the Kira."
+                }
+            }
+            await createNewActivity(payload)
+        }
+        catch (e) {
+            return res.status(500).json({ reqStatus: false, data: "Error while creating timeline." });
+        }
         const userDto = new UserDto(user)
         return res.json({ reqStatus: true, data: userDto })
     }
@@ -161,7 +178,6 @@ class AuthController {
         if (!emailAndUsername || !password) {
             return res.status(400).json({ reqStatus: false, data: 'All fields are required.' });
         }
-        console.log(req.url)
         try {
 
             const user = await findUserByUsernameAndEmail(emailAndUsername);
@@ -309,46 +325,103 @@ class AuthController {
                 Payload.Banner = result.img;
             }
             const filteredPayload = Object.fromEntries(
-            Object.entries(Payload).filter(([key, value]) => value !== '')
+                Object.entries(Payload).filter(([key, value]) => value !== '')
             );
-            await update(id,filteredPayload)
+            await update(id, filteredPayload)
             const user = await findUserById(id)
+
+            try {
+                const payload = {
+                    activityType: "userUpdated",
+                    activityId: user._id,
+                    avatar: user.avatar,
+                    activity: {
+                        title: user.username,
+                        body: "Update his/her profile."
+                    }
+                }
+                await createNewActivity(payload)
+            }
+            catch (e) {
+                return res.status(500).json({ reqStatus: false, data: "Error while creating timeline." });
+            }
             const userDto = new UserDto(user);
-            return res.json({ reqStatus: true, data: {userDto,auth: true} });
+            return res.json({ reqStatus: true, data: { userDto, auth: true } });
         }
         catch (e) {
             return res.status(500).json({ reqStatus: false, data: "Internal error." });
         }
     }
 
-    async deleteAccount(req,res) {
+    async deleteAccount(req, res) {
         try {
-            const {id} = req.params;
+            const { id } = req.params;
             await deleteAllBugsRelatedToUser(id)
             await deleteAllProjectsRelatedToUser(id)
             const user = await findUserById(id)
+            try {
+                const payload = {
+                    activityType: "deleteAccount",
+                    activityId: user._id,
+                    avatar: user.avatar,
+                    activity: {
+                        title: user.username,
+                        body: "Delete his/her Account."
+                    }
+                }
+                await createNewActivity(payload)
+            }
+            catch (e) {
+                return res.status(500).json({ reqStatus: false, data: "Error while creating timeline." });
+            }
             const email = user.email
             await updateAllProjectWhereUserInvited(email)
             await deleteAccountFromDB(id)
             await deleteAllRefreshTokens(id)
-            return res.json({ reqStatus: true, data: {userDto: {},auth: false} });
+            return res.json({ reqStatus: true, data: { userDto: {}, auth: false } });
         }
-        catch(e) {
+        catch (e) {
             return res.status(500).json({ reqStatus: false, data: "Internal error." });
         }
     }
-    async showPassword(req,res) {
+    async showPassword(req, res) {
         try {
-            const {id} = req.params;
+            const { id } = req.params;
             const user = await findUserById(id);
-            if(comparePassword(req.body.pass,user.password)) {
+            if (comparePassword(req.body.pass, user.password)) {
                 return res.json({ reqStatus: true, data: {} });
             }
             else {
-                return res.json({ reqStatus: false, data: {}});
+                return res.json({ reqStatus: false, data: {} });
             }
         }
-        catch(e) {
+        catch (e) {
+            return res.status(500).json({ reqStatus: false, data: "Internal error." });
+        }
+    }
+    async troubleShootAccount(req,res) {
+        try {
+            const {emailAndUsername} = req.body;
+            console.log(emailAndUsername)
+            if(!emailAndUsername) {
+                return res.status(404).json({ reqStatus: false, data: "All fields must be required." });
+            }
+            const user = await findUserByUsernameAndEmail(emailAndUsername);
+            if (!user) {
+                return res.status(401).json({ reqStatus: false, data: "username, email or password is incorrect." });
+            }
+            const {token} = await generateTokensForTroubleShooting({
+                _id: user._id
+            })
+            const payload = {
+                username: user.username,
+                email: user.email,
+                hashedId: token
+            }
+            await sendMailForTroubleShooting(user.email,payload)
+            return res.json({reqStatus: true,data: {}})
+        }
+        catch (e) {
             return res.status(500).json({ reqStatus: false, data: "Internal error." });
         }
     }

@@ -1,6 +1,10 @@
 import Jimp from "jimp";
 import bugsService from "../services/bugs.service.js";
+import userService from "../services/user.service.js";
+import timelineService from "../services/timeline.service.js";
 const { createNewBug, fetchProjectBugs, fetchBugsDetails, removeBug,UpdateBug } = bugsService;
+const {findUserById} = userService
+const {createNewActivity,UpdateActivity} = timelineService
 import path, { dirname } from "path"
 import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
@@ -10,6 +14,7 @@ class BugsController {
     async createNewBug(req, res) {
         try {
             let imagePath;
+            const {_id} = req.user;
             let payloadFromClient = req.body;
             try {
                 if (payloadFromClient.Attachment.img !== "") {
@@ -44,6 +49,23 @@ class BugsController {
                 }
             }
             const createdBug = await createNewBug(payloadFromClient)
+            const user = await findUserById(_id)
+            try {
+                const payload = {
+                    activityType: "newBugCreated",
+                    activityId: createdBug._id,
+                    avatar: user.avatar,
+                    activity: {
+                        title: createdBug.Name,
+                        body: `@${createdBug.ReporterName} creates a new bug in the ${createdBug.ProjectName} project.`
+                    },
+                    link: `/bug/${createdBug.ProjectId}/${createdBug._id}`
+                }
+                await createNewActivity(payload)
+            }
+            catch (e) {
+                return res.status(500).json({ reqStatus: false, data: "Error while creating timeline." });
+            }
             return res.json({
                 reqStatus: true, data: createdBug
             })
@@ -79,6 +101,24 @@ class BugsController {
     async removeBugFromProject(req, res) {
         try {
             const { id } = req.params;
+            const {_id} = req.user;
+            const user = await findUserById(_id)
+            const bug = await fetchBugsDetails(id)
+            try {
+                const payload = {
+                    activityType: "deleteBug",
+                    activityId: bug._id,
+                    avatar: user.avatar,
+                    activity: {
+                        title: bug.Name,
+                        body: `@${bug.ReporterName} delete a bug in the ${bug.ProjectName} project.`
+                    }
+                }
+                await createNewActivity(payload)
+            }
+            catch (e) {
+                return res.status(500).json({ reqStatus: false, data: "Error while creating timeline." });
+            }
             await removeBug(id)
             return res.json({
                 reqStatus: true, data: {}
@@ -92,6 +132,7 @@ class BugsController {
         try {
             
             const { id } = req.params;
+            const {_id} = req.user;
             const payloadFromClient = {
                 ...req.body
             }
@@ -124,6 +165,23 @@ class BugsController {
             }
             await UpdateBug(id,payloadFromClient)
             const bug = await fetchBugsDetails(id)
+            const user = await findUserById(_id)
+            try {
+                const payload = {
+                    activityType: "bugUpdated",
+                    activityId: bug._id,
+                    avatar: user.avatar,
+                    activity: {
+                        title: bug.Name,
+                        body: `@${bug.ReporterName} updates a bug in the ${bug.ProjectName} project.`
+                    },
+                    link: `/bug/${bug.ProjectId}/${bug._id}`
+                }
+                await createNewActivity(payload)
+            }
+            catch (e) {
+                return res.status(500).json({ reqStatus: false, data: "Error while creating timeline." });
+            }
             return res.json({
                 reqStatus: true, data: bug 
             })
@@ -135,8 +193,69 @@ class BugsController {
     async resolveBug(req,res) {
         try {
             const {id} = req.params; 
+            const {_id} = req.user;
             await UpdateBug(id,{isResolve: true})
             const bug = await fetchBugsDetails(id)
+            const user = await findUserById(_id)
+            try {
+                const payload = {
+                    activityType: "resolveBug",
+                    activityId: bug._id,
+                    avatar: user.avatar,
+                    activity: {
+                        title: bug.Name,
+                        body: `@${bug.ReporterName} closed a bug in the ${bug.ProjectName} project.`
+                    },
+                    isResolve: {
+                        flag: true,
+                        bugId: bug._id
+                    },
+                    link: `/bug/${bug.ProjectId}/${bug._id}`
+                }
+                await createNewActivity(payload)
+            }
+            catch (e) {
+                return res.status(500).json({ reqStatus: false, data: "Error while creating timeline." });
+            }
+            return res.json({
+                reqStatus: true, data: bug 
+            })
+        }
+        catch(e) {
+            return res.status(500).json({ reqStatus: false, data: "Error while updating bug." });
+        }
+    }
+    async unResolve(req,res) {
+        try {
+            const {id,activityId} = req.params; 
+            const {_id} = req.user;
+            await UpdateBug(id,{isResolve: false})
+            await UpdateActivity(activityId,false)
+            const bug = await fetchBugsDetails(id)
+            if(!bug) {
+                return res.status(500).json({ reqStatus: false, data: "Bug is already deleted." });
+            }
+            const user = await findUserById(_id)
+            try {
+                const payload = {
+                    activityType: "reOpenBug",
+                    activityId: bug._id,
+                    avatar: user.avatar,
+                    activity: {
+                        title: bug.Name,
+                        body: `@${bug.ReporterName} reopen a bug in the ${bug.ProjectName} project.`
+                    },
+                    isResolve: {
+                        flag: false,
+                        bugId: bug._id
+                    },
+                    link: `/bug/${bug.ProjectId}/${bug._id}`
+                }
+                await createNewActivity(payload)
+            }
+            catch (e) {
+                return res.status(500).json({ reqStatus: false, data: "Error while creating timeline." });
+            }
             return res.json({
                 reqStatus: true, data: bug 
             })

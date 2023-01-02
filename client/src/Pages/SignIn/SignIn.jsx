@@ -133,7 +133,7 @@ function SignUp() {
                   </label>
                 </div>
                 <label class="label">
-                  <a href="#" class="label-text-alt link text-sm  link-hover">Having trouble in sign in?</a>
+                  <Link to="/troubleshoot" class="label-text-alt link text-sm  link-hover">Having trouble in sign in?</Link>
                 </label>
               </div>
               <button className="pushable normal-case mt-2 rounded-full">

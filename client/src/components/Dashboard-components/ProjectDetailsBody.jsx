@@ -116,7 +116,7 @@ function ProjectDetailsBody({ details, invitedUser, handleSendInvite }) {
                         <td className='px-4 py-2'>{bug.Severity}</td>
                         <td className='px-4 py-2'>{moment(bug.createdAt).format("MMM D, YYYY")}</td>
                         <td className='px-4 py-2'>12</td>
-                        <td className='px-4 py-2'>{!bug.isResolve ? <span className='flex items-center'>Open<FaCheckCircle className='ml-2 text-green-400' /></span> : <span className='flex items-center' >Closed<FaTimesCircle className='ml-2 text-red-400' /></span>}</td>
+                        <td className='px-4 py-2'>{!bug.isResolve ? <span className='flex items-center'>UnResolved<FaCheckCircle className='ml-2 text-green-400' /></span> : <span className='flex items-center' >Resolved<FaTimesCircle className='ml-2 text-red-400' /></span>}</td>
                         <td className='py-4 px-2 relative'>
                           <span onClick={(e) => {
                             e.stopPropagation()

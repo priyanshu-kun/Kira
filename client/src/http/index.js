@@ -21,6 +21,7 @@ export const userLogin = async (inputs) =>  {
 export const updateUser = async (id,data) => await api.patch('http://localhost:5500/api/update-user/'+id,data)
 export const deleteAccount = async (id) => await api.delete('http://localhost:5500/api/delete-account/'+id)
 export const userLogout = async (data) => await api.post('http://localhost:5500/api/logout-user', data)
+export const troubleShootAccount = async (data) => await api.post('http://localhost:5500/api/troubleShoot-account', data)
 export const createNewProject = async (data) => await api.post('http://localhost:5500/api/create-project', data)
 export const showPass = async (id,data) => await api.post("http://localhost:5500/api/show-password/"+id,data)
 export const removeProject = async (projectId) => await api.delete('http://localhost:5500/api/user/remove-project', {
@@ -46,6 +47,8 @@ export const fetchBugsFromProject = async (id) => await api.get('http://localhos
 export const removeBugFromProject = async (id) => await api.delete('http://localhost:5500/api/remove-bug/'+id)
 export const updateBug = async (id,data) => await api.patch('http://localhost:5500/api/update-bug/'+id,data)
 export const resolveBug = async (id) => await api.get('http://localhost:5500/api/resolve-bug/'+id)
+export const unResolveBug = async (id,activityId) => await api.get('http://localhost:5500/api/unresolve-bug/'+id+"/"+activityId)
+export const fetchTimelineActivites = async (skip,limit) => await api.get(`http://localhost:5500/api/fetch-timeline-activites?skip=${skip}&limit=${limit}`)
 
 
 

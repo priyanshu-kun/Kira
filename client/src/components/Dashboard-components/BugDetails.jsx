@@ -28,6 +28,12 @@ function BugDetails() {
     (async () => {
       try {
         const { data: { data: details } } = await fetchBugsFromProject(id)
+        if(!details) {
+          navigate("/")
+          return toast.error("Bug is already deleted by user", {
+            icon: "😓"
+          })
+        }
         setBugDetails(details)
         setLoader(false)
       }
@@ -133,6 +139,9 @@ function BugDetails() {
     try {
       const { data: { data: bug } } = await resolveBug(id);
       setBugDetails(bug)
+      return toast.success("Bug resolved.", {
+        icon: "💥"
+      })
     }
     catch (e) {
       return toast.error("Something bad happen.", {
@@ -160,9 +169,9 @@ function BugDetails() {
                           }} className='btn mr-6 cursor-pointer bg-transparent border border-solid border-white/10 rounded-full hover:bg-transparent hover:border-transparent transition-all transform hover:-translate-x-2'><FiArrowLeft className='text-white text-3xl' /></button>
                           {
                             !bugDetails.isResolve ? (
-                              <button onClick={handleResolve} className='btn bg-green-400 hover:bg-green-500 text-white w-24 normal-case mr-6'>Open</button>
+                              <button onClick={handleResolve} className='btn bg-green-400 hover:bg-green-500 text-black w-24 normal-case mr-6'>Resolve</button>
                             ) : (
-                              <p className='bg-red-400 rounded-xl flex items-center justify-center h-14  text-white w-28 normal-case mr-6'>Closed<FaTimes className='text-white ml-1 text-lg' /></p>
+                              <p className='bg-red-400 rounded-xl flex items-center justify-center h-14  text-white w-32 normal-case mr-6'>Resolved<FaTimes className='text-white ml-1 text-lg' /></p>
                             )
                           }
                         </>
@@ -181,7 +190,7 @@ function BugDetails() {
                     ) : (
                       <>
                         <textarea name='Description' value={description} onChange={(e) => setDescription(e.target.value)} className="textarea textarea-bordered mt-2 bg-black w-3/4 h-28 border-2px border-solid border-white/10  text-base" placeholder="Add description"></textarea>
-                        <button onClick={handleUpdateChange} className='btn hover:bg-green-500 bg-green-400 w-20 text-white mt-2'>Update</button>
+                        <button onClick={handleUpdateChange} className='btn hover:bg-green-500 bg-green-400 w-20 text-white mt-4'>Update</button>
                       </>
                     )
                   }

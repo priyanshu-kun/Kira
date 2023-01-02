@@ -18,6 +18,8 @@ import { useSelector } from "react-redux"
 import { useLoadingWithRefresh } from './hooks/useLoadingWithRefresh.js'
 import PrimaryLoader from './PrimaryLoader'
 import BugDetails from './components/Dashboard-components/BugDetails'
+import GetEmail from './Pages/TroubleShoot/GetEmail'
+import ResetPassword from './Pages/TroubleShoot/ResetPassword'
 
 
 function AuthenticationRoutes() {
@@ -57,6 +59,8 @@ function App() {
               <Route path='/SignUp' element={<SignUp />} />
               <Route path='/SignIn' element={<SignIn />} />
               <Route path='/confirm-otp' element={<ConfirmOTP />} />
+              <Route path='/troubleshoot' element={<GetEmail />} />
+              <Route path='/forgot-password/:id' element={<ResetPassword />} />
             </Route>
             <Route path='*' element={<h1>Path didn't exists.</h1>} />
           </Routes>

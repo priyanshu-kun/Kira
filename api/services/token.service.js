@@ -34,6 +34,12 @@ class TokenService {
         });
         return {invitationToken}
     }
+    async generateTokensForTroubleShooting(payload) {
+        const token = jwt.sign(payload, process.env.JWT_ACCESS_TOKEN_SECRET_FOR_INVITE, {
+            expiresIn: '1h'
+        });
+        return {token}
+    }
     async verifyAccessTokenForInvite(token) {
         return jwt.verify(token, process.env.JWT_ACCESS_TOKEN_SECRET_FOR_INVITE);
     }

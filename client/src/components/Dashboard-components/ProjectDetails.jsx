@@ -48,6 +48,12 @@ function ProjectDetails() {
     (async () => {
       try {
         const { data: { data: Details } } = await fetchProjectDetails(id)
+        if(Details === null) {
+          toast.error("Project is already deleted.", {
+            icon: "😓"
+          })
+          return navigate("/")
+        }
         const {data: {data: {userDto}}} = await findAllUsers()
         const Users = userDto.filter(u => {
           return Details.users.find(e => e === u.email)
