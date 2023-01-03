@@ -5,8 +5,8 @@ class BugsService {
     async createNewBug(data) {
         return await bugsModel.create(data)
     }
-    async fetchProjectBugs(id) {
-        return await bugsModel.find({ProjectId: id}).populate("ProjectId").exec()
+    async fetchProjectBugs(id,skp,lmt) {
+        return await bugsModel.find({ProjectId: id}).populate("ProjectId").skip(skp).limit(lmt).exec()
     }
     async fetchBugsDetails(id) {
         return await bugsModel.findOne({_id: id})
@@ -19,6 +19,9 @@ class BugsService {
     }
     async deleteAllBugsRelatedToUser(id) {
         return await bugsModel.deleteMany({Reporter: id})
+    }
+    async countBugsDocuments() {
+        return await bugsModel.countDocuments()
     }
 }
 

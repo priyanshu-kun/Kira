@@ -2,7 +2,8 @@ import Jimp from "jimp";
 import bugsService from "../services/bugs.service.js";
 import userService from "../services/user.service.js";
 import timelineService from "../services/timeline.service.js";
-const { createNewBug, fetchProjectBugs, fetchBugsDetails, removeBug,UpdateBug } = bugsService;
+import url from "url"
+const { createNewBug, fetchProjectBugs, fetchBugsDetails, removeBug,UpdateBug,countBugsDocuments } = bugsService;
 const {findUserById} = userService
 const {createNewActivity,UpdateActivity} = timelineService
 import path, { dirname } from "path"
@@ -77,9 +78,14 @@ class BugsController {
     async fetchRelatedToAProject(req, res) {
         try {
             const { id } = req.params;
-            const bugs = await fetchProjectBugs(id)
+            const parsedUrl = url.parse(req.url, true);
+            const queryParams = parsedUrl.query;
+            const {skip,limit} = queryParams;
+            const count = await countBugsDocuments();
+            const totalPages = Math.ceil(count / limit);
+            const bugs = await fetchProjectBugs(id,skip,limit)
             return res.json({
-                reqStatus: true, data: bugs
+                reqStatus: true, data: {bugs,count,totalPages}
             })
         }
         catch (e) {

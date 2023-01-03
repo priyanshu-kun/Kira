@@ -7,6 +7,7 @@ import projectService from "../services/project.service.js";
 import getImageURL from "../services/image.service.js"
 import bugsService from "../services/bugs.service.js";
 import timelineService from "../services/timeline.service.js";
+import crypto from "crypto"
 import url from "url"
 import UserDto from "../dto/user.dto.js";
 const { createNewProject, fetchUserProjects, fetchDetails, removeProjectFromDB, deleteAllProjectsRelatedToUser, updateAllProjectWhereUserInvited } = projectService;
@@ -20,6 +21,7 @@ const { createNewActivity } = timelineService;
 import Jimp from "jimp"
 import path, { dirname } from "path"
 import { fileURLToPath } from 'url';
+import forgetpasswordModel from "../model/forgetpassword.model.js";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename)
 const cookieOptions = {
@@ -402,7 +404,9 @@ class AuthController {
     async troubleShootAccount(req,res) {
         try {
             const {emailAndUsername} = req.body;
-            console.log(emailAndUsername)
+            if(emailAndUsername === "Guest" || emailAndUsername === "zafyutikka@gufum.com") {
+                return res.status(500).json({ reqStatus: false, data: "You cannot change guest user credentials." });
+            }
             if(!emailAndUsername) {
                 return res.status(404).json({ reqStatus: false, data: "All fields must be required." });
             }
@@ -410,15 +414,54 @@ class AuthController {
             if (!user) {
                 return res.status(401).json({ reqStatus: false, data: "username, email or password is incorrect." });
             }
-            const {token} = await generateTokensForTroubleShooting({
-                _id: user._id
+            
+            const resetPasswordToken = crypto.randomBytes(32).toString('hex');
+            const ttl = 3600000;
+            const resetPasswordExpires = Date.now()+ttl;
+
+            const resp = await forgetpasswordModel.create({
+                userId: user._id,
+                token: resetPasswordToken,
+                expired: resetPasswordExpires
             })
+
+            if(!resp) {
+                return res.status(500).json({ reqStatus: false, data: "Internal error." });
+            }
+
             const payload = {
                 username: user.username,
                 email: user.email,
-                hashedId: token
+                id: resetPasswordToken, 
+
             }
             await sendMailForTroubleShooting(user.email,payload)
+            return res.json({reqStatus: true,data: {}})
+        }
+        catch (e) {
+            return res.status(500).json({ reqStatus: false, data: "Internal error." });
+        }
+    }
+    async forgotPassword(req,res) {
+        try {
+            const {passwordState} = req.body;
+            if(!passwordState.password || !passwordState.confirmPassword) {
+                return res.status(500).json({ reqStatus: false, data: "request body cannot be empty." });
+            }
+            if(passwordState.password !== passwordState.confirmPassword) {
+                return res.status(500).json({ reqStatus: false, data: "Confirm password is incorrect." });
+            }
+
+            const doc = await forgetpasswordModel.findOne({token: req.params.id})
+            if(!doc) {
+                return res.status(500).json({ reqStatus: false, data: "Internal error." });
+            }
+            if(Date.now() > +doc.expired) {
+                return res.status(500).json({ reqStatus: false, data: "Endpoint is expired." });
+            }
+            const hashedPassword = await hashPassword(passwordState.password);
+            await update(doc.userId,{password: hashedPassword})
+            await forgetpasswordModel.deleteOne({_id: doc._id})
             return res.json({reqStatus: true,data: {}})
         }
         catch (e) {

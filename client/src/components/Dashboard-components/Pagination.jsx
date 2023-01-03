@@ -2,7 +2,7 @@ import React from 'react'
 
 function Pagination({ handleSetPagination, pagination, documentCount, totalPages, page }) {
     return (
-        <div className="flex flex-col items-center relative z-[10] mt-12">
+        <div className="flex flex-col items-center relative z-[10] mt-8">
             <span className="text-sm text-gray-700 dark:text-gray-400">
                 Showing <span className="font-semibold text-gray-900 dark:text-white">{pagination.skip}</span> to <span className="font-semibold text-gray-900 dark:text-white">{pagination.skip + pagination.limit >= documentCount ? documentCount : pagination.skip + pagination.limit}</span> of <span className="font-semibold text-gray-900 dark:text-white">{documentCount}</span> Entries
             </span>

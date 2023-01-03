@@ -9,63 +9,99 @@ import { toast } from 'react-toastify'
 import moment from "moment"
 import { useNavigate } from "react-router-dom"
 import copy from "copy-to-clipboard"
+import Pagination from './Pagination'
 
 function ProjectDetailsBody({ details, invitedUser, handleSendInvite }) {
 
 
+  const [pagination, setPagination] = useState({
+    skip: 0,
+    limit: 5
+  })
   const [projectBugs, setProjectBugs] = useState([])
   const [loader, setLoader] = useState(true)
   const [drawerValue, setDrawerValue] = useState(null)
   const [drawer, setDrawer] = useState(true)
+  const [page, setPage] = useState(1)
+  const [totalPages, setTotalPages] = useState(0)
+  const [documentCount, setDocumentCount] = useState(0)
+  const [bugRemoved,setBugRemoved] = useState(true)
+  const [filter,setFilter] = useState("")
   const navigate = useNavigate()
 
   useEffect(() => {
     (async () => {
       try {
-        const { data: { data: bugs } } = await fetchAllBugsRelatedToProject(details._id)
+        const { data: { data: { bugs, count, totalPages } } } = await fetchAllBugsRelatedToProject(details._id, pagination.skip, pagination.limit)
+        setTotalPages(totalPages)
+        setDocumentCount(count)
         setProjectBugs(prev => {
           return [...bugs]
         })
-        setLoader(false)
       }
       catch (e) {
-        setLoader(false)
         return toast.error("Cannot able to fetch projects.", {
           icon: "😓"
         })
       }
     })()
-  }, [details])
+  }, [details, pagination,bugRemoved])
 
 
-  async function handleCopyLine(e,id) {
-      const link = `http://localhost:5173/bug/${details?._id}/${id}`;
-      copy(link)
-      return toast.success("Link is copied to clipboard", {
-        icon: "💥"
+
+  function handleSetPagination(prev) {
+    if (prev) {
+      setPage(prev => prev - 1)
+      if (page < 1) {
+        return;
+      }
+      setPagination(prev => {
+        return {
+          ...prev,
+          skip: prev.skip - 5
+        }
       })
+    }
+    else {
+      setPage(prev => prev + 1)
+      if (page > totalPages) {
+        return;
+      }
+      setPagination(prev => {
+        return {
+          ...prev,
+          skip: prev.skip + 5
+        }
+      })
+    }
   }
 
-  async function handleRemoveBug(e,id) {
+
+  async function handleCopyLine(e, id) {
+    const link = `http://localhost:5173/bug/${details?._id}/${id}`;
+    copy(link)
+    return toast.success("Link is copied to clipboard", {
+      icon: "💥"
+    })
+  }
+
+  async function handleRemoveBug(e, id) {
     try {
       await removeBugFromProject(id)
-        const { data: { data: bugs } } = await fetchAllBugsRelatedToProject(details._id)
-        setProjectBugs(prev => {
-          return [...bugs]
-        })
+      setBugRemoved(prev => !prev)
       return toast.success("The bug has been removed from the project.", {
         icon: "💥"
       })
-    } 
-    catch(e) {
-        return toast.error("Cannot able to remove bug.", {
-          icon: "😓"
-        })
+    }
+    catch (e) {
+      return toast.error("Cannot able to remove bug.", {
+        icon: "😓"
+      })
     }
   }
 
   function handleBugRoute(e, id) {
-    navigate("/bug/"+details?._id+"/" + id)
+    navigate("/bug/" + details?._id + "/" + id)
   }
 
   return (
@@ -93,14 +129,14 @@ function ProjectDetailsBody({ details, invitedUser, handleSendInvite }) {
             <table className="mx-auto w-4/5 mt-12">
               <thead className='text-left w-full border-b-2px border-solid border-white/10'>
                 <tr className='w-full'>
-                  <th className="pl-4 pb-2">Name</th>
-                  <th className="pl-4 pb-2">Reporter</th>
-                  <th className="pl-4 pb-2">Type</th>
-                  <th className="pl-4 pb-2">Priority</th>
-                  <th className="pl-4 pb-2">Severity</th>
-                  <th className="pl-4 pb-2">Created</th>
-                  <th className="pl-4 pb-2"><FaComments /></th>
-                  <th className="pl-4 pb-2">Resolution</th>
+                  <th className="pl-4 pb-2 cursor-pointer" onClick={() => setFilter("Name")}>Name</th>
+                  <th className="pl-4 pb-2 cursor-pointer" onClick={() => setFilter("ReporterName")}>Reporter</th>
+                  <th className="pl-4 pb-2 cursor-pointer" onClick={() => setFilter("Type")}>Type</th>
+                  <th className="pl-4 pb-2 cursor-pointer" onClick={() => setFilter("Priority")}>Priority</th>
+                  <th className="pl-4 pb-2 cursor-pointer" onClick={() => setFilter("Severity")}>Severity</th>
+                  <th className="pl-4 pb-2 cursor-pointer" onClick={() => setFilter("createdAt")}>Created</th>
+                  <th className="pl-4 pb-2 cursor-pointer"><FaComments /></th>
+                  <th className="pl-4 pb-2 cursor-pointer" onClick={() => setFilter("isResolve")}>Resolution</th>
                   <th className="pl-4 pb-2"></th>
                 </tr>
               </thead>
@@ -130,8 +166,8 @@ function ProjectDetailsBody({ details, invitedUser, handleSendInvite }) {
                             }
                           }} className='relative w-8 h-8 rounded-full flex items-center justify-center bg-white/10 hover:bg-white/30 '><FaEllipsisH />
                             <div className={`absolute flex px-6 py-4 top-8 rounded-xl z-50 left-0 bg-[#0a0a0a] border-[3px] border-solid border-white/10  ${drawerValue === bug._id ? "block" : "hidden"}`}><span onClick={(e) => {
-                                handleCopyLine(e,bug._id)
-                            }}><FaLink className='mr-8 hover:text-green-400' /></span><span onClick={(e) => handleRemoveBug(e,bug._id)}><FaTrash className='hover:text-red-400' /></span></div>
+                              handleCopyLine(e, bug._id)
+                            }}><FaLink className='mr-8 hover:text-green-400' /></span><span onClick={(e) => handleRemoveBug(e, bug._id)}><FaTrash className='hover:text-red-400' /></span></div>
                           </span>
                         </td>
                       </tr>
@@ -143,6 +179,7 @@ function ProjectDetailsBody({ details, invitedUser, handleSendInvite }) {
           </>
         )
       }
+      <Pagination handleSetPagination={handleSetPagination} documentCount={documentCount} pagination={pagination} page={page} totalPages={totalPages} />
       <div className='absolute  max-h-users-list  right-16   top-32  flex flex-col items-center justify-between overflow-hidden'>
         <div className='p-1 w-full  max-h-users-list bg-black rounded-3xl border-2px border-solid border-white/10 flex items-center justify-center overflow-scroll flex-col'>
           {

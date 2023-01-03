@@ -28,7 +28,7 @@ class SendMail {
             html: `
                 <h3 style="color: orange;">Username: @${payload.username}</h3>
                 <h3 style="color: orange;">Email: ${payload.email}</h3>
-                <h3 style="color: orange;">Reset Password: ${process.env.FRONT_URL}/forgot-password/${payload.hashedId}</h3>
+                <h3 style="color: orange;">Reset Password: ${process.env.FRONT_URL}/forgot-password/${payload.id}</h3>
            `,
         }
         sgMail

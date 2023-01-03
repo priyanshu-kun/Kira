@@ -18,6 +18,7 @@ router.post('/api/show-password/:id',authMiddleware,authController.showPassword)
 router.delete('/api/delete-account/:id',authMiddleware,authController.deleteAccount); // timeline
 router.post('/api/logout-user',authMiddleware,authController.logOutUser);
 router.post('/api/troubleShoot-account',authController.troubleShootAccount)
+router.post('/api/forgot-password/:id',authController.forgotPassword)
 router.post('/api/create-project',authMiddleware, projectController.createProject) // timeline
 router.get('/api/fetch/user/projects',authMiddleware, projectController.fetchUserProjects)
 router.get('/api/fetch/user/project/details',authMiddleware, projectController.fetchProjectDetails)

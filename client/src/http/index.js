@@ -22,6 +22,7 @@ export const updateUser = async (id,data) => await api.patch('http://localhost:5
 export const deleteAccount = async (id) => await api.delete('http://localhost:5500/api/delete-account/'+id)
 export const userLogout = async (data) => await api.post('http://localhost:5500/api/logout-user', data)
 export const troubleShootAccount = async (data) => await api.post('http://localhost:5500/api/troubleShoot-account', data)
+export const forgotPassword = async (data,id) => await api.post('http://localhost:5500/api/forgot-password/'+id, data)
 export const createNewProject = async (data) => await api.post('http://localhost:5500/api/create-project', data)
 export const showPass = async (id,data) => await api.post("http://localhost:5500/api/show-password/"+id,data)
 export const removeProject = async (projectId) => await api.delete('http://localhost:5500/api/user/remove-project', {
@@ -42,7 +43,7 @@ export const fetchProjectDetails = async (userId) => await api.get('http://local
 export const invitePerson = async (data) => await api.post('http://localhost:5500/api/fetch/user/project/send-invite',data)
 export const findAllUsers = async () => await api.get('http://localhost:5500/api/fetch-all-users')
 export const createNewBug = async (data) => await api.post('http://localhost:5500/api/create-bug',data)
-export const fetchAllBugsRelatedToProject = async (id) => await api.get('http://localhost:5500/api/fetch-all-bugs/'+id)
+export const fetchAllBugsRelatedToProject = async (id,skip,limit,filter) => await api.get('http://localhost:5500/api/fetch-all-bugs/'+id+"?skip="+skip+"&limit="+limit)
 export const fetchBugsFromProject = async (id) => await api.get('http://localhost:5500/api/fetch-details/'+id)
 export const removeBugFromProject = async (id) => await api.delete('http://localhost:5500/api/remove-bug/'+id)
 export const updateBug = async (id,data) => await api.patch('http://localhost:5500/api/update-bug/'+id,data)
