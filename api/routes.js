@@ -6,6 +6,7 @@ import authController from "./controllers/user.controller.js"
 import authMiddleware from "./middleware/auth.middleware.js";
 import bugsController from "./controllers/bugs.controller.js";
 import timelineController from "./controllers/timeline.controller.js";
+import commentController from "./controllers/comment.controller.js";
 
 router.post('/api/send-otp',authController.sendOTP);
 router.post('/api/verify-otp',authController.verifyOTP);
@@ -34,5 +35,4 @@ router.patch('/api/update-bug/:id',authMiddleware,bugsController.updateBug) // t
 router.get('/api/resolve-bug/:id',authMiddleware,bugsController.resolveBug) // timeline
 router.get('/api/unresolve-bug/:id/:activityId',authMiddleware,bugsController.unResolve) // timeline
 router.get('/api/fetch-timeline-activites',authMiddleware,timelineController.fetchAllActivites)
-
 export default  router

@@ -1,7 +1,7 @@
 
 //require mongoose module
 import mongoose from "mongoose"
-
+mongoose.set('strictQuery', true);
 //require chalk module to give colors to console text
 import chalk from "chalk"
 

@@ -9,6 +9,7 @@ import { FiArrowLeft, FiTrash, FiXCircle } from 'react-icons/fi'
 import { useSelector } from 'react-redux'
 import { FaCheck, FaLink, FaTimes, FaTrash } from 'react-icons/fa'
 import copy from 'copy-to-clipboard'
+import Comments from './Comments'
 
 
 function BugDetails() {
@@ -190,7 +191,7 @@ function BugDetails() {
                     ) : (
                       <>
                         <textarea name='Description' value={description} onChange={(e) => setDescription(e.target.value)} className="textarea textarea-bordered mt-2 bg-black w-3/4 h-28 border-2px border-solid border-white/10  text-base" placeholder="Add description"></textarea>
-                        <button onClick={handleUpdateChange} className='btn hover:bg-green-500 bg-green-400 w-20 text-white mt-4'>Update</button>
+                        <button onClick={handleUpdateChange} className='btn hover:bg-green-500 bg-green-400 w-20 text-black normal-case mt-4'>Update</button>
                       </>
                     )
                   }
@@ -208,7 +209,7 @@ function BugDetails() {
                             <div className='relative  w-fit'>
                               <img onClick={() => setFullView(true)} src={image.img} alt="upload image" className='w-[500px] mt-2 h-[300px] object-cover relative rounded-lg cursor-pointer' />
                               <span onClick={(e) => setImage({ img: "", width: "", height: "" })} className='absolute  top-2 right-2 rounded-full cursor-pointer bg-black'><FiXCircle className='text-3xl text-white' /></span>
-                              <button onClick={handleUpdateChange} className='btn hover:bg-green-500 bg-green-400 w-20 text-white mt-2'>Update</button>
+                              <button onClick={handleUpdateChange} className='btn hover:bg-green-500 bg-green-400 w-20 text-black normal-case mt-2'>Update</button>
                             </div>
                           </>
                         ) : (
@@ -276,6 +277,7 @@ function BugDetails() {
             )
           }
         </div>
+        <Comments bugId={id} />
       </div>
       {
         fullView && <div className='w-[100vw] h-[100vh] fixed flex items-center justify-center top-0 right-0 bg-black/80 z-[99999] overflow-hidden'>
