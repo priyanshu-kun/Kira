@@ -300,7 +300,7 @@ thead th {
     font-family: './assets/fonts/HelveticaNowDisplay-Medium.otf';
 }
 
-.bug-details-left h1,.profile,.profile-span, .Details-box h1,.details span {
+.bug-details-left h1,.profile,.profile-span, .Details-box h1,.details,.details span {
     font-family: './assets/fonts/HelveticaNowDisplay-ExtBlk.otf';
 }
 

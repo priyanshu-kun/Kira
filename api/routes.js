@@ -35,4 +35,6 @@ router.patch('/api/update-bug/:id',authMiddleware,bugsController.updateBug) // t
 router.get('/api/resolve-bug/:id',authMiddleware,bugsController.resolveBug) // timeline
 router.get('/api/unresolve-bug/:id/:activityId',authMiddleware,bugsController.unResolve) // timeline
 router.get('/api/fetch-timeline-activites',authMiddleware,timelineController.fetchAllActivites)
+router.post("/api/save-comment",commentController.saveComment)
+router.get("/api/get-comments/:id",commentController.getComments)
 export default  router

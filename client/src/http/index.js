@@ -50,6 +50,8 @@ export const updateBug = async (id,data) => await api.patch('http://localhost:55
 export const resolveBug = async (id) => await api.get('http://localhost:5500/api/resolve-bug/'+id)
 export const unResolveBug = async (id,activityId) => await api.get('http://localhost:5500/api/unresolve-bug/'+id+"/"+activityId)
 export const fetchTimelineActivites = async (skip,limit) => await api.get(`http://localhost:5500/api/fetch-timeline-activites?skip=${skip}&limit=${limit}`)
+export const saveComment = async (data) => await api.post("http://localhost:5500/api/save-comment",data)
+export const getComments = async (id) => await api.get("http://localhost:5500/api/get-comments/"+id)
 
 api.interceptors.response.use(function (response) {
     return response;

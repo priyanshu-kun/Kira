@@ -2,10 +2,10 @@ import React, { useEffect } from 'react'
 import { useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
-import { fetchBugsFromProject, resolveBug, updateBug } from '../../http'
+import { fetchBugsFromProject, getComments, resolveBug, updateBug } from '../../http'
 import Preloader from './Preloader'
 import Navbar from "./Navbar"
-import { FiArrowLeft, FiTrash, FiXCircle } from 'react-icons/fi'
+import { FiArrowLeft, FiClock, FiTrash, FiXCircle } from 'react-icons/fi'
 import { useSelector } from 'react-redux'
 import { FaCheck, FaLink, FaTimes, FaTrash } from 'react-icons/fa'
 import copy from 'copy-to-clipboard'
@@ -21,6 +21,7 @@ function BugDetails() {
   const [description, setDescription] = useState("")
   const [fullView, setFullView] = useState(false)
   const [copyLink, setCopyLink] = useState(false)
+  const [commentList,setCommentList] = useState([])
   const navigate = useNavigate()
 
 
@@ -99,7 +100,6 @@ function BugDetails() {
         }
       }
       const { data: { data: bug } } = await updateBug(id, payload)
-      console.log(bug)
       setBugDetails(bug)
       return toast.success("Updated Successfully.", {
         icon: "💥"
@@ -152,6 +152,24 @@ function BugDetails() {
   }
 
 
+  const updateComment = (data) => {
+    setCommentList(prev => {
+      return [...prev,data]
+    })
+  }
+
+
+  useEffect(() => {
+    (async () => {
+      const {data: {reqStatus,data}} = await getComments(id)
+      if(reqStatus) {
+        console.log(data)
+        setCommentList(data)
+      }
+    })()
+  },[])
+
+
   return (
     <>
       <Navbar />
@@ -198,7 +216,7 @@ function BugDetails() {
                   <div className='mt-12'>
                     <h1 className='profile text-xl ml-2' >Attachment</h1>
                     {
-                      bugDetails.Attachment.img !== "" ? (
+                      bugDetails && bugDetails?.Attachment.img !== "" ? (
                         <div className='w-[200px] h-[200px] mt-4 rounded-2xl border-2px relative border-solid border-white/10 cursor-pointer'>
                           <img onClick={() => setFullView(true)} className='object-cover w-full h-full rounded-2xl' src={bugDetails.Attachment.img} alt="" />
                           <span onClick={handleRemoveAttachment} className='absolute  top-2 right-2 rounded-lg cursor-pointer p-2 bg-white'><FaTrash className='text-lg text-red-400' /></span>
@@ -241,35 +259,35 @@ function BugDetails() {
                   <h1 className='text-xl mb-4'>Details</h1>
                   <div className="divider"></div>
                   <div>
-                    <div className='mb-6 details'>
+                    <div className='mb-6'>
                       <span className='mr-20 opacity-60 text-sm'>Reporter</span>
-                      <span className='text-blue-400'>@Tadano_Kun</span>
+                      <span className="text-blue-400 details">@Tadano_Kun</span>
                     </div>
-                    <div className='mb-6 details'>
+                    <div className='mb-6'>
                       <span className='mr-20 opacity-60 text-sm'>Assigned To</span>
-                      <span>Tadano_Kun</span>
+                      <span className="details">Tadano_Kun</span>
                     </div>
-                    <div className='mb-6 details'>
+                    <div className='mb-6'>
                       <span className='mr-20 opacity-60 text-sm'>Type</span>
-                      <span>Improvement</span>
+                      <span className="details">Improvement</span>
                     </div>
-                    <div className='mb-6 details'>
+                    <div className='mb-6'>
                       <span className='mr-20 opacity-60 text-sm'>Priority</span>
-                      <span>Urgent</span>
+                      <span className="details">Urgent</span>
                     </div>
-                    <div className='mb-6 details'>
+                    <div className='mb-6'>
                       <span className='mr-20 opacity-60 text-sm'>Severity</span>
-                      <span>Crash</span>
+                      <span className="details">Crash</span>
                     </div>
-                    <div className='mb-6 details'>
+                    <div className='mb-6 flex'>
                       <span className='mr-20 opacity-60 text-sm'>Created At</span>
-                      <span>Mon 28, 2022</span>
+                      <span className='text-sm opacity-60 flex items-center'><FiClock className='mr-2' />Mon 28, 2022</span>
                     </div>
                     <div className="divider"></div>
                     <div className='mb-4'>
-                      <span className='profile'><span className='profile-span mr-4 opacity-60 text-base'>Platform</span>Linux</span><br />
-                      <span className='profile'><span className='profile-span mr-4 opacity-60 text-base'>OS</span>Mint</span><br />
-                      <span className='profile'><span className='profile-span mr-4 opacity-60 text-base'>Version</span>1.0</span>
+                      <span ><span className='mr-4 opacity-60 text-base'>Platform</span><span className='details'>Linux</span></span><br />
+                      <span ><span className='mr-4 opacity-60 text-base'>OS</span><span className='details'>Mint</span></span><br />
+                      <span ><span className='mr-4 opacity-60 text-base'>Version</span><span className='details'>1.0</span></span>
                     </div>
                   </div>
                 </div>
@@ -277,7 +295,7 @@ function BugDetails() {
             )
           }
         </div>
-        <Comments bugId={id} />
+        <Comments bugId={id} commentList={commentList} refreshComments={updateComment} />
       </div>
       {
         fullView && <div className='w-[100vw] h-[100vh] fixed flex items-center justify-center top-0 right-0 bg-black/80 z-[99999] overflow-hidden'>
