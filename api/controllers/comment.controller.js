@@ -1,5 +1,5 @@
 import commentService from "../services/comment.service.js";
-const {saveNewComment,getComment,getCommentsFromDB} = commentService
+const {saveNewComment,getComment,getCommentsFromDB,saveNewCommentWithChild} = commentService
 
 class commentController {
     async saveComment(req,res) {
@@ -7,7 +7,13 @@ class commentController {
             if(!req.body && !req.body.content) {
                 return res.status(404).json({ reqStatus: false, data: "Comment cannot be empty." });
             }
-            const savedComment = await saveNewComment(req.body)
+            let savedComment;
+            if(req.body.respondTo) {
+                savedComment = await saveNewCommentWithChild(req.body,req.body.respondTo)
+            }
+            else {
+                savedComment = await saveNewComment(req.body)
+            }
             if(!savedComment) {
                 return res.status(404).json({ reqStatus: false, data: "Error while saving comment" });
             }

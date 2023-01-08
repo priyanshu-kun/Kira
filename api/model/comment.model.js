@@ -22,7 +22,11 @@ const commentsSchema = mongoose.Schema({
     createdAt: {
         type: Date,
         default: Date.now
-    }
+    },
+    childComments: [{
+        type: mongoose.Types.ObjectId,
+        ref: "Comments"
+    }]
 })
 
 

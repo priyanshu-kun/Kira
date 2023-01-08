@@ -51,6 +51,7 @@ function SingleComment({ comment, bugId, refreshComments }) {
                 <span>{comment.createdAt}</span>
             </div>
             <p>{comment.content}</p>
+            <button className="btn">{comment.childComments ? comment.childComments.length: 0}</button>
             <button onClick={toogleReplyForm} className="btn">Reply</button>
             {
                 reply && (
