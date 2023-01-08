@@ -6,7 +6,7 @@ import { fetchBugsFromProject, getComments, resolveBug, updateBug } from '../../
 import Preloader from './Preloader'
 import Navbar from "./Navbar"
 import { FiArrowLeft, FiClock, FiTrash, FiXCircle } from 'react-icons/fi'
-import { useSelector } from 'react-redux'
+import { useDispatch,useSelector } from 'react-redux'
 import { FaCheck, FaLink, FaTimes, FaTrash } from 'react-icons/fa'
 import copy from 'copy-to-clipboard'
 import Comments from './Comments'
@@ -163,7 +163,6 @@ function BugDetails() {
     (async () => {
       const {data: {reqStatus,data}} = await getComments(id)
       if(reqStatus) {
-        console.log(data)
         setCommentList(data)
       }
     })()
@@ -285,9 +284,9 @@ function BugDetails() {
                     </div>
                     <div className="divider"></div>
                     <div className='mb-4'>
-                      <span ><span className='mr-4 opacity-60 text-base'>Platform</span><span className='details'>Linux</span></span><br />
-                      <span ><span className='mr-4 opacity-60 text-base'>OS</span><span className='details'>Mint</span></span><br />
-                      <span ><span className='mr-4 opacity-60 text-base'>Version</span><span className='details'>1.0</span></span>
+                      <span className='-mt-2 block' ><span className='mr-12 opacity-60 text-base'>Platform</span><span className='details'>Linux</span></span><br />
+                      <span className='-mt-2 block' ><span className='mr-12 opacity-60 text-base'>OS</span><span className='details'>Mint</span></span><br />
+                      <span className='-mt-2 block' ><span className='mr-12 opacity-60 text-base'>Version</span><span className='details'>1.0</span></span>
                     </div>
                   </div>
                 </div>
@@ -295,6 +294,7 @@ function BugDetails() {
             )
           }
         </div>
+        <div className="divider mt-32"></div>
         <Comments bugId={id} commentList={commentList} refreshComments={updateComment} />
       </div>
       {

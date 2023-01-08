@@ -13,7 +13,9 @@ const timelineSchema = mongoose.Schema({
             "bugUpdated",
             "deleteBug",
             "resolveBug",
-            "reOpenBug"
+            "reOpenBug",
+            "comment",
+            "reply"
         ],
         required: true
     },

@@ -2,12 +2,10 @@ import React, { useState, useEffect } from 'react'
 import { fetchProjectDetails, fetchUserProjects } from '../../http'
 import { useSelector, useDispatch } from "react-redux"
 import ProjectModal from './Modals/ProjectModal';
-import { FiCopy, FiMoreHorizontal, FiTrash, FiArrowLeft } from "react-icons/fi"
 import { setProjectDetails, setProjects } from '../../store/project.slice';
 import ProjectPlaceholder from './ProjectPlaceholder';
 import ProjectTable from './ProjectTable';
 import { toast } from 'react-toastify';
-import ProjectDetails from './ProjectDetails';
 import { useNavigate } from 'react-router-dom';
 import Preloader from './Preloader';
 

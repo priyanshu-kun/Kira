@@ -58,7 +58,7 @@ function SingleComment({ comment, bugId, refreshComments, parentData }) {
             <p className='my-3 ml-2 text-xl'>{(parentData && parentData.username) && <span className='text-blue-400 text-lg mr-2 details'>@{parentData.username}</span>}{comment.content}</p>
             <div className="divider"></div>
             <div className='flex items-center justify-between'>
-                <button className="min-w-[48px] h-12 p-3 rounded-lg border border-solid border-white/10 bg-accent-color/5 text-white">{comment.childComments ? comment.childComments.length : 0}</button>
+                <button className="min-w-[48px] h-12 p-3 rounded-lg border border-solid border-white/10 bg-accent-color/5 text-white cursor-default">{comment.childComments ? comment.childComments.length : 0}</button>
                 <div>
                     {
                         user ? (

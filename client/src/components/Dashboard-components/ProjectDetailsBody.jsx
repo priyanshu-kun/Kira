@@ -110,7 +110,7 @@ function ProjectDetailsBody({ details, invitedUser, handleSendInvite }) {
         <h1 ><span className='font-exBold'>PROJECT ID:</span> {details?._id}
         </h1>
         <h1 className='flex items-center'> <span className='font-exBold'>LEAD: </span> @{details?.projectLead}
-          <FiCopy className='ml-2 text-xl cursor-pointer' />
+          
         </h1>
         <h1> <span className='font-exBold'>OWNER:</span>  {details?.owner}</h1>
         <div className='my-3 w-fit pl-12'>
@@ -135,7 +135,6 @@ function ProjectDetailsBody({ details, invitedUser, handleSendInvite }) {
                   <th className="pl-4 pb-2 cursor-pointer" onClick={() => setFilter("Priority")}>Priority</th>
                   <th className="pl-4 pb-2 cursor-pointer" onClick={() => setFilter("Severity")}>Severity</th>
                   <th className="pl-4 pb-2 cursor-pointer" onClick={() => setFilter("createdAt")}>Created</th>
-                  <th className="pl-4 pb-2 cursor-pointer"><FaComments /></th>
                   <th className="pl-4 pb-2 cursor-pointer" onClick={() => setFilter("isResolve")}>Resolution</th>
                   <th className="pl-4 pb-2"></th>
                 </tr>
@@ -151,7 +150,6 @@ function ProjectDetailsBody({ details, invitedUser, handleSendInvite }) {
                         <td className="px-4 py-2">{bug.Priority}</td>
                         <td className='px-4 py-2'>{bug.Severity}</td>
                         <td className='px-4 py-2'>{moment(bug.createdAt).format("MMM D, YYYY")}</td>
-                        <td className='px-4 py-2'>12</td>
                         <td className='px-4 py-2'>{!bug.isResolve ? <span className='flex items-center'>UnResolved<FaCheckCircle className='ml-2 text-green-400' /></span> : <span className='flex items-center' >Resolved<FaTimesCircle className='ml-2 text-red-400' /></span>}</td>
                         <td className='py-4 px-2 relative'>
                           <span onClick={(e) => {

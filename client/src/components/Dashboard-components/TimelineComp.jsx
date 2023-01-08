@@ -10,6 +10,7 @@ import DeleteBug from './Activites/DeleteBug'
 import ResolveBug from './Activites/ResolveBug'
 import Preloader from './Preloader';
 import ReOpenBug from './Activites/ReOpenBug';
+import CreateComment from './Activites/CreateComment';
 
 
 function TimelineComp({ Activites, loader,setLoader,setDocumentCount,setTotalPages }) {
@@ -44,6 +45,10 @@ function TimelineComp({ Activites, loader,setLoader,setDocumentCount,setTotalPag
                                         return <ResolveBug setLoader={setLoader} setTotalPages={setTotalPages}  setDocumentCount={setDocumentCount} activity={activity} />
                                     case "reOpenBug":
                                         return <ReOpenBug activity={activity} />
+                                    case "comment":
+                                        return <CreateComment activity={activity} />
+                                    case "reply":
+                                        return <CreateComment activity={activity} />
                                 }
                             })
                         }

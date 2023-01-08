@@ -40,7 +40,7 @@ function Navbar() {
 
     return (
         <div className='dashboard-navbar fixed top-0 flex justify-between items-center px-20 left-0 right-0 z-50 h-16 bg-black'>
-            <div className='dashboard-logo text-lg text-white'>Kira</div>
+            <Link to="/" className='dashboard-logo text-lg text-white'>Kira</Link>
             <div className='flex justify-between items-center'>
                 <div className='flex justify-between items-center mr-8'>
                     <p className='navbar-username text-white opacity-80'><span className='text-button-main-light mr-1'>@</span>{user !== null ? user.username : "Username"}</p>

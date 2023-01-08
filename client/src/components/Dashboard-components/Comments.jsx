@@ -49,8 +49,8 @@ function Comments({ bugId, refreshComments, commentList }) {
 
 
   return (
-    <div className='mt-[140px] w-[80%] mx-auto'>
-      <h1 className="dashboard-logo w-fit font-['./assets/fonts/HelveticaNowDisplay-ExtBlk.otf'] text-2xl mr-2 mb-2">Discuss</h1>
+    <div className='mt-[100px] w-[80%] mx-auto'>
+      <h1 className="dashboard-logo w-fit font-['./assets/fonts/HelveticaNowDisplay-ExtBlk.otf'] text-2xl mr-2 mb-6">Discuss</h1>
       {
         user ? (
           <button onClick={openForm} className="btn btn-primary bg-green-400 hover:bg-green-400 normal-case text-black border-none w-[220px]">Start Discussion</button>
@@ -63,7 +63,7 @@ function Comments({ bugId, refreshComments, commentList }) {
           <CommentForm closeCommentForm={closeForm} handleComment={handleInputChange} handleCommentSubmit={handleInputSubmit} user={user} comment={Comment} type={"root"} replyingUsername={null} />
         )
       }
-      <div className='mt-[100px]'>
+      <div className='mt-[50px]'>
         {
           commentList && commentList.map((cmt,index) => {
             return (
