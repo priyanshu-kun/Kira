@@ -295,7 +295,7 @@ function BugDetails() {
           }
         </div>
         <div className="divider mt-32"></div>
-        <Comments bugId={id} commentList={commentList} refreshComments={updateComment} />
+          <Comments bugId={id} commentList={commentList} refreshComments={updateComment} />
       </div>
       {
         fullView && <div className='w-[100vw] h-[100vh] fixed flex items-center justify-center top-0 right-0 bg-black/80 z-[99999] overflow-hidden'>

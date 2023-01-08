@@ -1,9 +1,19 @@
 import React from 'react'
 import { FaArrowRight, FaSmile } from 'react-icons/fa'
+import EmojiPicker from 'emoji-picker-react';
+import { useState } from 'react';
 
-function CommentForm({ closeCommentForm, handleCommentSubmit, handleComment, user, comment, type, replyingUsername }) {
+function CommentForm({ closeCommentForm,setComment, handleCommentSubmit, handleComment, user, comment, type, replyingUsername }) {
+    const [emoji,setEmoji] = useState(false)
     return (
         <div className='fixed bottom-0 left-0 h-[300px] border-t-2px border-solid border-white/10 bg-[#000] right-0'>
+            {
+                emoji && (
+            <div className='absolute top-0 left-0'>
+                <EmojiPicker theme="dark" height={300} onEmojiClick={(emg) => setComment(prev => prev += emg.emoji)} />
+            </div>
+                )
+            }
             <div className='w-[60%] h-full mx-auto flex items-start justify-start mt-6'>
                 <div className='w-full h-full'>
                     <div>
@@ -19,8 +29,9 @@ function CommentForm({ closeCommentForm, handleCommentSubmit, handleComment, use
                         </div>
                         <textarea name="Bio" placeholder='Begin discussion' type="text" value={comment} onChange={handleComment} className="textarea input-bordered max-w-xs w-full border-2px border-solid border-white/10 bg-[#0a0a0a] text-lg min-h-[140px]" />
                     </div>
+
                     <div className='flex items-center justify-between mt-2'>
-                        <button className='btn bg-none border-none hover:bg-none'><FaSmile className='text-xl' /></button>
+                        <button onClick={() => setEmoji(prev => !prev)} className='btn bg-none border-none hover:bg-none'><FaSmile className='text-xl' /></button>
                         <div>
                             <button onClick={closeCommentForm} className='btn mr-3 normal-case'>Cancel</button>
                             <button onClick={handleCommentSubmit} className='btn bg-green-400 hover:bg-green-400 border-none text-black normal-case'>Submit</button>

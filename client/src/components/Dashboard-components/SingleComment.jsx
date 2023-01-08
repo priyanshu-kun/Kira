@@ -73,7 +73,7 @@ function SingleComment({ comment, bugId, refreshComments, parentData }) {
             </div>
             {
                 reply && (
-                    <CommentForm closeCommentForm={toogleReplyForm} handleComment={handleInputChange} handleCommentSubmit={handleInputSubmit} user={user} comment={Comment} type={"reply"} replyingUsername={comment.author.username} />
+                    <CommentForm closeCommentForm={toogleReplyForm} setComment={setComment} handleComment={handleInputChange} handleCommentSubmit={handleInputSubmit} user={user} comment={Comment} type={"reply"} replyingUsername={comment.author.username} />
                 )
             }
         </div>

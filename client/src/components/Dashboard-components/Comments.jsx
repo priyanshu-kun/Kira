@@ -5,6 +5,7 @@ import { saveComment } from '../../http'
 import SingleComment from './SingleComment'
 import ReplyComment from "./ReplyComment"
 import CommentForm from './CommentForm'
+import EmojiPicker from 'emoji-picker-react'
 
 function Comments({ bugId, refreshComments, commentList }) {
 
@@ -60,17 +61,19 @@ function Comments({ bugId, refreshComments, commentList }) {
       }
       {
         form && (
-          <CommentForm closeCommentForm={closeForm} handleComment={handleInputChange} handleCommentSubmit={handleInputSubmit} user={user} comment={Comment} type={"root"} replyingUsername={null} />
+          <CommentForm closeCommentForm={closeForm} setComment={setComment}  handleComment={handleInputChange} handleCommentSubmit={handleInputSubmit} user={user} comment={Comment} type={"root"} replyingUsername={null} />
         )
       }
       <div className='mt-[50px]'>
         {
-          commentList && commentList.map((cmt,index) => {
+          commentList && commentList.length === 0 ? (
+            <h1 className='text-center details mt-24 text-2xl'>No Comments 🙃</h1>
+          ) : commentList.map((cmt, index) => {
             return (
               (cmt && !cmt.respondTo) && (
                 <>
-                  <SingleComment key={cmt._id} parentUsername={null} comment={cmt} bugId={bugId} refreshComments={refreshComments}  />
-                  <ReplyComment key={index} comment={cmt} commentList={commentList} bugId={bugId} refreshComments={refreshComments} parentCommentId={cmt._id} parentData={cmt.author}  />
+                  <SingleComment key={cmt._id} parentUsername={null} comment={cmt} bugId={bugId} refreshComments={refreshComments} />
+                  <ReplyComment key={index} comment={cmt} commentList={commentList} bugId={bugId} refreshComments={refreshComments} parentCommentId={cmt._id} parentData={cmt.author} />
                 </>
               )
             )
