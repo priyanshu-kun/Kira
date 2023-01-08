@@ -308,3 +308,8 @@ thead th {
 .profile-section input,textarea {
     background-color: #0C0C0C !important;
 }
+
+
+.important-text-white {
+    color: rgb(255, 255, 255,0.6) !important;
+}
