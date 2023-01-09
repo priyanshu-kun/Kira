@@ -30,7 +30,6 @@ class commentController {
                     await createNewActivity(payload)
                 }
                 catch (e) {
-                    console.log(e)
                     return res.status(500).json({ reqStatus: false, data: "Error while creating timeline." });
                 }
             }

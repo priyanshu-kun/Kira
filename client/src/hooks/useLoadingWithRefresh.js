@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import axios from 'axios';
 import { setUser } from '../store/user.slice';
 import { useDispatch } from 'react-redux';
@@ -26,7 +26,6 @@ export function useLoadingWithRefresh() {
         }
       }
       catch (e) {
-        console.log(e)
         setLoading(!loading)
       }
     })()

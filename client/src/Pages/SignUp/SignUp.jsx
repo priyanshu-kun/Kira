@@ -1,5 +1,5 @@
-import React, { useRef, useState } from 'react'
-import { FaGoogle, FaGithub, FaUserSecret } from "react-icons/fa";
+import React, { useState } from 'react'
+import {  FaUserSecret } from "react-icons/fa";
 import character from "../../assets/character.svg"
 import "./SignUp.css"
 import { Link, useNavigate, useSearchParams } from "react-router-dom"
@@ -10,7 +10,6 @@ import Navbar from '../../components/Navbar';
 import avatar from "../../assets/avatar.png"
 import { toast } from 'react-toastify';
 import { setUser } from '../../store/user.slice';
-const MAX = 1000000
 const initialState = {
   username: "",
   fullName: "",

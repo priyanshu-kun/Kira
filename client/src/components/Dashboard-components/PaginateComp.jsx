@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import ReactPaginate from "react-paginate"
-import { FiArrowLeft, FiArrowRight, FiArrowUpLeft, FiMoreHorizontal, FiTrash } from 'react-icons/fi'
+import { FiArrowLeft, FiArrowRight, FiTrash } from 'react-icons/fi'
 import { fetchUserProjects, removeProject } from '../../http'
 import { toast } from 'react-toastify'
 import { setProjects } from '../../store/project.slice'

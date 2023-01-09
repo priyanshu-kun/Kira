@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import NewUserCreated from './Activites/NewUserCreated';
 import UserUpdated from './Activites/UserUpdated';
 import DeleteAccount from './Activites/DeleteAccount'

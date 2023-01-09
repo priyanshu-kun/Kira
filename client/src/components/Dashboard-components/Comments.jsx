@@ -5,14 +5,12 @@ import { getComments, saveComment } from '../../http'
 import SingleComment from './SingleComment'
 import ReplyComment from "./ReplyComment"
 import CommentForm from './CommentForm'
-import EmojiPicker from 'emoji-picker-react'
 
 function Comments({ bugId, refreshComments, commentList }) {
 
   const [Comment, setComment] = useState("")
   const { user } = useSelector(state => state.user)
   const [form, setForm] = useState(false)
-  const [Replies, setReplies] = useState(false)
 
   function handleInputChange(e) {
     setComment(e.target.value)

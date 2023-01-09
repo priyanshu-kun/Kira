@@ -1,6 +1,6 @@
 import React from 'react'
 import { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { fetchProjectDetails, findAllUsers, invitePerson } from '../../http'

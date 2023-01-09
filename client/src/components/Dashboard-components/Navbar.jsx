@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { FaSignOutAlt } from "react-icons/fa"
 import { userLogout } from '../../http'
 import { useDispatch } from 'react-redux'

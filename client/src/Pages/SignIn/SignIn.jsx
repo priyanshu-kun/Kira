@@ -1,10 +1,7 @@
-import React, { useRef, useState } from 'react'
-import { FiArrowRight } from "react-icons/fi";
-import { FaGoogle, FaGithub, FaUserSecret } from "react-icons/fa";
+import React, { useState } from 'react'
+import { FaUserSecret } from "react-icons/fa";
 import character from "../../assets/character.svg"
-import ContentEditable from "react-contenteditable"
-import avatar from "../../assets/avatar.png"
-import { useDispatch, useSelector } from "react-redux"
+import { useDispatch } from "react-redux"
 import "./SignIn.css"
 import { Link } from "react-router-dom"
 import Navbar from '../../components/Navbar';
@@ -13,7 +10,6 @@ import { toast } from 'react-toastify';
 import { setUser } from '../../store/user.slice';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
-// import pointingArrow from "../../assets/arrow.svg"
 const initialState = {
   emailAndUsername: "",
   password: ""

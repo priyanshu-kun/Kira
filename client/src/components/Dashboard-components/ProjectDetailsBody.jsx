@@ -1,10 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import InviteModal from './Modals/InviteModal'
-import { FiCopy, FiDisc } from 'react-icons/fi'
-import { FaAngleDoubleUp, FaAngleUp, FaArrowUp, FaAsterisk, FaBomb, FaBug, FaCalendar, FaCheckCircle, FaChevronDown, FaChevronUp, FaCircle, FaComments, FaEllipsisH, FaExclamationTriangle, FaFire, FaHotjar, FaLightbulb, FaLink, FaMeteor, FaMinus, FaRadiationAlt, FaShare, FaSkullCrossbones, FaSplotch, FaTasks, FaTimesCircle, FaTrash } from 'react-icons/fa'
-import { fetchAllBugsRelatedToProject, fetchProjectDetails, removeBugFromProject } from '../../http'
-import { useDispatch, useSelector } from 'react-redux'
-import { setProjectDetails } from '../../store/project.slice'
+import { FaAngleDoubleUp, FaArrowUp, FaAsterisk, FaBomb, FaBug, FaCalendar, FaCheckCircle, FaChevronDown, FaChevronUp, FaCircle, FaEllipsisH, FaExclamationTriangle, FaLightbulb, FaLink, FaMeteor, FaMinus, FaSkullCrossbones, FaTasks, FaTimesCircle, FaTrash } from 'react-icons/fa'
+import { fetchAllBugsRelatedToProject, removeBugFromProject } from '../../http'
 import { toast } from 'react-toastify'
 import moment from "moment"
 import { useNavigate } from "react-router-dom"
@@ -19,7 +16,6 @@ function ProjectDetailsBody({ details, invitedUser, handleSendInvite }) {
     limit: 5
   })
   const [projectBugs, setProjectBugs] = useState([])
-  const [loader, setLoader] = useState(true)
   const [drawerValue, setDrawerValue] = useState(null)
   const [drawer, setDrawer] = useState(true)
   const [page, setPage] = useState(1)

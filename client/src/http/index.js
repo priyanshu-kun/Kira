@@ -9,7 +9,6 @@ const api = axios.create({
     },
 });
 
-// const dispatch = useDispatch()
 
 
 export const sendOTP = async (data) => await api.post('http://localhost:5500/api/send-otp', data)
@@ -63,7 +62,6 @@ api.interceptors.response.use(function (response) {
             !originalRequest._isRetry
         ) {
             originalRequest.isRetry = true;
-            console.log(originalRequest.isRetry)
             try {
                 await axios.get(
                     `http://localhost:5500/api/refresh`,

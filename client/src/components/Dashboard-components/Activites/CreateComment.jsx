@@ -2,7 +2,6 @@ import moment from 'moment'
 import React from 'react'
 
 function CreateComment({activity}) {
-    console.log("acitvity: ",activity)
   return (
     <li className="mb-10 ml-6">
       <span className="flex absolute -left-4 justify-center items-center  bg-accent-color rounded-full ring-2 ring-accent-color w-8 h-8">

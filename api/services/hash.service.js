@@ -1,5 +1,5 @@
 import crypto from "crypto"
-import bcrypt, { getRounds } from "bcrypt"
+import bcrypt from "bcrypt"
 class HashService {
    async hashOTP(hash) {
        return await crypto.createHmac('sha256','somesecret').update(hash).digest('hex') 

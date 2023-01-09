@@ -1,8 +1,6 @@
-import React, { useRef, useState } from 'react'
-import { FiArrowRight } from "react-icons/fi";
-import { FaGoogle, FaGithub } from "react-icons/fa";
+import React, {  useState } from 'react'
 import character from "../../assets/character.svg"
-import { Link, useNavigate, useSearchParams } from "react-router-dom"
+import { useNavigate, useSearchParams } from "react-router-dom"
 import Navbar from '../../components/Navbar';
 import { createAccount, verifyOTP } from '../../http';
 import { toast } from 'react-toastify';
@@ -35,7 +33,6 @@ function ConfirmOTP() {
             if (otpData.reqStatus) {
                 const queryData = queryParams.get("data");
                 const { data } = await createAccount({user, query: queryData})
-                console.log(data)
             }
             navigate("/SignIn")
             toast.success("Account created successfully.", {

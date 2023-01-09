@@ -10,13 +10,13 @@ import timelineService from "../services/timeline.service.js";
 import crypto from "crypto"
 import url from "url"
 import UserDto from "../dto/user.dto.js";
-const { createNewProject, fetchUserProjects, fetchDetails, removeProjectFromDB, deleteAllProjectsRelatedToUser, updateAllProjectWhereUserInvited } = projectService;
+const {  fetchDetails, deleteAllProjectsRelatedToUser, updateAllProjectWhereUserInvited } = projectService;
 const { deleteAllBugsRelatedToUser } = bugsService
 const { sendMail,sendMailForTroubleShooting } = emailService
 const { hashOTP, hashPassword, comparePassword } = hashOtpService
 const { verifyOtp, generateOTP } = otpService
 const { createUser, findAllUsers, findUserByEmail, findUserByUsernameAndEmail, findUserById, findUserByUsername, update, deleteAccountFromDB } = UserService
-const { generateTokens, removeRefreshToken, storeRefreshToken, verifyRefreshToken, deleteAllRefreshTokens, findRefreshTokenInDB, updateRefreshToken,generateTokensForTroubleShooting } = tokenService
+const { generateTokens, removeRefreshToken, storeRefreshToken, verifyRefreshToken, deleteAllRefreshTokens, findRefreshTokenInDB, updateRefreshToken } = tokenService
 const { createNewActivity } = timelineService;
 import Jimp from "jimp"
 import path, { dirname } from "path"
@@ -45,8 +45,7 @@ class AuthController {
             const expire = Date.now() + ttl;
             const data = `${Email}.${otp}.${expire}`
             const hash = await hashOTP(data)
-            console.log(otp)
-            // await sendMail(Email,otp)
+            await sendMail(Email,otp)
             return res.json({
                 reqStatus: true, data: {
                     otp,
@@ -189,7 +188,6 @@ class AuthController {
             if (!user.activated) {
                 return res.status(401).json({ reqStatus: false, data: "Please create account first." });
             }
-            // console.log(user)
             const isMatch = await comparePassword(user.password, password);
             if (!isMatch) {
                 return res.status(401).json({ reqStatus: false, data: "username, email or password is incorrect." });
