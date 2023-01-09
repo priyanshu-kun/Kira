@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import InviteModal from './Modals/InviteModal'
 import { FaAngleDoubleUp, FaArrowUp, FaAsterisk, FaBomb, FaBug, FaCalendar, FaCheckCircle, FaChevronDown, FaChevronUp, FaCircle, FaEllipsisH, FaExclamationTriangle, FaLightbulb, FaLink, FaMeteor, FaMinus, FaSkullCrossbones, FaTasks, FaTimesCircle, FaTrash } from 'react-icons/fa'
-import { fetchAllBugsRelatedToProject, removeBugFromProject } from '../../http'
+import { removeBugFromProject } from '../../http'
 import { toast } from 'react-toastify'
 import moment from "moment"
 import { useNavigate } from "react-router-dom"
 import copy from "copy-to-clipboard"
 import Pagination from './Pagination'
+import { useFetchBugsRelatedToProject } from '../../hooks/useFetchBugsRelatedToProject'
 
 function ProjectDetailsBody({ details, invitedUser, handleSendInvite }) {
 
@@ -15,34 +16,12 @@ function ProjectDetailsBody({ details, invitedUser, handleSendInvite }) {
     skip: 0,
     limit: 5
   })
-  const [projectBugs, setProjectBugs] = useState([])
   const [drawerValue, setDrawerValue] = useState(null)
+  const [bugRemoved,setBugRemoved] = useState(true)
   const [drawer, setDrawer] = useState(true)
   const [page, setPage] = useState(1)
-  const [totalPages, setTotalPages] = useState(0)
-  const [documentCount, setDocumentCount] = useState(0)
-  const [bugRemoved,setBugRemoved] = useState(true)
-  const [filter,setFilter] = useState("")
   const navigate = useNavigate()
-
-  useEffect(() => {
-    (async () => {
-      try {
-        const { data: { data: { bugs, count, totalPages } } } = await fetchAllBugsRelatedToProject(details._id, pagination.skip, pagination.limit)
-        setTotalPages(totalPages)
-        setDocumentCount(count)
-        setProjectBugs(prev => {
-          return [...bugs]
-        })
-      }
-      catch (e) {
-        return toast.error("Cannot able to fetch projects.", {
-          icon: "😓"
-        })
-      }
-    })()
-  }, [details, pagination,bugRemoved])
-
+  const {totalPages,documentCount,projectBugs} = useFetchBugsRelatedToProject(details,pagination,bugRemoved)
 
 
   function handleSetPagination(prev) {
@@ -74,7 +53,7 @@ function ProjectDetailsBody({ details, invitedUser, handleSendInvite }) {
 
 
   async function handleCopyLine(e, id) {
-    const link = `http://localhost:5173/bug/${details?._id}/${id}`;
+    const link = `${import.meta.env.VITE_FRONT_URL}/bug/${details?._id}/${id}`;
     copy(link)
     return toast.success("Link is copied to clipboard", {
       icon: "💥"
@@ -105,27 +84,27 @@ function ProjectDetailsBody({ details, invitedUser, handleSendInvite }) {
       switch(Priority) {
         case 'Low':
           return {
-            icon:<FaChevronDown className='text-xl mr-2 text-green-600' />,
+            icon:<FaChevronDown className='text-sm mr-2 text-green-600' />,
             msg: "Low" 
           } 
         case 'Medium':
           return {
-            icon: <FaMinus className='text-xl mr-2 text-yellow-300' />,
+            icon: <FaMinus className='text-sm mr-2 text-yellow-300' />,
             msg: "Medium"
           }
         case 'High':
           return {
-            icon: <FaChevronUp className='text-xl mr-2  text-amber-600' />,
+            icon: <FaChevronUp className='text-sm mr-2  text-amber-600' />,
             msg: "High"
           }
         case 'Urgent':
           return {
-            icon: <FaArrowUp className='text-xl mr-2 text-red-400' />,
+            icon: <FaArrowUp className='text-sm mr-2 text-red-400' />,
             msg: "Urgent"
           }
         case 'Immediate':
           return {
-            icon: <FaExclamationTriangle className='text-xl mr-2 text-red-700' />,
+            icon: <FaExclamationTriangle className='text-sm mr-2 text-red-700' />,
             msg: "Immediate"
           }
       }
@@ -136,27 +115,27 @@ function ProjectDetailsBody({ details, invitedUser, handleSendInvite }) {
       switch(type) {
         case 'Bug':
           return {
-            icon:<FaBug className='text-xl mr-2 text-red-700' />,
+            icon:<FaBug className='text-sm mr-2 text-red-700' />,
             msg: "Bug" 
           } 
         case 'Task':
           return {
-            icon: <FaTasks className='text-xl mr-2 text-white' />,
+            icon: <FaTasks className='text-sm mr-2 text-white' />,
             msg: "Task"
           }
         case 'Improvement':
           return {
-            icon: <FaAngleDoubleUp className='text-xl mr-2  text-green-400' />,
+            icon: <FaAngleDoubleUp className='text-sm mr-2  text-green-400' />,
             msg: "Improvement"
           }
         case 'New Feature':
           return {
-            icon: <FaLightbulb className='text-xl mr-2 text-yellow-500' />,
+            icon: <FaLightbulb className='text-sm mr-2 text-yellow-500' />,
             msg: "New Feature"
           }
         case 'Epic':
           return {
-            icon: <FaMeteor className='text-xl mr-2 text-purple-400' />,
+            icon: <FaMeteor className='text-sm mr-2 text-purple-400' />,
             msg: "Epic"
           }
       }
@@ -168,27 +147,27 @@ function ProjectDetailsBody({ details, invitedUser, handleSendInvite }) {
       switch(Severity) {
         case 'Minor':
           return {
-            icon:<FaCircle className='text-xl mr-2 text-yellow-300' />,
+            icon:<FaCircle className='text-sm mr-2 text-yellow-300' />,
             msg: "Minor" 
           } 
         case 'Major':
           return {
-            icon: <FaCircle className='text-xl mr-2 text-amber-600' />,
+            icon: <FaCircle className='text-sm mr-2 text-amber-600' />,
             msg: "Major"
           }
         case 'Critical':
           return {
-            icon: <FaBomb className='text-xl mr-2  text-red-400' />,
+            icon: <FaBomb className='text-sm mr-2  text-red-400' />,
             msg: "Critical"
           }
         case 'Crash':
           return {
-            icon: <FaSkullCrossbones className='text-xl mr-2 text-red-600' />,
+            icon: <FaSkullCrossbones className='text-sm mr-2 text-red-600' />,
             msg: "Crash"
           }
         case 'Tweak':
           return {
-            icon: <FaAsterisk className='text-xl mr-2 text-green-300' />,
+            icon: <FaAsterisk className='text-sm mr-2 text-green-300' />,
             msg: "Tweak"
           }
       }
@@ -221,13 +200,13 @@ function ProjectDetailsBody({ details, invitedUser, handleSendInvite }) {
             <table className="mx-auto w-4/5 mt-12">
               <thead className='text-left w-full border-b-2px border-solid border-white/10'>
                 <tr className='w-full'>
-                  <th className="pl-4 pb-2 cursor-pointer" onClick={() => setFilter("Name")}>Name</th>
-                  <th className="pl-4 pb-2 cursor-pointer" onClick={() => setFilter("ReporterName")}>Reporter</th>
-                  <th className="pl-4 pb-2 cursor-pointer" onClick={() => setFilter("Type")}>Type</th>
-                  <th className="pl-4 pb-2 cursor-pointer" onClick={() => setFilter("Priority")}>Priority</th>
-                  <th className="pl-4 pb-2 cursor-pointer" onClick={() => setFilter("Severity")}>Severity</th>
-                  <th className="pl-4 pb-2 cursor-pointer" onClick={() => setFilter("createdAt")}>Created</th>
-                  <th className="pl-4 pb-2 cursor-pointer" onClick={() => setFilter("isResolve")}>Resolution</th>
+                  <th className="pl-4 pb-2 cursor-pointer" >Name</th>
+                  <th className="pl-4 pb-2 cursor-pointer" >Reporter</th>
+                  <th className="pl-4 pb-2 cursor-pointer" >Type</th>
+                  <th className="pl-4 pb-2 cursor-pointer" >Priority</th>
+                  <th className="pl-4 pb-2 cursor-pointer" >Severity</th>
+                  <th className="pl-4 pb-2 cursor-pointer" >Created</th>
+                  <th className="pl-4 pb-2 cursor-pointer" >Resolution</th>
                   <th className="pl-4 pb-2"></th>
                 </tr>
               </thead>

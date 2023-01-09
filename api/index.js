@@ -1,18 +1,18 @@
-import dotenv from "dotenv"
-dotenv.config()
 import express from "express"
+import "./config.js"
 const app = express()
 const PORT = process.env.PORT || 5500
 import router from "./routes.js"
 import cookieParser from "cookie-parser"
 import dbConnect from "./db/index.js"
+import cors from "cors"
+
 
 dbConnect()
-import cors from "cors"
 
 app.use(cors({
     credentials: true,
-    origin: ['http://localhost:5173'],
+    origin: [process.env.FRONT_URL],
 }));
 
 

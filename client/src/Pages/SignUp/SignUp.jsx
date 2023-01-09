@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import {  FaUserSecret } from "react-icons/fa";
+import { FaUserSecret } from "react-icons/fa";
 import character from "../../assets/character.svg"
 import "./SignUp.css"
 import { Link, useNavigate, useSearchParams } from "react-router-dom"

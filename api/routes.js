@@ -1,6 +1,5 @@
 import express from "express"
 import projectController from "./controllers/project.controller.js";
-// import userController from "./controllers/user.controller.js";
 const router = express.Router()
 import authController from "./controllers/user.controller.js"
 import authMiddleware from "./middleware/auth.middleware.js";

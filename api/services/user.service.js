@@ -1,5 +1,3 @@
-import bugsModel from "../model/bugs.model.js";
-import projectModel from "../model/project.model.js";
 import userModel from "../model/user.model.js"
 
 class UserService {

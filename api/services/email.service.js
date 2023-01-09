@@ -1,4 +1,5 @@
 import sgMail from '@sendgrid/mail'
+
 class SendMail {
     sendMail(email, otp) {
         sgMail.setApiKey(process.env.SENDGRID_SECRET)

@@ -25,7 +25,6 @@ function BugDetails() {
   const navigate = useNavigate()
 
 
-
   useEffect(() => {
     (async () => {
       try {
@@ -70,7 +69,7 @@ function BugDetails() {
 
   async function handleCopyLine(e) {
     if (copyLink === true) return;
-    const link = `http://localhost:5173/bug/${projectId}/${id}`;
+    const link = `${import.meta.env.VITE_FRONT_URL}/bug/${projectId}/${id}`;
     copy(link)
     setCopyLink(true)
     return toast.success("Link is copied to clipboard", {

@@ -35,7 +35,6 @@ function GetEmail() {
             <Navbar _Route={"SignUp"} />
             <div className='form-body px-12 py-12 bg-white  w-[500px]  relative z-50 rounded-3xl shadow-sm'>
                 <h1 className='signup__form__welcome text-center mb-4 text-2xl'>Troubleshoot your account.</h1>
-                {/* <p className='text-center pt-2 pb-6 opacity-80 w-72 mx-auto'>Hey, we have just sent a verification code to  <span className='text-green-400'>{email}</span>.</p> */}
                 <form className='w-full flex flex-col items-center justify-center' onSubmit={handleSubmit} action="">
                     <div className="form-control w-full mb-2">
                         <label htmlFor='otp' className="label">

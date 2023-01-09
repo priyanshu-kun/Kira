@@ -8,7 +8,7 @@ import Navbar from '../../components/Navbar';
 import { userLogin } from '../../http';
 import { toast } from 'react-toastify';
 import { setUser } from '../../store/user.slice';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const initialState = {
   emailAndUsername: "",
@@ -102,7 +102,6 @@ function SignUp() {
       <img className='login-character-image absolute bottom-10 right-20' src={character} alt="" />
       <div className='form-body px-12 py-12 bg-white  w-form-width-login  relative z-50 rounded-3xl shadow-sm'>
         <h1 className='signup__form__welcome text-center mb-10 text-2xl'>Agent Login</h1>
-        {/* <p className='text-center pt-6 pb-10 w-72 mx-auto '>Hey, Enter your details to get to Sign in to your account.</p> */}
         <form className='w-full h-full' onSubmit={handleSubmit} action="">
           <div class="flex flex-col w-full border-opacity-50">
             <div class="grid card rounded-box place-items-center">

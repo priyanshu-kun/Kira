@@ -39,7 +39,7 @@ function ResolveBug({ activity, setLoader, setDocumentCount, setTotalPages }) {
               <button className='btn bg-gray-600 hover:bg-gray-600 pointer-events-none text-white w-24 normal-case mr-3'>UnResolve</button>
             )
           }
-          <div className="text-sm font-normal text-gray-500 dark:text-gray-300"><a href={"http://localhost:5173" + activity.link} className="font-semibold text-blue-600 dark:text-blue-500 hover:underline cursor-pointer  mr-2">{activity.activity.title}</a>{activity.activity.body}{activity.isResolve.flag ? <span className='badge bg-green-400 text-black ml-2'>Resolved</span>: <span className='badge bg-red-400 text-black ml-2'>UnResolved</span>}</div>
+          <div className="text-sm font-normal text-gray-500 dark:text-gray-300"><a href={import.meta.env.VITE_FRONT_URL + activity.link} className="font-semibold text-blue-600 dark:text-blue-500 hover:underline cursor-pointer  mr-2">{activity.activity.title}</a>{activity.activity.body}{activity.isResolve.flag ? <span className='badge bg-green-400 text-black ml-2'>Resolved</span>: <span className='badge bg-red-400 text-black ml-2'>UnResolved</span>}</div>
         </div>
       </div>
     </li>

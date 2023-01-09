@@ -1,48 +1,25 @@
-import React, { useState, useEffect } from 'react'
-import { fetchProjectDetails, fetchUserProjects } from '../../http'
-import { useSelector, useDispatch } from "react-redux"
+import React, { useState } from 'react'
+import { fetchProjectDetails } from '../../http'
+import { useSelector } from "react-redux"
 import ProjectModal from './Modals/ProjectModal';
-import { setProjectDetails, setProjects } from '../../store/project.slice';
 import ProjectPlaceholder from './ProjectPlaceholder';
 import ProjectTable from './ProjectTable';
-import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import Preloader from './Preloader';
+import { useFetchProjects } from '../../hooks/useFetchProjects';
 
 function Dashboard() {
 
   const { user: { id } } = useSelector(state => state.user);
-  const dispatch = useDispatch()
   const navigate = useNavigate()
   const { projects } = useSelector(state => state.projects);
   const [fetchingProjectFlag, setFetchingProjectFlag] = useState(false);
-  const [loader,setLoader] = useState(true);
-
-
-
-  useEffect(() => {
-    (async () => {
-      try {
-        const { data: { data: projectsData } } = await fetchUserProjects(id)
-        dispatch(setProjects(projectsData))
-        setLoader(false)
-      }
-      catch (e) {
-        setLoader(false)
-        return toast.error("Cannot able to fetch projects.", {
-          icon: "😓"
-        })
-      }
-    })()
-  }, [fetchingProjectFlag])
-
+  const {loader} = useFetchProjects(fetchProjectDetails,id)
 
 
   const handleProject = async (id) => {
     navigate("/details/project/" + id)
   }
-
-
 
 
 

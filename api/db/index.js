@@ -4,9 +4,8 @@ import mongoose from "mongoose"
 mongoose.set('strictQuery', true);
 //require chalk module to give colors to console text
 import chalk from "chalk"
-
 //require database URL from properties file
-const dbURL = "mongodb://127.0.0.1:27017/Kira";
+const dbURL = process.env.MONGO_DB_LOCAL_URI;
 
 const connected = chalk.bold.cyan;
 const error = chalk.bold.yellow;
