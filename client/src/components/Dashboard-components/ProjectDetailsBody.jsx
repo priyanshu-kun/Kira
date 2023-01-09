@@ -266,7 +266,7 @@ function ProjectDetailsBody({ details, invitedUser, handleSendInvite }) {
             ))
           }
         </div>
-        <label htmlFor="my-modal-4" className="btn mt-3">Invite</label>
+        <label htmlFor="my-modal-4" className="btn mt-3 relative  z-10">Invite</label>
       </div>
       <InviteModal handleSendInvite={handleSendInvite} />
 
