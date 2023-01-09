@@ -17,12 +17,13 @@ function ProjectDetailsBody({ details, invitedUser, handleSendInvite }) {
     limit: 5
   })
   const [drawerValue, setDrawerValue] = useState(null)
-  const [bugRemoved,setBugRemoved] = useState(true)
+  const [bugRemoved, setBugRemoved] = useState(true)
   const [drawer, setDrawer] = useState(true)
   const [page, setPage] = useState(1)
   const navigate = useNavigate()
-  const {totalPages,documentCount,projectBugs} = useFetchBugsRelatedToProject(details,pagination,bugRemoved)
+  const { totalPages, documentCount, projectBugs } = useFetchBugsRelatedToProject(details, pagination, bugRemoved)
 
+  console.log(documentCount)
 
   function handleSetPagination(prev) {
     if (prev) {
@@ -81,96 +82,96 @@ function ProjectDetailsBody({ details, invitedUser, handleSendInvite }) {
 
 
   function displayPriority(Priority) {
-      switch(Priority) {
-        case 'Low':
-          return {
-            icon:<FaChevronDown className='text-sm mr-2 text-green-600' />,
-            msg: "Low" 
-          } 
-        case 'Medium':
-          return {
-            icon: <FaMinus className='text-sm mr-2 text-yellow-300' />,
-            msg: "Medium"
-          }
-        case 'High':
-          return {
-            icon: <FaChevronUp className='text-sm mr-2  text-amber-600' />,
-            msg: "High"
-          }
-        case 'Urgent':
-          return {
-            icon: <FaArrowUp className='text-sm mr-2 text-red-400' />,
-            msg: "Urgent"
-          }
-        case 'Immediate':
-          return {
-            icon: <FaExclamationTriangle className='text-sm mr-2 text-red-700' />,
-            msg: "Immediate"
-          }
-      }
+    switch (Priority) {
+      case 'Low':
+        return {
+          icon: <FaChevronDown className='text-sm mr-2 text-green-600' />,
+          msg: "Low"
+        }
+      case 'Medium':
+        return {
+          icon: <FaMinus className='text-sm mr-2 text-yellow-300' />,
+          msg: "Medium"
+        }
+      case 'High':
+        return {
+          icon: <FaChevronUp className='text-sm mr-2  text-amber-600' />,
+          msg: "High"
+        }
+      case 'Urgent':
+        return {
+          icon: <FaArrowUp className='text-sm mr-2 text-red-400' />,
+          msg: "Urgent"
+        }
+      case 'Immediate':
+        return {
+          icon: <FaExclamationTriangle className='text-sm mr-2 text-red-700' />,
+          msg: "Immediate"
+        }
+    }
   }
 
 
   function displayType(type) {
-      switch(type) {
-        case 'Bug':
-          return {
-            icon:<FaBug className='text-sm mr-2 text-red-700' />,
-            msg: "Bug" 
-          } 
-        case 'Task':
-          return {
-            icon: <FaTasks className='text-sm mr-2 text-white' />,
-            msg: "Task"
-          }
-        case 'Improvement':
-          return {
-            icon: <FaAngleDoubleUp className='text-sm mr-2  text-green-400' />,
-            msg: "Improvement"
-          }
-        case 'New Feature':
-          return {
-            icon: <FaLightbulb className='text-sm mr-2 text-yellow-500' />,
-            msg: "New Feature"
-          }
-        case 'Epic':
-          return {
-            icon: <FaMeteor className='text-sm mr-2 text-purple-400' />,
-            msg: "Epic"
-          }
-      }
+    switch (type) {
+      case 'Bug':
+        return {
+          icon: <FaBug className='text-sm mr-2 text-red-700' />,
+          msg: "Bug"
+        }
+      case 'Task':
+        return {
+          icon: <FaTasks className='text-sm mr-2 text-white' />,
+          msg: "Task"
+        }
+      case 'Improvement':
+        return {
+          icon: <FaAngleDoubleUp className='text-sm mr-2  text-green-400' />,
+          msg: "Improvement"
+        }
+      case 'New Feature':
+        return {
+          icon: <FaLightbulb className='text-sm mr-2 text-yellow-500' />,
+          msg: "New Feature"
+        }
+      case 'Epic':
+        return {
+          icon: <FaMeteor className='text-sm mr-2 text-purple-400' />,
+          msg: "Epic"
+        }
+    }
   }
 
 
 
   function displaySeverity(Severity) {
-      switch(Severity) {
-        case 'Minor':
-          return {
-            icon:<FaCircle className='text-sm mr-2 text-yellow-300' />,
-            msg: "Minor" 
-          } 
-        case 'Major':
-          return {
-            icon: <FaCircle className='text-sm mr-2 text-amber-600' />,
-            msg: "Major"
-          }
-        case 'Critical':
-          return {
-            icon: <FaBomb className='text-sm mr-2  text-red-400' />,
-            msg: "Critical"
-          }
-        case 'Crash':
-          return {
-            icon: <FaSkullCrossbones className='text-sm mr-2 text-red-600' />,
-            msg: "Crash"
-          }
-        case 'Tweak':
-          return {
-            icon: <FaAsterisk className='text-sm mr-2 text-green-300' />,
-            msg: "Tweak"
-          }
-      }
+    switch (Severity) {
+      case 'Minor':
+        return {
+          icon: <FaCircle className='text-sm mr-2 text-yellow-300' />,
+          msg: "Minor"
+        }
+      case 'Major':
+        return {
+          icon: <FaCircle className='text-sm mr-2 text-amber-600' />,
+          msg: "Major"
+        }
+      case 'Critical':
+        return {
+          icon: <FaBomb className='text-sm mr-2  text-red-400' />,
+          msg: "Critical"
+        }
+      case 'Crash':
+        return {
+          icon: <FaSkullCrossbones className='text-sm mr-2 text-red-600' />,
+          msg: "Crash"
+        }
+      case 'Tweak':
+        return {
+          icon: <FaAsterisk className='text-sm mr-2 text-green-300' />,
+          msg: "Tweak"
+        }
+    }
   }
 
 
@@ -181,7 +182,7 @@ function ProjectDetailsBody({ details, invitedUser, handleSendInvite }) {
         <h1 ><span className='font-exBold'>PROJECT ID:</span> {details?._id}
         </h1>
         <h1 className='flex items-center'> <span className='font-exBold'>LEAD: </span> @{details?.projectLead}
-          
+
         </h1>
         <h1> <span className='font-exBold'>OWNER:</span>  {details?.owner}</h1>
         <div className='my-3 w-fit pl-12'>
@@ -248,7 +249,11 @@ function ProjectDetailsBody({ details, invitedUser, handleSendInvite }) {
           </>
         )
       }
-      <Pagination handleSetPagination={handleSetPagination} documentCount={documentCount} pagination={pagination} page={page} totalPages={totalPages} />
+      {
+        (projectBugs && projectBugs.length > 0) && (
+          <Pagination handleSetPagination={handleSetPagination} documentCount={documentCount} pagination={pagination} page={page} totalPages={totalPages} />
+        )
+      }
       <div className='absolute  max-h-users-list  right-16   top-32  flex flex-col items-center justify-between overflow-hidden'>
         <div className='p-1 w-full  max-h-users-list bg-black rounded-3xl border-2px border-solid border-white/10 flex items-center justify-center overflow-scroll flex-col'>
           {

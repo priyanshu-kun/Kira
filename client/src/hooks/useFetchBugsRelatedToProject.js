@@ -11,9 +11,7 @@ export const useFetchBugsRelatedToProject = (details,pagination,bugRemoved) => {
         const { data: { data: { bugs, count, totalPages } } } = await fetchAllBugsRelatedToProject(details._id, pagination.skip, pagination.limit)
         setTotalPages(totalPages)
         setDocumentCount(count)
-        setProjectBugs(prev => {
-          return [...bugs]
-        })
+        setProjectBugs(bugs)
       }
       catch (e) {
         return toast.error("Cannot able to fetch projects.", {
@@ -21,7 +19,7 @@ export const useFetchBugsRelatedToProject = (details,pagination,bugRemoved) => {
         })
       }
     })()
-  }, [details, pagination,bugRemoved])
+  }, [details._id, pagination,bugRemoved])
 
 
   return {

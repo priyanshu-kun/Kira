@@ -81,7 +81,7 @@ class BugsController {
             const parsedUrl = url.parse(req.url, true);
             const queryParams = parsedUrl.query;
             const {skip,limit} = queryParams;
-            const count = await countBugsDocuments();
+            const count = await countBugsDocuments(id);
             const totalPages = Math.ceil(count / limit);
             const bugs = await fetchProjectBugs(id,skip,limit)
             return res.json({

@@ -20,8 +20,8 @@ class BugsService {
     async deleteAllBugsRelatedToUser(id) {
         return await bugsModel.deleteMany({Reporter: id})
     }
-    async countBugsDocuments() {
-        return await bugsModel.countDocuments()
+    async countBugsDocuments(id) {
+        return await bugsModel.count({"ProjectId": id}).exec()
     }
 }
 
