@@ -1,51 +1,29 @@
-import React, { useEffect } from 'react'
 import { useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
-import { fetchBugsFromProject, getComments, resolveBug, updateBug } from '../../http'
+import {  resolveBug, updateBug } from '../../http'
 import Preloader from './Preloader'
 import Navbar from "./Navbar"
-import { FiArrowLeft, FiClock,  FiXCircle } from 'react-icons/fi'
+import { FiArrowLeft, FiClock, FiXCircle } from 'react-icons/fi'
 import { useSelector } from 'react-redux'
 import { FaCheck, FaLink, FaTimes, FaTrash } from 'react-icons/fa'
 import copy from 'copy-to-clipboard'
 import Comments from './Comments'
+import { useBugDetails } from '../../hooks/useBugDetails'
+import { useFetchComments } from '../../hooks/useFetchComments'
 
 
 function BugDetails() {
   const { projectId, id } = useParams()
-  const [bugDetails, setBugDetails] = useState({})
-  const [loader, setLoader] = useState(true)
   const { user } = useSelector(state => state.user)
   const [image, setImage] = useState({ img: "", width: 0, height: 0 })
   const [description, setDescription] = useState("")
   const [fullView, setFullView] = useState(false)
   const [copyLink, setCopyLink] = useState(false)
-  const [commentList,setCommentList] = useState([])
   const navigate = useNavigate()
+  const { bugDetails, setBugDetails, loader } = useBugDetails(id)
+  const { commentList, setCommentList } = useFetchComments(id)
 
-
-  useEffect(() => {
-    (async () => {
-      try {
-        const { data: { data: details } } = await fetchBugsFromProject(id)
-        if(!details) {
-          navigate("/")
-          return toast.error("Bug is already deleted by user", {
-            icon: "😓"
-          })
-        }
-        setBugDetails(details)
-        setLoader(false)
-      }
-      catch (e) {
-        setLoader(false)
-        return toast.error("Cannot able to fetch details.", {
-          icon: "😓"
-        })
-      }
-    })()
-  }, [id])
 
 
 
@@ -155,15 +133,6 @@ function BugDetails() {
     setCommentList(data)
   }
 
-
-  useEffect(() => {
-    (async () => {
-      const {data: {reqStatus,data}} = await getComments(id)
-      if(reqStatus) {
-        setCommentList(data)
-      }
-    })()
-  },[])
 
 
   return (
@@ -292,11 +261,11 @@ function BugDetails() {
           }
         </div>
         <div className="divider mt-32"></div>
-          <Comments bugId={id} commentList={commentList} refreshComments={updateComment} />
+        <Comments bugId={id} commentList={commentList} refreshComments={updateComment} />
       </div>
       {
         fullView && <div className='w-[100vw] h-[100vh] fixed flex items-center justify-center top-0 right-0 bg-black/80 z-[99999] overflow-hidden'>
-          <div className={`w-[${image.img === "" ? bugDetails.Attachment.width : image.width}] h-[${image.img === "" ? bugDetails.Attachment.height : image.height}]  ${bugDetails.Attachment.height > bugDetails.Attachment.width ? "max-w-[40%]": "max-w-[80%]" }  overflow-auto rounded-2xl  border-[3px] border-solid border-white/30`}>
+          <div className={`w-[${image.img === "" ? bugDetails.Attachment.width : image.width}] h-[${image.img === "" ? bugDetails.Attachment.height : image.height}]  ${bugDetails.Attachment.height > bugDetails.Attachment.width ? "max-w-[40%]" : "max-w-[80%]"}  overflow-auto rounded-2xl  border-[3px] border-solid border-white/30`}>
             <img className="rounded-2xl  w-full h-auto " src={image.img === "" ? bugDetails.Attachment.img : image.img} alt="" />
           </div>
           <span onClick={(e) => setFullView(false)} className='absolute  top-2 right-2 rounded-full cursor-pointer bg-black'><FiXCircle className='text-3xl text-white' /></span>

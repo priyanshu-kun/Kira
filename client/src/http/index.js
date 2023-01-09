@@ -44,7 +44,7 @@ export const invitePerson = async (data) => await api.post('/fetch/user/project/
 export const findAllUsers = async () => await api.get('/fetch-all-users')
 export const createNewBug = async (data) => await api.post('/create-bug',data)
 export const fetchAllBugsRelatedToProject = async (id,skip,limit,filter) => await api.get('/fetch-all-bugs/'+id+"?skip="+skip+"&limit="+limit)
-export const fetchBugsFromProject = async (id) => await api.get('/fetch-details/'+id)
+export const fetchBugFromProject = async (id) => await api.get('/fetch-details/'+id)
 export const removeBugFromProject = async (id) => await api.delete('/remove-bug/'+id)
 export const updateBug = async (id,data) => await api.patch('/update-bug/'+id,data)
 export const resolveBug = async (id) => await api.get('/resolve-bug/'+id)

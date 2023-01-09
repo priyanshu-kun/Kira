@@ -4,7 +4,6 @@ import { useSelector } from 'react-redux'
 import { createNewBug } from '../../../http'
 import { toast } from 'react-toastify'
 import { useNavigate } from 'react-router-dom'
-import { isFulfilled } from '@reduxjs/toolkit'
 
 const initialState = {
     Name: "",
