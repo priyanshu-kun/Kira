@@ -9,7 +9,7 @@ class CommentService {
         return await commentModel.findById({_id: id}).populate('bugId').populate('author').populate('respondTo').exec()
     }
     async getCommentsFromDB(id) {
-        return await commentModel.find({bugId: id}).populate('bugId').populate('author').populate('respondTo').exec()
+        return await commentModel.find({bugId: id},{},{sort: {createdAt: -1}}).populate('bugId').populate('author').populate('respondTo').exec()
     }
     async saveNewCommentWithChild(data,parentCmt) {
         const doc = await commentModel.create(data)

@@ -1,7 +1,7 @@
 import React from 'react'
 import { useState } from 'react'
 import { useSelector } from "react-redux"
-import { saveComment } from '../../http'
+import { getComments, saveComment } from '../../http'
 import SingleComment from './SingleComment'
 import ReplyComment from "./ReplyComment"
 import CommentForm from './CommentForm'
@@ -27,8 +27,11 @@ function Comments({ bugId, refreshComments, commentList }) {
         bugId,
         author: user.id
       }
-      const { data: { data } } = await saveComment(payload)
-      refreshComments(data)
+      const { data } = await saveComment(payload)
+      const {data: {reqStatus,data:commentsFromDB}} = await getComments(bugId)
+      if(reqStatus) {
+        refreshComments(commentsFromDB)
+      }
       setComment("")
       setForm(false)
     }
@@ -68,7 +71,7 @@ function Comments({ bugId, refreshComments, commentList }) {
         {
           commentList && commentList.length === 0 ? (
             <h1 className='text-center details mt-24 text-2xl'>No Comments 🙃</h1>
-          ) : commentList.map((cmt, index) => {
+          ) : commentList && commentList.map((cmt, index) => {
             return (
               (cmt && !cmt.respondTo) && (
                 <>

@@ -7,7 +7,10 @@ class SendMail {
             from: process.env.SENDGRID_EMAIL, // Change to your verified sender
             subject: 'Account confirmation',
             text: "please don't share it with anybody.",
-            html: `<strong>${otp}</strong>`,
+            html: `<strong>
+                Please don't share it with anybody.
+                <h1>-> ${otp}</h1>
+            </strong>`,
         }
         sgMail
             .send(msg)

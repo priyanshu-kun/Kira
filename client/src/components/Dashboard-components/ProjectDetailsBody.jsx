@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import InviteModal from './Modals/InviteModal'
 import { FiCopy, FiDisc } from 'react-icons/fi'
-import { FaCheckCircle, FaComments, FaEllipsisH, FaLink, FaShare, FaTimesCircle, FaTrash } from 'react-icons/fa'
+import { FaAngleDoubleUp, FaAngleUp, FaArrowUp, FaAsterisk, FaBomb, FaBug, FaCalendar, FaCheckCircle, FaChevronDown, FaChevronUp, FaCircle, FaComments, FaEllipsisH, FaExclamationTriangle, FaFire, FaHotjar, FaLightbulb, FaLink, FaMeteor, FaMinus, FaRadiationAlt, FaShare, FaSkullCrossbones, FaSplotch, FaTasks, FaTimesCircle, FaTrash } from 'react-icons/fa'
 import { fetchAllBugsRelatedToProject, fetchProjectDetails, removeBugFromProject } from '../../http'
 import { useDispatch, useSelector } from 'react-redux'
 import { setProjectDetails } from '../../store/project.slice'
@@ -104,6 +104,102 @@ function ProjectDetailsBody({ details, invitedUser, handleSendInvite }) {
     navigate("/bug/" + details?._id + "/" + id)
   }
 
+
+  function displayPriority(Priority) {
+      switch(Priority) {
+        case 'Low':
+          return {
+            icon:<FaChevronDown className='text-xl mr-2 text-green-600' />,
+            msg: "Low" 
+          } 
+        case 'Medium':
+          return {
+            icon: <FaMinus className='text-xl mr-2 text-yellow-300' />,
+            msg: "Medium"
+          }
+        case 'High':
+          return {
+            icon: <FaChevronUp className='text-xl mr-2  text-amber-600' />,
+            msg: "High"
+          }
+        case 'Urgent':
+          return {
+            icon: <FaArrowUp className='text-xl mr-2 text-red-400' />,
+            msg: "Urgent"
+          }
+        case 'Immediate':
+          return {
+            icon: <FaExclamationTriangle className='text-xl mr-2 text-red-700' />,
+            msg: "Immediate"
+          }
+      }
+  }
+
+
+  function displayType(type) {
+      switch(type) {
+        case 'Bug':
+          return {
+            icon:<FaBug className='text-xl mr-2 text-red-700' />,
+            msg: "Bug" 
+          } 
+        case 'Task':
+          return {
+            icon: <FaTasks className='text-xl mr-2 text-white' />,
+            msg: "Task"
+          }
+        case 'Improvement':
+          return {
+            icon: <FaAngleDoubleUp className='text-xl mr-2  text-green-400' />,
+            msg: "Improvement"
+          }
+        case 'New Feature':
+          return {
+            icon: <FaLightbulb className='text-xl mr-2 text-yellow-500' />,
+            msg: "New Feature"
+          }
+        case 'Epic':
+          return {
+            icon: <FaMeteor className='text-xl mr-2 text-purple-400' />,
+            msg: "Epic"
+          }
+      }
+  }
+
+
+
+  function displaySeverity(Severity) {
+      switch(Severity) {
+        case 'Minor':
+          return {
+            icon:<FaCircle className='text-xl mr-2 text-yellow-300' />,
+            msg: "Minor" 
+          } 
+        case 'Major':
+          return {
+            icon: <FaCircle className='text-xl mr-2 text-amber-600' />,
+            msg: "Major"
+          }
+        case 'Critical':
+          return {
+            icon: <FaBomb className='text-xl mr-2  text-red-400' />,
+            msg: "Critical"
+          }
+        case 'Crash':
+          return {
+            icon: <FaSkullCrossbones className='text-xl mr-2 text-red-600' />,
+            msg: "Crash"
+          }
+        case 'Tweak':
+          return {
+            icon: <FaAsterisk className='text-xl mr-2 text-green-300' />,
+            msg: "Tweak"
+          }
+      }
+  }
+
+
+
   return (
     <div className='dashboard-right-body text-white mt-12'>
       <div className=' w-4/5 bg-[#0a0a0a] border-2px border-solid border-white/10 mx-auto mt-5 px-3 flex items-center justify-around h-28 rounded-3xl'>
@@ -146,10 +242,10 @@ function ProjectDetailsBody({ details, invitedUser, handleSendInvite }) {
                       <tr key={bug._id} onClick={(e) => handleBugRoute(e, bug._id)} className="border-b-2px bg-white/5 border-b-solid border-b-white/10 h-16  cursor-pointer hover:bg-white/10 transition-all">
                         <td className="px-4 py-2 table-title shadow-table-side">{bug.Name}</td>
                         <td className="px-4 py-2 text-sm font-black text-blue-400">@{bug.ReporterName}</td>
-                        <td className="px-4 py-2">{bug.Type}</td>
-                        <td className="px-4 py-2">{bug.Priority}</td>
-                        <td className='px-4 py-2'>{bug.Severity}</td>
-                        <td className='px-4 py-2'>{moment(bug.createdAt).format("MMM D, YYYY")}</td>
+                        <td className="px-4 py-2"><span className='flex items-center'>{displayType(bug.Type).icon} {displayType(bug.Type).msg}</span></td>
+                        <td className="px-4 py-2 "><span className='flex items-center'>{displayPriority(bug.Priority).icon} {displayPriority(bug.Priority).msg}</span></td>
+                        <td className='px-4 py-2'><span className='flex items-center'>{displaySeverity(bug.Severity).icon} {displaySeverity(bug.Severity).msg}</span></td>
+                        <td className='px-4 py-2'><span className='flex items-center'><FaCalendar className='text-sm mr-2 opacity-50' />{moment(bug.createdAt).format("MMM D, YYYY")}</span></td>
                         <td className='px-4 py-2'>{!bug.isResolve ? <span className='flex items-center'>UnResolved<FaCheckCircle className='ml-2 text-green-400' /></span> : <span className='flex items-center' >Resolved<FaTimesCircle className='ml-2 text-red-400' /></span>}</td>
                         <td className='py-4 px-2 relative'>
                           <span onClick={(e) => {

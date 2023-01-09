@@ -6,7 +6,7 @@ class BugsService {
         return await bugsModel.create(data)
     }
     async fetchProjectBugs(id,skp,lmt) {
-        return await bugsModel.find({ProjectId: id}).populate("ProjectId").skip(skp).limit(lmt).exec()
+        return await bugsModel.find({ProjectId: id},{},{sort: {createdAt: -1}}).populate("ProjectId").skip(skp).limit(lmt).exec()
     }
     async fetchBugsDetails(id) {
         return await bugsModel.findOne({_id: id})

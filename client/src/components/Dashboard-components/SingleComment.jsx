@@ -1,6 +1,6 @@
 import React from 'react'
 import { useState } from 'react'
-import { saveComment } from '../../http'
+import { getComments, saveComment } from '../../http'
 import { useSelector } from "react-redux"
 import CommentForm from './CommentForm'
 import moment from "moment"
@@ -31,10 +31,12 @@ function SingleComment({ comment, bugId, refreshComments, parentData }) {
                 author: user.id,
                 respondTo: comment._id
             }
-            const { data: { data } } = await saveComment(payload)
-            console.log(data)
+            const { data } = await saveComment(payload)
+            const { data: { reqStatus, data: commentsFromDB } } = await getComments(bugId)
+            if (reqStatus) {
+                refreshComments(commentsFromDB)
+            }
             toogleReplyForm()
-            refreshComments(data)
             setComment("")
         }
         catch (e) {
@@ -63,10 +65,10 @@ function SingleComment({ comment, bugId, refreshComments, parentData }) {
                     {
                         user ? (
 
-                    <button onClick={toogleReplyForm} className="btn bg-blue-400 hover:bg-blue-400 normal-case text-black">Reply<FaReply className='ml-2' /></button>
-                        ): (
+                            <button onClick={toogleReplyForm} className="btn bg-blue-400 hover:bg-blue-400 normal-case text-black">Reply<FaReply className='ml-2' /></button>
+                        ) : (
 
-                    <button className="btn bg-blue-400 hover:bg-blue-400 normal-case important-text-white border-2px border-solid border-white/30" disabled>Reply<FaReply className='ml-2 text-white' /></button>
+                            <button className="btn bg-blue-400 hover:bg-blue-400 normal-case important-text-white border-2px border-solid border-white/30" disabled>Reply<FaReply className='ml-2 text-white' /></button>
                         )
                     }
                 </div>

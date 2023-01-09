@@ -153,9 +153,7 @@ function BugDetails() {
 
 
   const updateComment = (data) => {
-    setCommentList(prev => {
-      return [...prev,data]
-    })
+    setCommentList(data)
   }
 
 
