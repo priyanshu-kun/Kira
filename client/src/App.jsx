@@ -26,7 +26,7 @@ function AuthenticationRoutes() {
 
   const User = useSelector(state => state.user)
 
-
+  console.log("USER: ",User)
   return (
     !User.auth ? <Outlet /> : <Navigate to="/" />
   )

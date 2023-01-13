@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { FiHome, FiX, FiUser } from "react-icons/fi"
 import { useSelector } from "react-redux"
 

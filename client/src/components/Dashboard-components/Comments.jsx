@@ -11,6 +11,7 @@ function Comments({ bugId, refreshComments, commentList }) {
   const [Comment, setComment] = useState("")
   const { user } = useSelector(state => state.user)
   const [form, setForm] = useState(false)
+  const [loader,setLoader] = useState(false)
 
   function handleInputChange(e) {
     setComment(e.target.value)
@@ -25,15 +26,18 @@ function Comments({ bugId, refreshComments, commentList }) {
         bugId,
         author: user.id
       }
-      const { data } = await saveComment(payload)
+      setLoader(true)
+      await saveComment(payload)
       const {data: {reqStatus,data:commentsFromDB}} = await getComments(bugId)
       if(reqStatus) {
         refreshComments(commentsFromDB)
       }
+      setLoader(false)
       setComment("")
       setForm(false)
     }
     catch (e) {
+      setLoader(false)
       console.log(e)
     }
   }
@@ -62,7 +66,7 @@ function Comments({ bugId, refreshComments, commentList }) {
       }
       {
         form && (
-          <CommentForm closeCommentForm={closeForm} setComment={setComment}  handleComment={handleInputChange} handleCommentSubmit={handleInputSubmit} user={user} comment={Comment} type={"root"} replyingUsername={null} />
+          <CommentForm loader={loader} closeCommentForm={closeForm} setComment={setComment}  handleComment={handleInputChange} handleCommentSubmit={handleInputSubmit} user={user} comment={Comment} type={"root"} replyingUsername={null} />
         )
       }
       <div className='mt-[50px]'>

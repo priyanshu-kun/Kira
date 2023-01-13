@@ -13,6 +13,7 @@ function SingleComment({ comment, bugId, refreshComments, parentData }) {
     const [Comment, setComment] = useState("")
     const [reply, setReply] = useState(false)
     const { user } = useSelector(state => state.user)
+    const [loader,setLoader] = useState(false)
     function handleInputChange(e) {
         setComment(e.target.value)
     }
@@ -25,6 +26,7 @@ function SingleComment({ comment, bugId, refreshComments, parentData }) {
     async function handleInputSubmit(e) {
         e.preventDefault()
         try {
+setLoader(true)
             const payload = {
                 content: Comment,
                 bugId,
@@ -36,10 +38,12 @@ function SingleComment({ comment, bugId, refreshComments, parentData }) {
             if (reqStatus) {
                 refreshComments(commentsFromDB)
             }
+setLoader(false)
             toogleReplyForm()
             setComment("")
         }
         catch (e) {
+setLoader(false)
             return toast.error("Cannot load comments.", {
                 icon: "😓"
             })
@@ -75,7 +79,7 @@ function SingleComment({ comment, bugId, refreshComments, parentData }) {
             </div>
             {
                 reply && (
-                    <CommentForm closeCommentForm={toogleReplyForm} setComment={setComment} handleComment={handleInputChange} handleCommentSubmit={handleInputSubmit} user={user} comment={Comment} type={"reply"} replyingUsername={comment.author.username} />
+                    <CommentForm loader={loader} closeCommentForm={toogleReplyForm} setComment={setComment} handleComment={handleInputChange} handleCommentSubmit={handleInputSubmit} user={user} comment={Comment} type={"reply"} replyingUsername={comment.author.username} />
                 )
             }
         </div>

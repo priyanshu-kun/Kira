@@ -2,9 +2,10 @@ import React from 'react'
 import { FaArrowRight, FaSmile } from 'react-icons/fa'
 import {FiX} from "react-icons/fi"
 import EmojiPicker from 'emoji-picker-react';
+import Loader from "../../assets/loader2.gif"
 import { useState } from 'react';
 
-function CommentForm({ closeCommentForm, setComment, handleCommentSubmit, handleComment, user, comment, type, replyingUsername }) {
+function CommentForm({loader, closeCommentForm, setComment, handleCommentSubmit, handleComment, user, comment, type, replyingUsername }) {
     const [emoji, setEmoji] = useState(false)
     const [emojiBtn, setEmojiBtn] = useState(false)
     return (
@@ -43,9 +44,9 @@ function CommentForm({ closeCommentForm, setComment, handleCommentSubmit, handle
                                     <FaSmile className='text-xl' />
                                 )
                             }</button>
-                        <div>
-                            <button onClick={closeCommentForm} className='btn mr-3 normal-case'>Cancel</button>
-                            <button onClick={handleCommentSubmit} className='btn bg-green-400 hover:bg-green-400 border-none text-black normal-case'>Submit</button>
+                        <div className='flex items-center'>
+                            <button onClick={closeCommentForm} className='btn mr-3 normal-case w-[80px] h-[30px]'>Cancel</button>
+                            <button onClick={handleCommentSubmit} className='btn bg-green-400 hover:bg-green-400 border-none text-black normal-case flex items-center w-[80px] h-[30px]'>{loader ? <img src={Loader} alt="loader" className='w-[80%] h-auto' />: "Submit"}</button>
                         </div>
                     </div>
                 </div>
