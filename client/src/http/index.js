@@ -1,16 +1,16 @@
 import axios from 'axios';
 
 const api = axios.create({
-    baseURL: `${import.meta.env.VITE_API_URL}/api`,
+    baseURL: `http://localhost:5500/api`,
     withCredentials: true,
     headers: {
         'Content-type': 'application/json',
         Accept: 'application/json',
     },
 });
+// /api/login-user
 
-
-
+console.log("meta: ",import.meta.url.VITE_API_URL)
 
 export const sendOTP = async (data) => await api.post('/send-otp', data)
 export const verifyOTP = async (data) => await api.post('/verify-otp', data)

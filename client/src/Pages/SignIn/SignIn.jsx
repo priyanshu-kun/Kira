@@ -60,7 +60,8 @@ function SignUp() {
       })
     }
     catch (e) {
-      toast.error(e.response.data.data, {
+      console.log(e)
+      toast.error("e.response.data.data", {
         icon: "😰"
       })
     }
@@ -89,7 +90,8 @@ function SignUp() {
       })
     }
     catch (e) {
-      toast.error(e.response.data.data, {
+      console.log(e)
+      toast.error("e.response.data.data", {
         icon: "😰"
       })
     }
