@@ -15,12 +15,12 @@ const __dirname = dirname(__filename)
 dbConnect()
 
 app.use(cors({
-    origin: [process.env.FRONT_URL],
+    origin: "*",
     credentials: true,
 }));
 
 
-app.use(express.static("static"))
+// app.use(express.static("static"))
 app.use(cookieParser())
 app.use(express.json({ limit: '12mb' }))
 app.use(express.urlencoded({ extended: true }))

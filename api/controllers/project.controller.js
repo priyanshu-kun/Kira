@@ -2,7 +2,6 @@ import projectService from "../services/project.service.js";
 import emailService from "../services/email.service.js";
 import UserService from "../services/user.service.js";
 import tokenService from "../services/token.service.js"
-import projectModel from "../model/project.model.js";
 import timelineService from "../services/timeline.service.js";
 const { createNewProject, fetchUserProjects, fetchDetails, removeProjectFromDB } = projectService;
 const { sendMail } = emailService
