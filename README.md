@@ -80,9 +80,9 @@ In addition to the overview of what Kira is and how it works, It's also importan
  ### Step 3: Setup .env
 To run the server you will also need to provide the .env variables
 
- -   create a new file .env in both api and client directories
- -   open .env.EXAMPLE in both directories
- -   copy the contents and paste it to the .env with valid keys
+ -   create a new file `.env` in api folder
+ -   open `.env.EXAMPLE` in api folder
+ -   copy the contents and paste it to the `.env` with valid keys
 
 ## 📂 What's inside?
 ```
