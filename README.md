@@ -5,7 +5,8 @@
 <br />
 <div align="center">Kira is a web-based application that allows developers to easily track and manage bugs in their software projects. It provides a user-friendly interface for creating, updating, and resolving bug reports, as well as a variety of tools for organizing and prioritizing bugs. With Kira, developers can easily identify and fix bugs, improve their workflow, and deliver high-quality software to their users.</div>
 
-[![IMAGE_ALT](https://www.alleycat.org/wp-content/uploads/2019/03/FELV-cat.jpg)](https://youtu.be/QQ11mKGkxpw)
+[Screencast from 10-01-24 12:56:24 AM IST.webm](https://github.com/priyanshu-kun/Kira/assets/57032769/bc2ee232-3026-4ff0-b843-81fa30100a3b)
+
 
 <br />
 
